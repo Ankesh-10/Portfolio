@@ -3,6 +3,8 @@ import { Background } from "./Background";
 import { TerminalWindow } from "../terminal/TerminalWindow";
 import { NavTracker } from "../terminal/NavTracker";
 import { VisualPanel } from "../visual/VisualPanel";
+import { LiveRegion } from "../terminal/LiveRegion";
+import { Matrix } from "./Matrix";
 
 /** DOM order (spec §13): skip links → terminal window → visual aside. CSS places the aside on the left. */
 export function Shell({
@@ -11,12 +13,14 @@ export function Shell({
   qr,
 }: {
   children: ReactNode;
-  build: { sha?: string; iso: string };
+  build: { sha?: string; iso: string; resumeKb?: number };
   qr: boolean[][];
 }) {
   return (
     <>
       <Background />
+      <Matrix />
+      <LiveRegion />
       <NavTracker />
       <a className="skip-link" href="#content">
         Skip to content

@@ -143,6 +143,10 @@ body {
   caret-color: var(--yellow);
   caret-shape: block;
 }
+/* A focused text field is marked by its yellow block cursor (spec §6.3), not the 2px ring */
+.cmd-input:focus-visible {
+  outline: none;
+}
 
 /* Figlet: three forms chosen by container query on the buffer (spec §7.0). Names are prefixed to avoid collisions. */
 .fig-full,
@@ -308,4 +312,50 @@ html[data-motion="off"] .cmd-blink {
 }
 .skip-link:focus {
   top: 8px;
+}
+
+/* `help` output (spec §8): group · commands · description; stacks on narrow buffers */
+.help-grid {
+  display: grid;
+  grid-template-columns: max-content max-content 1fr;
+  column-gap: 3ch;
+}
+.help-row {
+  display: contents;
+}
+@container buf (max-width: 619px) {
+  .help-grid {
+    grid-template-columns: max-content 1fr;
+  }
+  .help-desc {
+    grid-column: 2;
+    margin-bottom: 4px;
+  }
+}
+
+/* Once a command has run, its prompt holds the latest output: the page's gutter highlight steps back */
+.buf-scroll:has(.sess-prompt) .gut-latest {
+  color: var(--text-5);
+}
+.buf-scroll .sess-prompt .gut-latest {
+  color: var(--text-3);
+}
+
+/* Palette opens with an 8px rise + fade, 140ms (spec §9) */
+@keyframes palette-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.palette {
+  animation: palette-in 140ms var(--ease);
+}
+html[data-motion="off"] .palette {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .palette {
+    animation: none;
+  }
 }

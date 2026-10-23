@@ -1,5 +1,6 @@
 import type { Line as LineT } from "@/lib/lines";
-import { Line, gutterLh } from "./Line";
+import { BufferRow } from "./BufferRow";
+import { SessionLines } from "./SessionLines";
 
 /** The vim-style buffer: gutter + lines + `~` fill (spec §6.3). Text is always real HTML. */
 export function Buffer({ title, lines }: { title: string; lines: LineT[] }) {
@@ -13,23 +14,9 @@ export function Buffer({ title, lines }: { title: string; lines: LineT[] }) {
       <h1 className="sr-only">{title}</h1>
       <div className="flex min-h-full flex-col">
         {lines.map((l, i) => (
-          <div
-            key={i}
-            className="grid grid-cols-[48px_1fr] pr-6 max-md:grid-cols-[32px_1fr] max-md:pr-4"
-            style={{ marginTop: l.t === "prompt" && i > 0 ? 8 : 0 }}
-          >
-            <span
-              aria-hidden
-              className={`select-none pr-3 text-right text-[length:var(--fs-ui)] ${i === lastPrompt ? "text-t3" : "text-t5"}`}
-              style={{ lineHeight: `${gutterLh(l)}px` }}
-            >
-              {i + 1}
-            </span>
-            <div className="min-w-0">
-              <Line line={l} />
-            </div>
-          </div>
+          <BufferRow key={i} line={l} n={i + 1} first={i === 0} latest={i === lastPrompt} />
         ))}
+        <SessionLines start={lines.length} />
         <div aria-hidden className="relative mt-1 min-h-0 flex-1">
           <div className="absolute inset-0 overflow-hidden">
             {Array.from({ length: 40 }, (_, i) => (

@@ -502,7 +502,7 @@ fun           there are a few classic commands hidden here         (no list: dis
 | `matrix` | 3s monochrome character rain over the background, then fades |
 
 ### Input behavior
-- **Tab** autocompletes commands and arguments; **↑/↓** walk the history (kept in `sessionStorage`).
+- **Tab** autocompletes commands and arguments, only while the line has text: on an empty line Tab moves focus as usual, so keyboard users are never trapped. One match completes; several extend to their shared prefix, and a second Tab lists them in the buffer. **↑/↓** walk the history (kept in `sessionStorage`).
 - Unknown command → `command not found: xyz. did you mean 'projects'? — or click a tab below`, with the suggestion based on edit distance.
 - Every command is echoed into the buffer as a new prompt line before its output.
 - A navigation command typed in the command line keeps focus in the command line (see §13 Focus).

@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import { statSync } from "node:fs";
+import { join } from "node:path";
 import { profile } from "@/content/profile";
 import { links } from "@/content/links";
 import { projects, sortedProjects } from "@/content/projects";
@@ -260,5 +262,12 @@ export function contactPage(): Page {
 /** Real build info (spec §4): only present when the host injects it. */
 export function buildInfo() {
   const sha = process.env.VERCEL_GIT_COMMIT_SHA;
-  return { sha: sha ? sha.slice(0, 7) : undefined, iso: new Date().toISOString() };
+  let resumeKb: number | undefined;
+  try {
+    resumeKb = Math.max(
+      1,
+      Math.round(statSync(join(process.cwd(), "public/resume.pdf")).size / 1024),
+    );
+  } catch {}
+  return { sha: sha ? sha.slice(0, 7) : undefined, iso: new Date().toISOString(), resumeKb };
 }

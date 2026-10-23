@@ -10,11 +10,11 @@ export function TerminalWindow({
   build,
 }: {
   children: ReactNode;
-  build: { sha?: string; iso: string };
+  build: { sha?: string; iso: string; resumeKb?: number };
 }) {
   return (
     <div
-      className="term-win relative z-20 min-w-0 flex-1 overflow-hidden rounded-xl border border-line2 bg-[var(--term-bg)] max-md:rounded-none max-md:border-0"
+      className="term-win relative z-20 min-w-0 flex-1 overflow-hidden rounded-xl border border-line2 bg-[var(--term-bg)] max-md:h-dvh max-md:rounded-none max-md:border-0"
       style={{
         margin: "var(--win-margin)",
         marginLeft: 0,
@@ -35,7 +35,7 @@ export function TerminalWindow({
       </main>
       <footer className="contents">
         <VimStatusLine build={build} />
-        <CommandLine />
+        <CommandLine resumeKb={build.resumeKb} />
       </footer>
     </div>
   );

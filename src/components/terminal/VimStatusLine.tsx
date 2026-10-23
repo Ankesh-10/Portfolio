@@ -2,6 +2,7 @@
 import { usePathname } from "next/navigation";
 import { tabFor } from "@/lib/routes";
 import { RelTime } from "./RelTime";
+import { BufferPos } from "./BufferPos";
 
 type Build = { sha?: string; iso: string };
 
@@ -29,8 +30,7 @@ export function VimStatusLine({ build }: { build: Build }) {
           </span>
         )}
         <RelTime iso={build.iso} />
-        <span>1:1</span>
-        <span>Top</span>
+        <BufferPos />
       </span>
     </div>
   );

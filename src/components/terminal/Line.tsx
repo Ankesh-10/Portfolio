@@ -9,6 +9,8 @@ import { Tree } from "../blocks/Tree";
 import { Detail, Kv } from "../blocks/Detail";
 import { Inlines } from "../blocks/Inline";
 import { Nudge } from "./Nudge";
+import { Help, History } from "../blocks/Help";
+import { Neofetch } from "../blocks/Neofetch";
 
 /** Gutter line-height per block: matches the baseline of the line's first text row (spec §3). */
 export function gutterLh(l: LineT): number {
@@ -59,5 +61,11 @@ export function Line({ line }: { line: LineT }) {
       return <Detail title={line.title} body={line.body} rows={line.rows} />;
     case "kv":
       return <Kv rows={line.rows} />;
+    case "help":
+      return <Help />;
+    case "history":
+      return <History items={line.items} />;
+    case "neofetch":
+      return <Neofetch />;
   }
 }

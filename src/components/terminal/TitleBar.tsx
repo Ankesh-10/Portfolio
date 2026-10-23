@@ -1,10 +1,21 @@
 "use client";
+import { useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { tabFor } from "@/lib/routes";
 import { MotionToggle } from "./MotionToggle";
+import { announce } from "./LiveRegion";
 
 export function TitleBar() {
   const tab = tabFor(usePathname());
+  // `✓` for 2s after a download (spec §8 `resume`).
+  const [done, setDone] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const downloaded = () => {
+    setDone(true);
+    announce("résumé downloaded");
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => setDone(false), 2000);
+  };
   return (
     <header
       className="relative flex h-9 items-center border-b border-line1 bg-[var(--term-chrome)] px-4 text-[length:var(--fs-ui)] leading-4"
@@ -26,9 +37,10 @@ export function TitleBar() {
         <a
           href="/resume.pdf"
           download
+          onClick={downloaded}
           className="ylink flex h-8 items-center whitespace-nowrap px-1"
         >
-          <span aria-hidden>↓ </span>resume.pdf
+          <span aria-hidden>{done ? "✓\u00a0" : "↓\u00a0"}</span>resume.pdf
         </a>
       </div>
     </header>
