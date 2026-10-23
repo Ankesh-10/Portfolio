@@ -10,7 +10,9 @@ const alias: Record<string, string> = {
   education: "about",
 };
 
-/** Phase-2 command line: navigation only. The parser/registry, history and palette are Phase 3 (spec §8). */
+const HELP = `commands: ${["home", ...tabs.slice(1).map((t) => t.slug), "resume"].join(" ")} · keys: 0–5 switch tabs, : focus`;
+
+/** Phase-2 command line: navigation, `help` and `resume`. The parser/registry, history and palette are Phase 3 (spec §8). */
 export function CommandLine() {
   const router = useRouter();
   const ref = useRef<HTMLInputElement>(null);
@@ -35,35 +37,52 @@ export function CommandLine() {
   }, [router]);
 
   function run(raw: string) {
-    const cmd = raw.trim().replace(/^cd\s+~?\/?/, "");
+    const cmd = raw
+      .trim()
+      .toLowerCase()
+      .replace(/^cd\s+~?\/?/, "");
     if (!cmd) return;
-    const slug = alias[cmd] ?? cmd;
+    if (cmd === "help" || cmd === "?") return setNote(HELP);
+    if (cmd === "resume" || cmd === "resume.pdf") {
+      setNote("opening resume.pdf…");
+      window.open("/resume.pdf", "_blank", "noopener");
+      return;
+    }
+    const slug = alias[cmd] ?? (cmd === "~" ? "home" : cmd);
     const tab = tabs.find((t) => t.slug === slug);
     if (tab) {
       setNote("");
       router.push(tab.href + (alias[cmd] === "about" ? "#experience" : ""));
     } else {
-      setNote(`command not found: ${cmd}. click a tab below`);
+      setNote(`command not found: ${cmd} — type help for the list`);
     }
   }
 
   return (
     <div
-      className="flex h-8 items-center gap-2 bg-[var(--term-chrome)] px-3 text-[length:var(--fs-ui)] leading-4"
+      translate="no"
+      className="cmd-bar flex h-8 min-w-0 items-center gap-2 bg-[var(--term-chrome)] px-3 text-[length:var(--fs-ui)] leading-4"
       style={{ gridArea: "cmd" }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) ref.current?.focus();
+      }}
     >
-      <label htmlFor="cmdline" className="text-t3">
+      <label htmlFor="cmdline" className="cmd-colon text-t3">
         <span aria-hidden>:</span>
         <span className="sr-only">Command line</span>
       </label>
       <input
         id="cmdline"
         ref={ref}
-        className="cmd-input min-w-0 flex-1 bg-transparent text-t1 outline-none focus-visible:outline-none"
+        name="command"
+        type="text"
+        className="cmd-input min-w-0 flex-1 bg-transparent text-t1"
         autoComplete="off"
         autoCapitalize="off"
+        autoCorrect="off"
         spellCheck={false}
-        placeholder=""
+        enterKeyHint="go"
+        aria-describedby="cmd-status"
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             run(e.currentTarget.value);
@@ -71,8 +90,27 @@ export function CommandLine() {
           } else if (e.key === "Escape") e.currentTarget.blur();
         }}
       />
-      <span role="status" className="ml-auto text-t3 max-md:hidden">
-        {note || "click a tab below · type a tab name"}
+      <span
+        id="cmd-status"
+        role="status"
+        title={note || undefined}
+        className={`ml-auto min-w-0 truncate text-t3 ${note ? "" : "max-md:hidden"}`}
+      >
+        {note || (
+          <>
+            click a tab below<span aria-hidden> · </span>
+            <button
+              type="button"
+              className="slink"
+              onClick={() => {
+                run("help");
+                ref.current?.focus();
+              }}
+            >
+              help
+            </button>
+          </>
+        )}
       </span>
     </div>
   );

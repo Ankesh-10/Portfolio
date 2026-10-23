@@ -135,7 +135,7 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
           aria-label="ID badge"
           onPointerDown={(e) => (down.current = { x: e.clientX, y: e.clientY })}
           onPointerUp={onUp}
-          className="relative w-full cursor-grab touch-none active:cursor-grabbing"
+          className="relative w-full cursor-grab touch-none select-none active:cursor-grabbing"
           style={{ perspective: 1200 }}
         >
           <motion.div

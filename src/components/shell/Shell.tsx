@@ -27,7 +27,7 @@ export function Shell({
       <a className="skip-link" href="#visual">
         Skip to visual
       </a>
-      <div className="relative z-10 flex h-dvh w-full max-md:block">
+      <div className="relative z-10 flex h-dvh w-full">
         <TerminalWindow build={build}>{children}</TerminalWindow>
         <VisualPanel qr={qr} />
       </div>

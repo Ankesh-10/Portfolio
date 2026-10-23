@@ -1,19 +1,22 @@
 "use client";
 import { usePathname } from "next/navigation";
 import { tabFor } from "@/lib/routes";
+import { useScrollPos } from "@/lib/scroll-store";
 import { RelTime } from "./RelTime";
 
 type Build = { sha?: string; iso: string };
 
 export function VimStatusLine({ build }: { build: Build }) {
   const tab = tabFor(usePathname());
+  const pos = useScrollPos();
   return (
     <div
-      className="flex h-7 items-center gap-3 bg-[var(--term-chrome)] pr-3 text-[length:var(--fs-ui)] leading-4 text-t3"
+      translate="no"
+      className="tnum flex h-7 min-w-0 items-center gap-3 bg-[var(--term-chrome)] pr-3 text-[length:var(--fs-ui)] leading-4 text-t3"
       style={{ gridArea: "status" }}
     >
       <span className="flex h-full items-center bg-t2 px-3 font-bold text-bg">NORMAL</span>
-      <span>~/{tab?.slug ?? "?"}.md</span>
+      <span className="truncate">~/{tab?.slug ?? "?"}.md</span>
       <span className="ml-auto flex items-center gap-3 max-md:hidden">
         {build.sha && (
           <span>
@@ -29,8 +32,12 @@ export function VimStatusLine({ build }: { build: Build }) {
           </span>
         )}
         <RelTime iso={build.iso} />
-        <span>1:1</span>
-        <span>Top</span>
+        <span aria-hidden className="min-w-[5ch] text-right">
+          {pos.line}:1
+        </span>
+        <span aria-hidden className="min-w-[3ch] text-right">
+          {pos.where}
+        </span>
       </span>
     </div>
   );

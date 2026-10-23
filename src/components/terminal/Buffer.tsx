@@ -1,5 +1,6 @@
 import type { Line as LineT } from "@/lib/lines";
 import { Line, gutterLh } from "./Line";
+import { ScrollArea } from "./ScrollArea";
 
 /** The vim-style buffer: gutter + lines + `~` fill (spec §6.3). Text is always real HTML. */
 export function Buffer({ title, lines }: { title: string; lines: LineT[] }) {
@@ -9,18 +10,19 @@ export function Buffer({ title, lines }: { title: string; lines: LineT[] }) {
   });
 
   return (
-    <div className="buf-scroll h-full overflow-y-auto overflow-x-hidden" tabIndex={-1}>
+    <ScrollArea>
       <h1 className="sr-only">{title}</h1>
       <div className="flex min-h-full flex-col">
         {lines.map((l, i) => (
           <div
             key={i}
+            data-ln={i + 1}
             className="grid grid-cols-[48px_1fr] pr-6 max-md:grid-cols-[32px_1fr] max-md:pr-4"
             style={{ marginTop: l.t === "prompt" && i > 0 ? 8 : 0 }}
           >
             <span
               aria-hidden
-              className={`select-none pr-3 text-right text-[length:var(--fs-ui)] ${i === lastPrompt ? "text-t3" : "text-t5"}`}
+              className={`tnum select-none pr-3 text-right text-[length:var(--fs-ui)] ${i === lastPrompt ? "text-t3" : "text-t5"}`}
               style={{ lineHeight: `${gutterLh(l)}px` }}
             >
               {i + 1}
@@ -44,6 +46,6 @@ export function Buffer({ title, lines }: { title: string; lines: LineT[] }) {
           </div>
         </div>
       </div>
-    </div>
+    </ScrollArea>
   );
 }

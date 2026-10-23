@@ -10,7 +10,7 @@ export function Tree({ label, rows }: { label: string; rows: { key: string; item
               {i === rows.length - 1 ? "└─" : "├─"}
             </span>
             <span className="text-t3">{r.key}</span>
-            <span className="text-t2">
+            <span translate="no" className="min-w-0 text-t2">
               {r.items.map((it, j) => (
                 <span key={it}>
                   {j > 0 && (

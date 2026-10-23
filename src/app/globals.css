@@ -80,13 +80,46 @@ html {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
   color-scheme: dark;
+}
+/* Rubber-band only on fine pointers; touch keeps pull-to-refresh and swipe-back. */
+@media (pointer: fine) {
+  html {
+    overscroll-behavior: none;
+  }
 }
 body {
   margin: 0;
   min-height: 100dvh;
   background: var(--bg);
   font-family: var(--font-mono);
+}
+a,
+button,
+input,
+label,
+summary {
+  touch-action: manipulation;
+}
+button {
+  font: inherit;
+  cursor: pointer;
+}
+/* Anchor targets (#experience, skip links) land clear of the window's top edge. */
+[id] {
+  scroll-margin-top: 16px;
+}
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+.text-balance {
+  text-wrap: balance;
+}
+.text-pretty {
+  text-wrap: pretty;
 }
 
 /* Focus: 2px ring + 2px offset on everything focusable */
@@ -142,6 +175,19 @@ body {
 .cmd-input {
   caret-color: var(--yellow);
   caret-shape: block;
+}
+.cmd-input:focus-visible {
+  outline: none; /* replaced by the bar's focus-within state below */
+}
+/* Command line focus: the bar lifts one step and the `:` brightens, so focus never relies on the caret alone. */
+.cmd-bar {
+  transition: box-shadow 150ms var(--ease);
+}
+.cmd-bar:focus-within {
+  box-shadow: inset 0 0 0 1px var(--line-3);
+}
+.cmd-bar:focus-within .cmd-colon {
+  color: var(--text-1);
 }
 
 /* Figlet: three forms chosen by container query on the buffer (spec §7.0). Names are prefixed to avoid collisions. */
@@ -281,6 +327,27 @@ html[data-motion="off"] .cmd-blink {
 @media (prefers-reduced-motion: reduce) {
   .cmd-blink {
     animation: none !important;
+  }
+  .cmd-bar,
+  .slink {
+    transition: none;
+  }
+}
+
+/* Coarse pointers: 44px hit targets on the tab bar (WCAG 2.5.8 / spec §12). */
+@media (pointer: coarse) {
+  .tm-tab {
+    min-height: 44px;
+  }
+}
+
+/* Phone: the window is full-bleed, so keep chrome clear of notches and the home indicator. */
+@media (max-width: 767px) {
+  .term-win {
+    padding-top: env(safe-area-inset-top);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
 

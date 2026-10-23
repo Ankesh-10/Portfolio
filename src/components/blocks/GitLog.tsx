@@ -21,11 +21,11 @@ export function GitLog({ rows, id }: { rows: Row[]; id?: string }) {
           <span aria-hidden className="text-t4">
             *
           </span>
-          <span aria-hidden className="text-t4 max-[899px]:hidden">
+          <span aria-hidden translate="no" className="text-t4 max-[899px]:hidden">
             {r.hash}
           </span>
-          <span className="text-t3">{r.date}</span>
-          <span>
+          <span className="tnum text-t3">{r.date}</span>
+          <span className="min-w-0 break-words">
             {r.href ? (
               <Link href={r.href} className="slink font-bold">
                 {r.title}

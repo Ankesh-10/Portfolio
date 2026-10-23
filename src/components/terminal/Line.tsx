@@ -25,13 +25,13 @@ export function Line({ line }: { line: LineT }) {
       return <Figlet />;
     case "lead":
       return (
-        <p className="m-0 max-w-[60ch] text-[length:var(--fs-lead)] font-bold leading-[var(--lh-lead)] text-t1">
+        <p className="text-balance m-0 max-w-[60ch] text-[length:var(--fs-lead)] font-bold leading-[var(--lh-lead)] text-t1">
           {line.text}
         </p>
       );
     case "text":
       return (
-        <p className="m-0 max-w-[70ch] text-t2">
+        <p className="text-pretty m-0 max-w-[70ch] break-words text-t2">
           <Inlines parts={line.parts} />
         </p>
       );
@@ -39,7 +39,7 @@ export function Line({ line }: { line: LineT }) {
       return line.id === "nudge" ? (
         <Nudge text={line.text} />
       ) : (
-        <p className="m-0 max-w-[70ch] whitespace-pre-line text-t2">{line.text}</p>
+        <p className="text-pretty m-0 max-w-[70ch] whitespace-pre-line text-t2">{line.text}</p>
       );
     case "table":
       return <Table cols={line.cols} />;

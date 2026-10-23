@@ -8,7 +8,7 @@ export function Table({ cols }: { cols: { label: string; value: string; href?: s
           <dt className="text-[length:var(--fs-label)] uppercase leading-4 tracking-[.14em] text-t3">
             {c.label}
           </dt>
-          <dd className="m-0 font-bold leading-6 text-t1">
+          <dd className="tnum m-0 font-bold leading-6 text-t1">
             {c.href ? (
               <Link className="slink" href={c.href}>
                 {c.value}
