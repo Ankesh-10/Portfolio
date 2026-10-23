@@ -1,14 +1,17 @@
 "use client";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, m, useReducedMotion } from "motion/react";
 import { tabFor, wideTabs } from "@/lib/routes";
 import { IdBadge } from "./IdBadge";
-import { PhotoStack } from "./PhotoStack";
-import { ProjectPreview } from "./ProjectPreview";
-import { SkillGraphs } from "./SkillGraphs";
-import { CertDeck } from "./CertDeck";
-import { Lightbox } from "./Lightbox";
+import dynamic from "next/dynamic";
+
+// Each tab's visual is its own chunk: only the one you are on is downloaded (still server-rendered).
+const PhotoStack = dynamic(() => import("./PhotoStack").then((m) => m.PhotoStack));
+const ProjectPreview = dynamic(() => import("./ProjectPreview").then((m) => m.ProjectPreview));
+const SkillGraphs = dynamic(() => import("./SkillGraphs").then((m) => m.SkillGraphs));
+const CertDeck = dynamic(() => import("./CertDeck").then((m) => m.CertDeck));
+const Lightbox = dynamic(() => import("./Lightbox").then((m) => m.Lightbox));
 import type { LightboxItem } from "./Lightbox";
 import type { GithubStats } from "@/lib/github";
 
@@ -59,7 +62,7 @@ export function VisualPanel({ qr, gh }: { qr: boolean[][]; gh: GithubStats | nul
             qr={qr}
           />
         ) : (
-          <motion.div
+          <m.div
             key={slug || "x"}
             className="flex h-full items-center justify-center p-8 max-md:h-auto max-md:px-6 max-md:py-6"
             initial={{ opacity: reduce ? 1 : 0 }}
@@ -71,7 +74,7 @@ export function VisualPanel({ qr, gh }: { qr: boolean[][]; gh: GithubStats | nul
             {slug === "projects" && <ProjectPreview onOpen={open} />}
             {slug === "skills" && <SkillGraphs gh={gh} />}
             {slug === "certs" && <CertDeck onOpen={open} />}
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
       {box && (

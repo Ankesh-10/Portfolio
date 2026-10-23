@@ -17,3 +17,24 @@ export function validate(f: MailFields): MailErrors {
     e.message = `message is too long (max ${LIMITS.message})`;
   return e;
 }
+
+// Draft kept in sessionStorage until sent (spec §7.5).
+const DRAFT_KEY = "mail-draft";
+export function loadDraft(): MailFields {
+  try {
+    const d = JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? "{}");
+    return { name: d.name ?? "", email: d.email ?? "", message: d.message ?? "" };
+  } catch {
+    return { name: "", email: "", message: "" };
+  }
+}
+export function saveDraft(f: MailFields) {
+  try {
+    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(f));
+  } catch {}
+}
+export function clearDraft() {
+  try {
+    sessionStorage.removeItem(DRAFT_KEY);
+  } catch {}
+}

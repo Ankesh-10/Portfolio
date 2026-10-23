@@ -2,7 +2,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import { profile } from "@/content/profile";
-import { BadgeSheet } from "./BadgeSheet";
+import dynamic from "next/dynamic";
+
+const BadgeSheet = dynamic(() => import("./BadgeSheet").then((m) => m.BadgeSheet));
 
 const dot =
   profile.status === "open to work" ? (

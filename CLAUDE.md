@@ -12,7 +12,18 @@ Phase 1 (foundation) and the static half of Phase 2 (terminal chrome, output blo
 
 **Phase 5 (motion) done:** `src/lib/timeline.ts` `schedule()` (pure; boot, first/return visit, landing and command-echo schedules, clamped to the 1.5s hard end), CSS-driven reveals in `globals.css` ("Terminal text appearance": stream, type with a riding cursor, type-fast, draw), per-row timings emitted as CSS variables by `Buffer`/`Row`, the <1KB inline script in `layout.tsx` that sets `data-boot` / `data-landing` and handles skip, `Reveal` for client tab changes, `skip intro`, aria-busy while output prints, background fade-in, motion-off and reduced-motion paths. The text is always in the HTML; hidden lines use only opacity/width.
 
-**Not yet:** `BadgeSheet` and the phone layout (Phase 6; the aside is hidden below 768px, and the phone boot differs from desktop, see spec §12); the `mail` form (the command currently points to `email`); tablet badge sizing, mail form + `/api/contact`, OG images, Playwright tests checked into the repo, Lighthouse, deploy (Phase 6). Known gaps: the riding cursor only rides on typed prompts and the lead (not between streamed lines); retract/drop durations of the badge don't yet differ between first and return visits; lightbox scales from the centre, not the thumbnail. Real photo, screenshots, certificate images and content are still placeholders (spec §14).
+**Phase 6 done (except deploy):** phone and tablet layouts (top bar, fixed 2×4 bottom bar, docked command line, mini-badge header + `BadgeSheet` with device tilt, inline visuals), mail form + `/api/contact`, OG images (root + per-slug), Playwright e2e + axe suite.
+
+**Measured (Lighthouse 12, production build, local):** desktop performance 99 / accessibility 100 / best-practices 100 / SEO 100, LCP 0.9s. Mobile: accessibility/best-practices/SEO 100, performance ~93, observed LCP ~130ms but Lighthouse's throttled simulation reports ~3.1s (it charges the LCP for every byte fetched before it).
+
+**Open decisions / known gaps**
+- **JS budget (spec §13: < 150KB gz first load) is not met:** ~227KB transferred (framework ≈ 125KB: react-dom 70 + Next client 42 + 8; Motion ≈ 60KB; app ≈ 40KB). Already done: LazyMotion + per-tab dynamic imports, palette/mail/matrix/badge-sheet split out. Reaching 150KB needs dropping Motion for CSS/WAAPI (the badge's spring/drag/presence would be rewritten) or relaxing the budget.
+- **Mobile LCP target (< 1.5s) holds in real measurements but not in Lighthouse's simulated throttling.** Fonts (Regular + Bold, ~180KB) and the JS above are the cost. Dropped the Medium weight (spec §2 only lists Regular/Bold); tab labels therefore render at weight 400.
+- **Spec conflict:** §4 prescribes `aria-label="About"` on the visible tab `[1:about]`; axe flags this as `label-content-name-mismatch` (WCAG 2.5.3). Kept per spec; the rule is disabled only in the axe test, with a comment. Voice control ("click about") still works.
+- **Mail delivery needs env vars:** `RESEND_API_KEY`, `CONTACT_TO` (and optionally `CONTACT_FROM`); without them `/api/contact` answers 503 and the form says so. The rate limit is in-memory, per server instance (best-effort on serverless).
+- `GITHUB_TOKEN` is needed for the skills heatmap/language bar; without it the skills visual shows the "unavailable" note.
+- Phone: boot does not type prompts (they stream), and inline visuals sit after the whole terminal rather than right after their text block. Not yet done: tmux overflow is container-query based rather than measured; riding cursor only on typed prompts + lead; lightbox scales from the centre; badge drop/retract durations don't differ first vs return visit.
+- Not done (needs you): Vercel deploy and domain, real photo/screenshots/certificates/copy/links (spec §14), NVDA/VoiceOver walk-through.
 
 ## Commands
 

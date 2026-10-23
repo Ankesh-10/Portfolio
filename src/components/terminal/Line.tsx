@@ -10,7 +10,9 @@ import { Detail, Kv } from "../blocks/Detail";
 import { Inlines } from "../blocks/Inline";
 import { Nudge } from "./Nudge";
 import { Help } from "../blocks/Help";
-import { MailForm } from "./MailForm";
+import dynamic from "next/dynamic";
+
+const MailForm = dynamic(() => import("./MailForm").then((m) => m.MailForm));
 
 /** Gutter line-height per block: matches the baseline of the line's first text row (spec §3). */
 export function gutterLh(l: LineT): number {

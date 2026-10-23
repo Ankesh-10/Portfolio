@@ -13,7 +13,6 @@ import { profile } from "@/content/profile";
 const jb = localFont({
   src: [
     { path: "../../public/fonts/JetBrainsMono-Regular.woff2", weight: "400" },
-    { path: "../../public/fonts/JetBrainsMono-Medium.woff2", weight: "500" },
     { path: "../../public/fonts/JetBrainsMono-Bold.woff2", weight: "700" },
   ],
   variable: "--font-jb",

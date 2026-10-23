@@ -3,9 +3,10 @@ import { Background } from "./Background";
 import { TerminalWindow } from "../terminal/TerminalWindow";
 import { NavTracker } from "../terminal/NavTracker";
 import { TerminalProvider } from "../terminal/TerminalProvider";
-import { MatrixRain } from "../terminal/MatrixRain";
+import { MatrixHost } from "../terminal/MatrixHost";
 import { VisualPanel } from "../visual/VisualPanel";
 import { VisualProvider } from "../visual/VisualContext";
+import { MotionRoot } from "../visual/MotionRoot";
 import type { GithubStats } from "@/lib/github";
 
 /** DOM order (spec §13): skip links → terminal window → visual aside. CSS places the aside on the left. */
@@ -24,24 +25,26 @@ export function Shell({
 }) {
   return (
     <TerminalProvider resumeKb={resumeKb}>
-      <VisualProvider qr={qr}>
-        <Background />
-        <MatrixRain />
-        <NavTracker />
-        <a className="skip-link" href="#content">
-          Skip to content
-        </a>
-        <a className="skip-link" href="#sections">
-          Skip to sections
-        </a>
-        <a className="skip-link" href="#visual">
-          Skip to visual
-        </a>
-        <div className="relative z-10 flex h-dvh w-full max-md:block">
-          <TerminalWindow build={build}>{children}</TerminalWindow>
-          <VisualPanel qr={qr} gh={gh} />
-        </div>
-      </VisualProvider>
+      <MotionRoot>
+        <VisualProvider qr={qr}>
+          <Background />
+          <MatrixHost />
+          <NavTracker />
+          <a className="skip-link" href="#content">
+            Skip to content
+          </a>
+          <a className="skip-link" href="#sections">
+            Skip to sections
+          </a>
+          <a className="skip-link" href="#visual">
+            Skip to visual
+          </a>
+          <div className="relative z-10 flex h-dvh w-full max-md:block">
+            <TerminalWindow build={build}>{children}</TerminalWindow>
+            <VisualPanel qr={qr} gh={gh} />
+          </div>
+        </VisualProvider>
+      </MotionRoot>
     </TerminalProvider>
   );
 }

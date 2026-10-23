@@ -31,7 +31,7 @@ export function Buffer({ title, lines, boot }: { title: string; lines: LineT[]; 
           <button type="button" className="skip-intro ylink">
             skip intro <span aria-hidden>⏎</span>
           </button>
-          <style>{`@container buf (max-width:${leadFit}px){html[data-boot] .buf-row[data-kind="lead"] .rv-type{animation:none!important;display:inline!important;width:auto!important;white-space:normal!important}html[data-boot] .buf-row[data-kind="lead"] .rv-cur::after{animation:none!important}html[data-boot] .buf-row[data-kind="lead"] .buf-cnt{animation:rv-in 1ms linear var(--t) both}}`}</style>
+          <style>{`@container buf (max-width:${leadFit}px){html[data-boot] .buf-row[data-kind="lead"] .rv-type{animation:none!important;display:inline!important;width:auto!important;white-space:normal!important}html[data-boot] .buf-row[data-kind="lead"] .rv-cur::after{animation:none!important}html[data-boot] .buf-row[data-kind="lead"] .buf-cnt{animation:rv-in 1ms linear var(--t) backwards}}`}</style>
         </>
       )}
       {boot && <PhoneHero />}

@@ -114,3 +114,31 @@ test("command output streams, marks the buffer busy, then settles", async ({ pag
   await page.waitForTimeout(600);
   expect(await page.locator(".buf-scroll").getAttribute("aria-busy")).toBe("false");
 });
+
+// Regression guard: CSS reveal animations must not delay LCP. With `animation-fill-mode: both`, Chromium withheld
+// animated text from LCP until the boot attribute was removed at 1.6s (spec §9 targets LCP < 1.5s).
+for (const [name, vp, mobile, max] of [
+  ["phone", { width: 412, height: 823 }, true, 800],
+  ["desktop", { width: 1350, height: 940 }, false, 1400],
+] as const) {
+  test(`LCP stays early during the boot (${name}, < ${max}ms)`, async ({ browser }) => {
+    const ctx = await browser.newContext({ viewport: vp, isMobile: mobile, hasTouch: mobile });
+    const page = await ctx.newPage();
+    await page.addInitScript(() => {
+      (window as unknown as { __lcp: number }).__lcp = 0;
+      new PerformanceObserver((l) =>
+        l
+          .getEntries()
+          .forEach(
+            (e) => ((window as unknown as { __lcp: number }).__lcp = Math.round(e.startTime)),
+          ),
+      ).observe({ type: "largest-contentful-paint", buffered: true });
+    });
+    await page.goto("/");
+    await page.waitForTimeout(2200);
+    const lcp = await page.evaluate(() => (window as unknown as { __lcp: number }).__lcp);
+    expect(lcp).toBeGreaterThan(0);
+    expect(lcp).toBeLessThan(max);
+    await ctx.close();
+  });
+}

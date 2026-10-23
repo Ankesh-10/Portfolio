@@ -1,6 +1,6 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, m, useReducedMotion } from "motion/react";
 import { sortedProjects } from "@/content/projects";
 import { FallbackImage } from "./FallbackImage";
 import { EmptyFrame } from "./EmptyFrame";
@@ -44,7 +44,7 @@ export function ProjectPreview({ onOpen }: { onOpen: (items: LightboxItem[], i: 
         className="relative block aspect-[16/10] w-full cursor-zoom-in"
       >
         <AnimatePresence initial={false}>
-          <motion.span
+          <m.span
             key={p.slug}
             className="absolute inset-0 block"
             initial={{ opacity: reduce ? 1 : 0 }}
@@ -53,7 +53,7 @@ export function ProjectPreview({ onOpen }: { onOpen: (items: LightboxItem[], i: 
             transition={{ duration: reduce ? 0 : 0.2, ease: [0.2, 0, 0, 1] }}
           >
             <FallbackImage src={p.image} alt={p.name} sizes="560px" gray={false} />
-          </motion.span>
+          </m.span>
         </AnimatePresence>
       </button>
     </div>

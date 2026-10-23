@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { m, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import { profile } from "@/content/profile";
 import { skills } from "@/content/skills";
 import { links } from "@/content/links";
@@ -105,7 +105,7 @@ export function IdBadge({ flipped, onFlip, onDrag, device, qr }: BadgeProps) {
   };
 
   return (
-    <motion.div
+    <m.div
       className="relative mx-auto flex w-[var(--badge-w)] flex-col items-center"
       style={{ transformOrigin: "50% 0" }}
       initial={reduce ? { opacity: 0 } : { y: "-110vh", rotate: 0 }}
@@ -125,7 +125,7 @@ export function IdBadge({ flipped, onFlip, onDrag, device, qr }: BadgeProps) {
       dragMomentum={false}
     >
       {/* sway: idle pendulum ±0.6° over ~6s; stops with ‖ motion */}
-      <motion.div
+      <m.div
         className="flex w-full flex-col items-center"
         style={{ transformOrigin: "50% 0", rotateX: tx, rotateY: ty }}
         animate={still ? { rotate: 0 } : { rotate: [-0.6, 0.6] }}
@@ -166,7 +166,7 @@ export function IdBadge({ flipped, onFlip, onDrag, device, qr }: BadgeProps) {
           className="relative w-full cursor-grab touch-none active:cursor-grabbing"
           style={{ perspective: 1200 }}
         >
-          <motion.div
+          <m.div
             className="relative"
             style={{ transformStyle: "preserve-3d" }}
             animate={still && reduce ? {} : { rotateY: flipped ? 180 : 0 }}
@@ -347,9 +347,9 @@ export function IdBadge({ flipped, onFlip, onDrag, device, qr }: BadgeProps) {
                 <FlipButton flipped={flipped} onFlip={onFlip} />
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </section>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   );
 }

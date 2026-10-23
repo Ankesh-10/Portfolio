@@ -1,5 +1,5 @@
 "use client";
-import { motion, useReducedMotion } from "motion/react";
+import { m, useReducedMotion } from "motion/react";
 import { useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
 
@@ -46,7 +46,7 @@ export function Fan<T extends { id: string }>({
       {items.map((it) => {
         const r = rank(it.id);
         return (
-          <motion.div
+          <m.div
             key={it.id}
             className="absolute left-0 top-0"
             style={{ width: w, height: h, zIndex: items.length - r, transformOrigin: "50% 100%" }}
@@ -55,7 +55,7 @@ export function Fan<T extends { id: string }>({
             transition={reduce ? { duration: 0 } : { duration: 0.3, ease: [0.2, 0, 0, 1] }}
           >
             {render(it, r === 0)}
-          </motion.div>
+          </m.div>
         );
       })}
     </div>

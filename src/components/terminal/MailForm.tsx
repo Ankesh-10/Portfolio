@@ -1,30 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import type { KeyboardEvent, ReactNode } from "react";
-import { validate } from "@/lib/mail";
+import { clearDraft, loadDraft, saveDraft, validate } from "@/lib/mail";
 import type { MailErrors, MailFields } from "@/lib/mail";
 import { profile } from "@/content/profile";
 import { useTerminal } from "./TerminalProvider";
 
-const KEY = "mail-draft";
 const FRAMES = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
 type Status = "idle" | "sending" | "failed" | "limited" | "offline";
 type Field = keyof MailFields;
 const ORDER: Field[] = ["name", "email", "message"];
-
-export function loadDraft(): MailFields {
-  try {
-    const d = JSON.parse(sessionStorage.getItem(KEY) ?? "{}");
-    return { name: d.name ?? "", email: d.email ?? "", message: d.message ?? "" };
-  } catch {
-    return { name: "", email: "", message: "" };
-  }
-}
-export const clearDraft = () => {
-  try {
-    sessionStorage.removeItem(KEY);
-  } catch {}
-};
 
 /** In-terminal mail form (spec §7.5): real labelled fields styled as prompts, all in the DOM, Tab-reachable. */
 export function MailForm() {
@@ -56,9 +41,7 @@ export function MailForm() {
     const next = { ...f, [k]: v };
     setF(next);
     setErrors((e) => ({ ...e, [k]: undefined }));
-    try {
-      sessionStorage.setItem(KEY, JSON.stringify(next));
-    } catch {}
+    saveDraft(next);
   };
 
   // Validate on advancing: show the error under the field, keep the value, return focus to it.

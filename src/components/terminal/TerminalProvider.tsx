@@ -17,7 +17,7 @@ import { setMotion } from "@/lib/motion-store";
 import { infoOf, schedule } from "@/lib/timeline";
 import type { Timing } from "@/lib/timeline";
 import { shortcutsPref, themePref } from "@/lib/prefs";
-import { clearDraft } from "./MailForm";
+import { clearDraft } from "@/lib/mail";
 
 export type Entry = { line: Line; timing?: Timing };
 
