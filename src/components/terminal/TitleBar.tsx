@@ -2,9 +2,11 @@
 import { usePathname } from "next/navigation";
 import { tabFor } from "@/lib/routes";
 import { MotionToggle } from "./MotionToggle";
+import { useTerminal } from "./TerminalProvider";
 
 export function TitleBar() {
   const tab = tabFor(usePathname());
+  const { run, resumeFlash } = useTerminal();
   return (
     <header
       className="relative flex h-9 items-center border-b border-line1 bg-[var(--term-chrome)] px-4 text-[length:var(--fs-ui)] leading-4"
@@ -26,9 +28,13 @@ export function TitleBar() {
         <a
           href="/resume.pdf"
           download
+          onClick={(e) => {
+            e.preventDefault();
+            run("resume");
+          }}
           className="ylink flex h-8 items-center whitespace-nowrap px-1"
         >
-          <span aria-hidden>↓ </span>resume.pdf
+          <span aria-hidden>{resumeFlash ? "✓ " : "↓ "}</span>resume.pdf
         </a>
       </div>
     </header>

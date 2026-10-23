@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { Background } from "./Background";
 import { TerminalWindow } from "../terminal/TerminalWindow";
 import { NavTracker } from "../terminal/NavTracker";
+import { TerminalProvider } from "../terminal/TerminalProvider";
+import { MatrixRain } from "../terminal/MatrixRain";
 import { VisualPanel } from "../visual/VisualPanel";
 
 /** DOM order (spec §13): skip links → terminal window → visual aside. CSS places the aside on the left. */
@@ -9,14 +11,17 @@ export function Shell({
   children,
   build,
   qr,
+  resumeKb,
 }: {
   children: ReactNode;
   build: { sha?: string; iso: string };
   qr: boolean[][];
+  resumeKb?: number;
 }) {
   return (
-    <>
+    <TerminalProvider resumeKb={resumeKb}>
       <Background />
+      <MatrixRain />
       <NavTracker />
       <a className="skip-link" href="#content">
         Skip to content
@@ -31,6 +36,6 @@ export function Shell({
         <TerminalWindow build={build}>{children}</TerminalWindow>
         <VisualPanel qr={qr} />
       </div>
-    </>
+    </TerminalProvider>
   );
 }

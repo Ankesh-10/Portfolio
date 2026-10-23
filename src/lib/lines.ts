@@ -1,6 +1,7 @@
 // Buffer line model (spec §6.3). Pages build these from typed content; components only render them.
 
-export type Inline = string | { href: string; label: string; external?: boolean };
+export type Inline =
+  string | { href: string; label: string; external?: boolean } | { run: string; label?: string }; // a command name that runs when clicked (help output)
 
 export type Line =
   | { t: "prompt"; cmd: string; path: string; heading?: string }
@@ -30,4 +31,6 @@ export type Line =
     }
   | { t: "tree"; label: string; rows: { key: string; items: string[] }[] }
   | { t: "detail"; title: string; body: string; rows: { k: string; v: Inline[] }[] }
+  | { t: "help"; rows: { group: string; cmds: Inline[]; desc: string }[] }
+  | { t: "pre"; rows: string[] }
   | { t: "kv"; rows: { k: string; v: Inline[] }[] };

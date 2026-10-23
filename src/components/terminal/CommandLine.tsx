@@ -1,51 +1,32 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { tabs } from "@/lib/routes";
+import { useRef, useState } from "react";
+import { complete } from "@/lib/commands";
+import { useTerminal } from "./TerminalProvider";
 
-const alias: Record<string, string> = {
-  work: "projects",
-  experience: "about",
-  jobs: "about",
-  education: "about",
-};
-
-/** Phase-2 command line: navigation only. The parser/registry, history and palette are Phase 3 (spec §8). */
+/** The command line (spec §6.6, §8): Enter runs, Tab completes, ↑/↓ walk history, Esc blurs. */
 export function CommandLine() {
-  const router = useRouter();
-  const ref = useRef<HTMLInputElement>(null);
-  const [note, setNote] = useState("");
+  const { run, history, openPalette } = useTerminal();
+  const [value, setValue] = useState("");
+  const cursor = useRef(-1); // -1 = not browsing history
+  const draft = useRef("");
 
-  // Single-key shortcuts (0–5, `:`) only when no text field is focused (spec §8).
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      const el = e.target as HTMLElement | null;
-      if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable))
-        return;
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      const tab = tabs.find((t) => String(t.index) === e.key);
-      if (tab) router.push(tab.href);
-      else if (e.key === ":") {
-        e.preventDefault();
-        ref.current?.focus();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [router]);
-
-  function run(raw: string) {
-    const cmd = raw.trim().replace(/^cd\s+~?\/?/, "");
-    if (!cmd) return;
-    const slug = alias[cmd] ?? cmd;
-    const tab = tabs.find((t) => t.slug === slug);
-    if (tab) {
-      setNote("");
-      router.push(tab.href + (alias[cmd] === "about" ? "#experience" : ""));
+  const walk = (dir: -1 | 1) => {
+    if (!history.length) return;
+    if (cursor.current === -1) {
+      if (dir === 1) return;
+      draft.current = value;
+      cursor.current = history.length - 1;
     } else {
-      setNote(`command not found: ${cmd}. click a tab below`);
+      cursor.current += dir === -1 ? -1 : 1;
+      if (cursor.current < 0) cursor.current = 0;
+      if (cursor.current >= history.length) {
+        cursor.current = -1;
+        setValue(draft.current);
+        return;
+      }
     }
-  }
+    setValue(history[cursor.current]);
+  };
 
   return (
     <div
@@ -58,21 +39,41 @@ export function CommandLine() {
       </label>
       <input
         id="cmdline"
-        ref={ref}
         className="cmd-input min-w-0 flex-1 bg-transparent text-t1 outline-none focus-visible:outline-none"
+        value={value}
         autoComplete="off"
         autoCapitalize="off"
         spellCheck={false}
-        placeholder=""
+        onChange={(e) => {
+          cursor.current = -1;
+          setValue(e.target.value);
+        }}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            run(e.currentTarget.value);
-            e.currentTarget.value = "";
+            run(value);
+            setValue("");
+            cursor.current = -1;
+          } else if (e.key === "Tab") {
+            e.preventDefault();
+            setValue(complete(value));
+          } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            walk(-1);
+          } else if (e.key === "ArrowDown") {
+            e.preventDefault();
+            walk(1);
           } else if (e.key === "Escape") e.currentTarget.blur();
         }}
       />
-      <span role="status" className="ml-auto text-t3 max-md:hidden">
-        {note || "click a tab below · type a tab name"}
+      <span className="ml-auto whitespace-nowrap text-t3 max-md:hidden">
+        click a tab below <span aria-hidden>·</span>{" "}
+        <button type="button" className="slink" onClick={() => run("help")}>
+          help
+        </button>{" "}
+        <span aria-hidden>·</span>{" "}
+        <button type="button" className="slink" onClick={openPalette}>
+          / commands
+        </button>
       </span>
     </div>
   );

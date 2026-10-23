@@ -3,6 +3,8 @@ import { TitleBar } from "./TitleBar";
 import { TmuxBar } from "./TmuxBar";
 import { VimStatusLine } from "./VimStatusLine";
 import { CommandLine } from "./CommandLine";
+import { CommandPalette } from "./CommandPalette";
+import { LiveRegion } from "./LiveRegion";
 
 /** DOM order (spec §6.2/§13): header → nav → main → footer. CSS grid places the nav at the bottom. */
 export function TerminalWindow({
@@ -33,6 +35,8 @@ export function TerminalWindow({
       >
         {children}
       </main>
+      <LiveRegion />
+      <CommandPalette />
       <footer className="contents">
         <VimStatusLine build={build} />
         <CommandLine />

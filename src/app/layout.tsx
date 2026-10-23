@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { statSync } from "node:fs";
 import QRCode from "qrcode";
 import "./globals.css";
 import { Shell } from "@/components/shell/Shell";
@@ -41,6 +42,7 @@ export const viewport: Viewport = { themeColor: "#070707", colorScheme: "dark" }
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   // Inline script: restore the `‖ motion` choice before first paint (spec §9).
   const init = `try{if(localStorage.getItem("motion")==="off")document.documentElement.dataset.motion="off"}catch(e){}`;
+  const resumeKb = Math.max(1, Math.round(statSync("public/resume.pdf").size / 1024));
   const qr = QRCode.create(githubUrl, { errorCorrectionLevel: "M" });
   const n = qr.modules.size;
   const modules = Array.from({ length: n }, (_, y) =>
@@ -52,7 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: init }} />
       </head>
       <body>
-        <Shell build={buildInfo()} qr={modules}>
+        <Shell build={buildInfo()} qr={modules} resumeKb={resumeKb}>
           {children}
         </Shell>
       </body>

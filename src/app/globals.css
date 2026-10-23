@@ -309,3 +309,30 @@ html[data-motion="off"] .cmd-blink {
 .skip-link:focus {
   top: 8px;
 }
+
+/* Buffer gutter: dim line numbers; the latest prompt's number is text-3 (spec §6.3) */
+.buf-gut {
+  color: var(--text-5);
+}
+.buf-row[data-prompt]:not(:has(~ .buf-row[data-prompt])) .buf-gut {
+  color: var(--text-3);
+}
+
+/* Palette: 8px rise + fade in 140ms */
+@keyframes palette-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.palette-in {
+  animation: palette-in 140ms var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .palette-in {
+    animation: none;
+  }
+}
+html[data-motion="off"] .palette-in {
+  animation: none;
+}
