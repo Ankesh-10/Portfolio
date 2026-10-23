@@ -74,6 +74,38 @@ Priorities are ranked by how much each item closes the "smooth and responsive" g
 
 The one sequencing change worth proposing is moving the phone layout (Phase 6) up to sit next to Phase 3. Visitors arriving from LinkedIn on a phone currently see no badge and no thumb-reachable navigation, and that hurts more than missing left-panel visuals on desktop.
 
+## Live browser verification
+
+On 23 October 2026 I drove the live site in a real Chromium using `@playwright/cli`, at 375, 768, 1024 and 1440 px. The full record, with about 85 screenshots, is in [live_browser_audit.md](../research_notes/Nipun%20space%20site%20analysis/live_browser_audit.md) and `live/`. Most of the code-only claims held up: routes, boot timings, the tour, the 12-command palette with visited ✓, the carousel, j/k in project READMEs, the radar and services filters, `[ err ]` validation, the two-step `/api/ask` flow, `vibrate(5)` on each keystroke, WebAudio sounds with no mute, and the reduced-motion paths.
+
+**Corrections**
+- **The site has a custom cursor.** It is an aim-reticle SVG set in CSS. The cursor spotlight reveals a **red line grid**, not dots.
+- **The bottom quick-nav strip exists only below 1024 px.** On desktop the input and the `/` palette are the only global navigation. The home wheel responds to the mouse wheel and to clicks. Arrow keys, j/k and Enter did not move it in testing.
+- **The playful words ("Cogitating…", "Querying Nipun…") are an always-on idle ticker above the input**, not LucBot's thinking state, which reads "retrieving…". LucBot's suggestion buttons read "↵ see <page>".
+- **No draggable achievement badges were found.** Certifications are an accordion. The /about mind map is custom markup, not React Flow.
+- **/about shows real layout shift** (CLS 0.068–0.09 on desktop). The earlier 0.002–0.018 range covered home only. Desktop home LCP was 2.0–2.2 s, against 1.3 s on mobile.
+
+**Additions**
+- **Defects:**
+  - The ticker is not reserved in the layout and **overlaps content** on most pages and widths.
+  - The input placeholder is clipped at 768 px.
+  - The boot progress bar reaches 100% before the log finishes.
+  - LucBot once **printed raw `<button onclick=…>` HTML** instead of a nav button.
+  - Enter on /work opens the centred card, not the hovered one.
+- **First visits:** the blocking tour also appears on phones and under reduced motion. It is static there, but it still has to be dismissed.
+- **Features not noted before:**
+  - a typewriter intro on /about over a giant ASCII `<pre>`;
+  - a 3D theme carousel on /services;
+  - a separate list layout for /map on phones;
+  - Skills opening with AI / ML preselected;
+  - form errors that clear as the visitor edits.
+
+For the owner's site, this strengthens two earlier recommendations:
+- **Reserve space for any status or hint line inside the terminal.** It should never float over the buffer.
+- **Never block first paint with a modal.**
+
+The cursor-reticle idea is new and cheap, but whether it fits the "nothing eye-catchy" rule is a question for the design discussion.
+
 ## Conclusion
 
 nipun.space proves that "smooth" is mostly restraint applied consistently: one curve, short distances, an instant route swap with a quick entrance, a viewport-locked shell and no re-render on pointer moves. Its biggest flaws are architectural (SPA-only meta, unoptimised images, no caching) and the owner's Next.js stack avoids them by default. The owner's spec has already chosen a stricter, more authentic answer to the same problem: stdout-style text that is in the HTML from first paint and animated by CSS under hard budgets. Reaching nipun.space's level of polish therefore means building the spec's existing Phase 3, 5 and 6 work, mainly `schedule()`, the palette and the phone layout, rather than importing new effects.
