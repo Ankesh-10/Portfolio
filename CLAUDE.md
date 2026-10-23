@@ -23,6 +23,7 @@ Phase 1 (foundation) and the static half of Phase 2 (terminal chrome, output blo
 - **Mail delivery needs env vars:** `RESEND_API_KEY`, `CONTACT_TO` (and optionally `CONTACT_FROM`); without them `/api/contact` answers 503 and the form says so. The rate limit is in-memory, per server instance (best-effort on serverless).
 - `GITHUB_TOKEN` is needed for the skills heatmap/language bar; without it the skills visual shows the "unavailable" note.
 - Phone: boot does not type prompts (they stream), and inline visuals sit after the whole terminal rather than right after their text block. Not yet done: tmux overflow is container-query based rather than measured; riding cursor only on typed prompts + lead; lightbox scales from the centre; badge drop/retract durations don't differ first vs return visit.
+- **`npm audit` shows 5 high (dev-only, ignore):** the chain is `eslint-config-next → @next/eslint-plugin-next → fast-glob → micromatch → braces`. `braces` is vulnerable up to its latest release (3.0.3), so no patched version exists and `npm audit fix --force` just flip-flops `eslint-config-next` between 14 and 16 (and 14 trades it for a `glob` advisory). It only runs when linting local files; `npm audit --omit=dev` reports 0. Do not run `--force`; re-check after a normal `npm update`.
 - Not done (needs you): Vercel deploy and domain, real photo/screenshots/certificates/copy/links (spec §14), NVDA/VoiceOver walk-through.
 
 ## Commands
