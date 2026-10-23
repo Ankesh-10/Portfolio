@@ -5,7 +5,7 @@ function Rows({ rows, shadow, lh }: { rows: string[]; shadow: boolean; lh: strin
   return (
     <pre className="m-0 font-mono text-[13px] text-t1" style={{ lineHeight: lh }}>
       {rows.map((r, i) => (
-        <div key={i}>
+        <div key={i} className="fig-row" style={{ "--i": i } as React.CSSProperties}>
           {shadow
             ? r.split(/(█+)/).map((seg, j) =>
                 seg === "" ? null : seg[0] === "█" ? (

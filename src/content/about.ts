@@ -6,3 +6,10 @@ export const aboutParagraphs = [
 ];
 
 export const nowText = "Learning: system design and Postgres internals. Building: project-name.";
+
+// PLACEHOLDER photos for the about stack (B&W, 4:5). Replace the files in public/images/.
+export const aboutPhotos = [
+  { src: "/images/about-1.jpg", alt: "Workspace" },
+  { src: "/images/about-2.jpg", alt: "At an event" },
+  { src: "/images/about-3.jpg", alt: "Desk" },
+];

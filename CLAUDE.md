@@ -6,14 +6,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Phase 1 (foundation) and the static half of Phase 2 (terminal chrome, output blocks, all routes) are built; the rest follows spec §15. Placeholder copy lives in `src/content/` and is marked as such.
 
-**Done:** Next.js 16 App Router + TS + Tailwind v4 + Motion, tokens in `src/app/globals.css`, self-hosted full JetBrains Mono, hex-dump background canvas, Shell/TerminalWindow/TitleBar/TmuxBar (CSS container-query tiers)/VimStatusLine/CommandLine (navigation + `0`–`5`/`:` shortcuts only), all output blocks, six routes + `/projects/[slug]` + `/certs/[slug]` + not-found + `/work` redirects, ID badge (front/back, real QR, spring drop, sway, drag, flip), `scripts/contrast.mjs`.
+**Done:** Next.js 16 App Router + TS + Tailwind v4 + Motion, tokens in `src/app/globals.css`, self-hosted full JetBrains Mono, hex-dump background canvas, Shell/TerminalWindow/TitleBar/TmuxBar (CSS container-query tiers)/VimStatusLine/the full Phase 3 command system (`src/lib/commands.ts` is the pure registry/parser/autocomplete/palette search; `TerminalProvider` runs the effects, owns history, output lines, shortcuts and the live region; palette, easter eggs, `theme hex|log`, `matrix`, focus-on-route-change rules), all output blocks, six routes + `/projects/[slug]` + `/certs/[slug]` + not-found + `/work` redirects, ID badge (front/back, real QR, spring drop, sway, drag, flip), `scripts/contrast.mjs`.
 
-**Not yet:** command parser/registry/palette/easter eggs (Phase 3); PhotoStack, ProjectPreview, SkillGraphs + GitHub data, CertDeck, Lightbox, BadgeSheet (Phase 4; the left panel shows a placeholder frame for those tabs); `schedule()` timeline, boot sequence, typing/stream modes (Phase 5); phone layout, mail form + `/api/contact`, OG images, tests (Phase 6). Real photo, screenshots, certificate images and content are still placeholders (spec §14).
+**Phase 4 (visual area) done:** `PhotoStack`, `ProjectPreview`, `CertDeck` (both `PhotoStack` and `CertDeck` use the shared `Fan`), `SkillGraphs` (bars, 26-week heatmap, language split; data from `src/lib/github.ts`, needs `GITHUB_TOKEN`, otherwise shows "# github stats unavailable right now"), `Lightbox` (native `<dialog>`), cross-panel hover/focus links via `VisualContext` + `HotTarget`, badge cursor tilt. Placeholder images live in `public/images|projects|certs`.
+
+**Phase 5 (motion) done:** `src/lib/timeline.ts` `schedule()` (pure; boot, first/return visit, landing and command-echo schedules, clamped to the 1.5s hard end), CSS-driven reveals in `globals.css` ("Terminal text appearance": stream, type with a riding cursor, type-fast, draw), per-row timings emitted as CSS variables by `Buffer`/`Row`, the <1KB inline script in `layout.tsx` that sets `data-boot` / `data-landing` and handles skip, `Reveal` for client tab changes, `skip intro`, aria-busy while output prints, background fade-in, motion-off and reduced-motion paths. The text is always in the HTML; hidden lines use only opacity/width.
+
+**Phase 6 done (except deploy):** phone and tablet layouts (top bar, fixed 2×4 bottom bar, docked command line, mini-badge header + `BadgeSheet` with device tilt, inline visuals), mail form + `/api/contact`, OG images (root + per-slug), Playwright e2e + axe suite.
+
+**Measured (Lighthouse 12, production build, local):** desktop performance 99 / accessibility 100 / best-practices 100 / SEO 100, LCP 0.9s. Mobile: accessibility/best-practices/SEO 100, performance ~93, observed LCP ~130ms but Lighthouse's throttled simulation reports ~3.1s (it charges the LCP for every byte fetched before it).
+
+**Open decisions / known gaps**
+- **JS budget (spec §13: < 150KB gz first load) is not met:** ~227KB transferred (framework ≈ 125KB: react-dom 70 + Next client 42 + 8; Motion ≈ 60KB; app ≈ 40KB). Already done: LazyMotion + per-tab dynamic imports, palette/mail/matrix/badge-sheet split out. Reaching 150KB needs dropping Motion for CSS/WAAPI (the badge's spring/drag/presence would be rewritten) or relaxing the budget.
+- **Mobile LCP target (< 1.5s) holds in real measurements but not in Lighthouse's simulated throttling.** Fonts (Regular + Bold, ~180KB) and the JS above are the cost. Dropped the Medium weight (spec §2 only lists Regular/Bold); tab labels therefore render at weight 400.
+- **Spec conflict:** §4 prescribes `aria-label="About"` on the visible tab `[1:about]`; axe flags this as `label-content-name-mismatch` (WCAG 2.5.3). Kept per spec; the rule is disabled only in the axe test, with a comment. Voice control ("click about") still works.
+- **Mail delivery needs env vars:** `RESEND_API_KEY`, `CONTACT_TO` (and optionally `CONTACT_FROM`); without them `/api/contact` answers 503 and the form says so. The rate limit is in-memory, per server instance (best-effort on serverless).
+- `GITHUB_TOKEN` is needed for the skills heatmap/language bar; without it the skills visual shows the "unavailable" note.
+- Phone: boot does not type prompts (they stream), and inline visuals sit after the whole terminal rather than right after their text block. Not yet done: tmux overflow is container-query based rather than measured; riding cursor only on typed prompts + lead; lightbox scales from the centre; badge drop/retract durations don't differ first vs return visit.
+- **`npm audit` shows 5 high (dev-only, ignore):** the chain is `eslint-config-next → @next/eslint-plugin-next → fast-glob → micromatch → braces`. `braces` is vulnerable up to its latest release (3.0.3), so no patched version exists and `npm audit fix --force` just flip-flops `eslint-config-next` between 14 and 16 (and 14 trades it for a `glob` advisory). It only runs when linting local files; `npm audit --omit=dev` reports 0. Do not run `--force`; re-check after a normal `npm update`.
+- Not done (needs you): Vercel deploy and domain, real photo/screenshots/certificates/copy/links (spec §14), NVDA/VoiceOver walk-through.
 
 ## Commands
 
 - `npm run dev` / `npm run build` (checks `public/resume.pdf` exists, then `next build`) / `npm start`
-- `npm run lint` (ESLint), `npm run typecheck`, `npm run format` (Prettier), `npm run contrast` (fails if a readable text token drops below 4.5:1 on any surface)
+- `npm run lint` (ESLint), `npm run typecheck`, `npm run format` (Prettier), `npm run contrast` (fails if a readable text token drops below 4.5:1 on any surface), `npm run check:timeline` (checks `schedule()` against the spec §9 budgets), `npm run test:e2e` (Playwright: layout/fold, motion/boot/no-JS, commands, mail form + API, axe + structure; builds and serves the production build on :3111)
 
 ## Source of truth
 

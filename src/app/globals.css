@@ -73,12 +73,10 @@
   --font-mono: var(--font-jb), ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
+/* The root stays 16px so Tailwind's rem spacing lands on the 4px grid (h-11 = 44px); the type scale is set on body. */
 html {
   background: var(--bg);
-  color: var(--text-2);
-  font-family: var(--font-mono);
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   color-scheme: dark;
 }
@@ -86,7 +84,10 @@ body {
   margin: 0;
   min-height: 100dvh;
   background: var(--bg);
+  color: var(--text-2);
   font-family: var(--font-mono);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 /* Focus: 2px ring + 2px offset on everything focusable */
@@ -308,4 +309,294 @@ html[data-motion="off"] .cmd-blink {
 }
 .skip-link:focus {
   top: 8px;
+}
+
+/* Buffer gutter: dim line numbers; the latest prompt's number is text-3 (spec §6.3) */
+.buf-gut {
+  color: var(--text-5);
+}
+.buf-row[data-prompt]:not(:has(~ .buf-row[data-prompt])) .buf-gut {
+  color: var(--text-3);
+}
+
+/* Palette: 8px rise + fade in 140ms */
+@keyframes palette-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.palette-in {
+  animation: palette-in 140ms var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .palette-in {
+    animation: none;
+  }
+}
+html[data-motion="off"] .palette-in {
+  animation: none;
+}
+
+/* Lightbox: scale + fade in 220ms */
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+.lightbox-in {
+  animation: lightbox-in 220ms var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-in {
+    animation: none;
+  }
+}
+
+/* ───────────────────────── Terminal text appearance (spec §9) ─────────────────────────
+   The text is always in the HTML. These rules only control WHEN each rendered line becomes visible, using the
+   per-row variables --t (start), --d (duration), --n (chars) from schedule(). Hidden lines use opacity and
+   width only (never display/visibility), so they keep their height and stay readable by assistive tech.
+   fill-mode is `backwards`, never `both`: a finished animation that keeps filling stays attached to
+   the element, and Chromium then withholds it from LCP until the attribute goes away (measured: 1.7s on phone).
+   Active only inside: <html data-boot> (first visit to /), <html data-landing> (any other page load),
+   .buf-reveal (client tab change) or [data-echo] rows (commands the visitor ran). */
+
+@keyframes rv-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes rv-w {
+  from {
+    width: 0;
+  }
+  to {
+    width: calc(var(--n) * 1ch);
+  }
+}
+/* the riding cursor: solid until the line is done, then gone (steps(1) holds the first keyframe) */
+@keyframes rv-cur {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes rv-flash {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes bg-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* row variables per context (inline --t/--d from Reveal and echo rows win over these) */
+html[data-landing]:not([data-landing="skip"]) .buf-row {
+  --t: var(--tl, 0ms);
+  --d: var(--dl, 0ms);
+}
+html[data-boot]:not([data-boot="skip"]) .buf-row {
+  --t: var(--tc, 0ms);
+  --d: var(--dc, 0ms);
+}
+@container buf (min-width: 560px) and (min-height: 640px) {
+  html[data-boot]:not([data-boot="skip"]) .buf-row[data-pair] {
+    --t: var(--tf, 0ms);
+    --d: var(--df, 0ms);
+  }
+}
+
+/* 1. stream: a zero-length animation flips opacity at --t */
+:is(
+    html[data-landing]:not([data-landing="skip"]),
+    html[data-boot]:not([data-boot="skip"])
+      .buf-row:not([data-mode="type"], [data-mode="type-fast"], [data-mode="draw"]),
+    .buf-reveal .buf-row:not([data-mode="type"], [data-mode="type-fast"], [data-mode="draw"]),
+    .buf-row[data-echo]
+  )
+  .buf-cnt {
+  animation: rv-in 1ms linear var(--t) backwards;
+}
+
+/* gutter numbers appear with their line */
+:is(
+    html[data-landing]:not([data-landing="skip"]),
+    html[data-boot]:not([data-boot="skip"]),
+    .buf-reveal,
+    .buf-row[data-echo]
+  )
+  .buf-gut {
+  animation: rv-in 1ms linear var(--t) backwards;
+}
+
+/* 2. type / type-fast: the command grows one character at a time and the cursor rides at its end */
+:is(html[data-boot]:not([data-boot="skip"]) .buf-row, .buf-reveal .buf-row):is(
+  [data-mode="type"],
+  [data-mode="type-fast"]
+) {
+  .rv-type {
+    display: inline-block;
+    overflow: hidden;
+    white-space: pre;
+    vertical-align: bottom;
+    animation: rv-w var(--d) steps(var(--n), end) var(--t) backwards;
+  }
+  .rv-pfx {
+    animation: rv-in 1ms linear var(--t) backwards;
+  }
+  .rv-cur::after {
+    content: "█";
+    color: var(--text-1);
+    opacity: 0;
+    animation: rv-cur calc(var(--d) + 1ms) steps(1, end) var(--t) forwards;
+  }
+}
+
+/* 3. draw: figlet rows appear top to bottom; each shows one frame of solid blocks, then the letters */
+:is(html[data-boot]:not([data-boot="skip"]) .buf-row, .buf-reveal .buf-row)[data-mode="draw"]
+  .fig-row {
+  position: relative;
+  width: max-content;
+  animation: rv-in 1ms linear calc(var(--t) + var(--i) * var(--rs, 25ms)) backwards;
+}
+:is(html[data-boot]:not([data-boot="skip"]) .buf-row, .buf-reveal .buf-row)[data-mode="draw"]
+  .fig-row::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--text-1);
+  opacity: 0;
+  animation: rv-flash 16ms steps(1, end) calc(var(--t) + var(--i) * var(--rs, 25ms)) backwards;
+}
+
+/* skip intro: visible only during the boot (display:none also removes it from the tab order) */
+.skip-intro {
+  display: none;
+  position: absolute;
+  right: 16px;
+  top: 4px;
+  z-index: 5;
+  height: 32px;
+  padding: 0 4px;
+  font-size: var(--fs-ui);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+html[data-boot]:not([data-boot="skip"]) .skip-intro {
+  display: block;
+}
+html[data-boot]:not([data-boot="skip"]) .bg-canvas {
+  animation: bg-fade 200ms var(--ease) backwards;
+}
+
+/* Reduced motion and ‖ motion off: everything instant */
+@media (prefers-reduced-motion: reduce) {
+  .buf-row,
+  .buf-row *,
+  .buf-row *::after {
+    animation: none !important;
+  }
+  .rv-type {
+    width: auto !important;
+    white-space: normal !important;
+    display: inline !important;
+  }
+}
+html[data-motion="off"] .buf-row,
+html[data-motion="off"] .buf-row *,
+html[data-motion="off"] .buf-row *::after {
+  animation: none !important;
+}
+html[data-motion="off"] .rv-type {
+  width: auto !important;
+  white-space: normal !important;
+  display: inline !important;
+}
+
+/* ───────────────────────── Layout: window grid, tablet and phone (spec §4, §12) ───────────────────────── */
+.term-grid {
+  margin: var(--win-margin);
+  margin-left: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* never let the widest item stretch the window */
+  grid-template-rows: 36px minmax(0, 1fr) 28px 32px auto;
+  grid-template-areas: "title" "buffer" "status" "cmd" "tmux";
+}
+.term-title {
+  grid-area: title;
+}
+.term-main {
+  grid-area: buffer;
+  container: buf / size;
+}
+.term-status {
+  grid-area: status;
+}
+.term-cmd {
+  grid-area: cmd;
+}
+.term-tmux {
+  grid-area: tmux;
+}
+
+@media (max-width: 767px) {
+  /* The terminal becomes a full-width page that scrolls like a normal page. */
+  html {
+    scroll-padding-top: 44px;
+    scroll-padding-bottom: calc(88px + env(safe-area-inset-bottom));
+  }
+  body {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom));
+  }
+  .term-grid {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    border-radius: 0;
+    border: 0;
+    overflow: visible;
+    padding-top: 44px; /* the top bar */
+  }
+  .term-grid .term-status {
+    order: -1;
+  }
+  .term-main {
+    container: buf / inline-size;
+    height: auto;
+  }
+  /* phone boot: instant lead, 15ms per intro line (spec §12); typing is skipped on the phone */
+  html[data-boot]:not([data-boot="skip"]) .buf-row {
+    --t: var(--tp, 0ms);
+    --d: 0ms;
+  }
+  html[data-boot]:not([data-boot="skip"]) .buf-row .rv-type {
+    animation: none !important;
+    display: inline !important;
+    width: auto !important;
+    white-space: normal !important;
+  }
+  html[data-boot]:not([data-boot="skip"]) .buf-row .rv-cur::after {
+    animation: none !important;
+  }
+  html[data-boot]:not([data-boot="skip"]) .buf-row .buf-cnt,
+  html[data-boot]:not([data-boot="skip"]) .buf-row .rv-pfx {
+    animation: rv-in 1ms linear var(--t) backwards;
+  }
+  .skip-intro {
+    top: 0;
+  }
 }

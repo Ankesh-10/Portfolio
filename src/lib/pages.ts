@@ -97,6 +97,7 @@ export function aboutPage(): Page {
           title: e.title,
           org: e.org,
           orgHref: e.orgHref,
+          hot: e.photo ? { group: "photo" as const, id: e.photo } : undefined,
         })),
       },
       prompt("cat now.txt", "~/about", "Now"),
@@ -120,6 +121,7 @@ export function projectsPage(): Page {
               stack: p.stack.join(" · "),
               year: p.year,
               status: p.status,
+              hot: { group: "project" as const, id: p.slug },
             })),
           }
         : { t: "comment", text: "total 0\n# nothing here yet — check back soon" },
@@ -157,6 +159,7 @@ export function projectPage(slug: string): Page | undefined {
           stack: x.stack.join(" · "),
           year: x.year,
           status: x.status,
+          hot: { group: "project" as const, id: x.slug },
         })),
       },
     ],
@@ -172,6 +175,9 @@ export function skillsPage(): Page {
         t: "tree",
         label: "skills",
         rows: skills.map((g) => ({ key: g.group, items: g.items.map((i) => i.name) })),
+        hotItems: skills.flatMap((g) =>
+          g.items.filter((i) => i.level !== undefined).map((i) => i.name),
+        ),
       },
       prompt("cat philosophy.txt", "~/skills", "Philosophy"),
       ...philosophy.map((p): Line => ({ t: "text", parts: [p] })),
@@ -193,6 +199,7 @@ export function certsPage(): Page {
               title: c.name,
               org: c.issuer,
               href: `/certs/${c.slug}`,
+              hot: { group: "cert" as const, id: c.slug },
             })),
           }
         : { t: "comment", text: "total 0\n# nothing here yet — check back soon" },
@@ -226,6 +233,7 @@ export function certPage(slug: string): Page | undefined {
           title: x.name,
           org: x.issuer,
           href: `/certs/${x.slug}`,
+          hot: { group: "cert" as const, id: x.slug },
         })),
       },
     ],
@@ -253,6 +261,7 @@ export function contactPage(): Page {
           { k: "resume", v: [{ href: "/resume.pdf", label: "resume.pdf" }] },
         ],
       },
+      { t: "text", parts: ["→ ", { run: "mail", label: "send a message" }] },
     ],
   };
 }

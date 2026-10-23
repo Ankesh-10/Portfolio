@@ -1,6 +1,7 @@
 "use client";
-import { useRef } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useRef } from "react";
+import Image from "next/image";
+import { m, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import { profile } from "@/content/profile";
 import { skills } from "@/content/skills";
 import { links } from "@/content/links";
@@ -11,6 +12,8 @@ export type BadgeProps = {
   flipped: boolean;
   onFlip: () => void;
   onDrag?: () => void;
+  /** Sway with device tilt (inside the phone sheet only, spec §12). */
+  device?: boolean;
   qr: boolean[][];
 };
 
@@ -59,10 +62,35 @@ function FlipButton({ flipped, onFlip }: { flipped: boolean; onFlip: () => void 
   );
 }
 
-export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
+export function IdBadge({ flipped, onFlip, onDrag, device, qr }: BadgeProps) {
   const motionState = useMotion();
   const reduce = useReducedMotion();
   const still = reduce || motionState === "off";
+  // Subtle tilt toward the cursor, max 4° (spec §6.1). Stops with ‖ motion.
+  const tx = useSpring(useMotionValue(0), { stiffness: 80, damping: 18 });
+  const ty = useSpring(useMotionValue(0), { stiffness: 80, damping: 18 });
+  useEffect(() => {
+    if (still) {
+      tx.set(0);
+      ty.set(0);
+      return;
+    }
+    if (device) {
+      const onTilt = (e: DeviceOrientationEvent) => {
+        const clamp = (v: number) => Math.max(-12, Math.min(12, v));
+        tx.set(clamp(((e.beta ?? 0) - 45) * -0.3));
+        ty.set(clamp((e.gamma ?? 0) * 0.3));
+      };
+      window.addEventListener("deviceorientation", onTilt);
+      return () => window.removeEventListener("deviceorientation", onTilt);
+    }
+    const onMove = (e: PointerEvent) => {
+      tx.set(((e.clientY / window.innerHeight) * 2 - 1) * -4);
+      ty.set(((e.clientX / window.innerWidth) * 2 - 1) * 4);
+    };
+    window.addEventListener("pointermove", onMove);
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [still, device, tx, ty]);
   const down = useRef<{ x: number; y: number } | null>(null);
   const github = links.find((l) => l.kind === "github")!;
   const tags = skills.flatMap((g) => g.items.map((i) => i.name)).slice(0, 8);
@@ -77,7 +105,7 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
   };
 
   return (
-    <motion.div
+    <m.div
       className="relative mx-auto flex w-[var(--badge-w)] flex-col items-center"
       style={{ transformOrigin: "50% 0" }}
       initial={reduce ? { opacity: 0 } : { y: "-110vh", rotate: 0 }}
@@ -97,9 +125,9 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
       dragMomentum={false}
     >
       {/* sway: idle pendulum ±0.6° over ~6s; stops with ‖ motion */}
-      <motion.div
+      <m.div
         className="flex w-full flex-col items-center"
-        style={{ transformOrigin: "50% 0" }}
+        style={{ transformOrigin: "50% 0", rotateX: tx, rotateY: ty }}
         animate={still ? { rotate: 0 } : { rotate: [-0.6, 0.6] }}
         transition={
           still
@@ -138,7 +166,7 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
           className="relative w-full cursor-grab touch-none active:cursor-grabbing"
           style={{ perspective: 1200 }}
         >
-          <motion.div
+          <m.div
             className="relative"
             style={{ transformStyle: "preserve-3d" }}
             animate={still && reduce ? {} : { rotateY: flipped ? 180 : 0 }}
@@ -167,7 +195,15 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
                 className="relative w-full overflow-hidden rounded-sm border border-line3 bg-[#0a0a0a]"
                 style={{ height: "var(--photo-h)" }}
               >
-                {/* TODO: replace with the real B&W photo (spec §14): next/image, priority, alt="Ankesh Jaiswal" */}
+                <Image
+                  src={profile.photo}
+                  alt="Ankesh Jaiswal"
+                  fill
+                  priority
+                  sizes="300px"
+                  className="object-cover"
+                  style={{ filter: "grayscale(1) contrast(1.1)" }}
+                />
                 <div
                   aria-hidden
                   className="absolute inset-0"
@@ -176,12 +212,6 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
                       "repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 3px)",
                   }}
                 />
-                <span
-                  aria-hidden
-                  className="absolute inset-0 flex items-center justify-center text-6xl font-bold text-[#1a1a1a]"
-                >
-                  AJ
-                </span>
                 <span
                   aria-hidden
                   className="absolute left-2 top-1.5 text-[length:var(--fs-micro)] tracking-[.12em] text-t4"
@@ -317,9 +347,9 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
                 <FlipButton flipped={flipped} onFlip={onFlip} />
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </section>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   );
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HotTarget, type Hot } from "../visual/VisualContext";
 
 type Row = {
   hash: string;
@@ -7,6 +8,7 @@ type Row = {
   org?: string;
   orgHref?: string;
   href?: string;
+  hot?: Hot;
 };
 
 // `* a3f9c21  2025-06  Title @ Org` — graph and hash are decorative (aria-hidden).
@@ -14,7 +16,9 @@ export function GitLog({ rows, id }: { rows: Row[]; id?: string }) {
   return (
     <ul id={id} className="m-0 list-none p-0">
       {rows.map((r) => (
-        <li
+        <HotTarget
+          as="li"
+          hot={r.hot}
           key={r.hash + r.date}
           className="grid grid-cols-[2ch_7ch_8ch_1fr] gap-x-[2ch] max-[899px]:grid-cols-[2ch_8ch_1fr]"
         >
@@ -50,7 +54,7 @@ export function GitLog({ rows, id }: { rows: Row[]; id?: string }) {
               </>
             )}
           </span>
-        </li>
+        </HotTarget>
       ))}
     </ul>
   );

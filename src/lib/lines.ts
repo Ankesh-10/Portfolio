@@ -1,6 +1,9 @@
+import type { Hot } from "@/components/visual/VisualContext";
+
 // Buffer line model (spec §6.3). Pages build these from typed content; components only render them.
 
-export type Inline = string | { href: string; label: string; external?: boolean };
+export type Inline =
+  string | { href: string; label: string; external?: boolean } | { run: string; label?: string }; // a command name that runs when clicked (help output)
 
 export type Line =
   | { t: "prompt"; cmd: string; path: string; heading?: string }
@@ -11,10 +14,20 @@ export type Line =
   | { t: "table"; cols: { label: string; value: string; href?: string }[] }
   | { t: "links"; items: { label: string; href: string; external?: boolean; download?: boolean }[] }
   | { t: "dirs" }
-  | { t: "featured"; rows: { name: string; href: string; summary: string; year: number }[] }
+  | {
+      t: "featured";
+      rows: { name: string; href: string; summary: string; year: number; hot?: Hot }[];
+    }
   | {
       t: "projects";
-      rows: { name: string; href: string; stack: string; year: number; status: string }[];
+      rows: {
+        name: string;
+        href: string;
+        stack: string;
+        year: number;
+        status: string;
+        hot?: Hot;
+      }[];
     }
   | {
       t: "gitlog";
@@ -26,8 +39,12 @@ export type Line =
         org?: string;
         orgHref?: string;
         href?: string;
+        hot?: Hot;
       }[];
     }
-  | { t: "tree"; label: string; rows: { key: string; items: string[] }[] }
+  | { t: "tree"; label: string; rows: { key: string; items: string[] }[]; hotItems?: string[] }
   | { t: "detail"; title: string; body: string; rows: { k: string; v: Inline[] }[] }
+  | { t: "help"; rows: { group: string; cmds: Inline[]; desc: string }[] }
+  | { t: "pre"; rows: string[] }
+  | { t: "mail" }
   | { t: "kv"; rows: { k: string; v: Inline[] }[] };

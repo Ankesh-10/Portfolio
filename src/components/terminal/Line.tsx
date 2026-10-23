@@ -9,6 +9,10 @@ import { Tree } from "../blocks/Tree";
 import { Detail, Kv } from "../blocks/Detail";
 import { Inlines } from "../blocks/Inline";
 import { Nudge } from "./Nudge";
+import { Help } from "../blocks/Help";
+import dynamic from "next/dynamic";
+
+const MailForm = dynamic(() => import("./MailForm").then((m) => m.MailForm));
 
 /** Gutter line-height per block: matches the baseline of the line's first text row (spec §3). */
 export function gutterLh(l: LineT): number {
@@ -26,7 +30,8 @@ export function Line({ line }: { line: LineT }) {
     case "lead":
       return (
         <p className="m-0 max-w-[60ch] text-[length:var(--fs-lead)] font-bold leading-[var(--lh-lead)] text-t1">
-          {line.text}
+          <span className="rv-type">{line.text}</span>
+          <span className="rv-cur" />
         </p>
       );
     case "text":
@@ -54,9 +59,15 @@ export function Line({ line }: { line: LineT }) {
     case "gitlog":
       return <GitLog rows={line.rows} id={line.id} />;
     case "tree":
-      return <Tree label={line.label} rows={line.rows} />;
+      return <Tree label={line.label} rows={line.rows} hotItems={line.hotItems} />;
     case "detail":
       return <Detail title={line.title} body={line.body} rows={line.rows} />;
+    case "help":
+      return <Help rows={line.rows} />;
+    case "mail":
+      return <MailForm />;
+    case "pre":
+      return <pre className="m-0 whitespace-pre font-mono text-t2">{line.rows.join("\n")}</pre>;
     case "kv":
       return <Kv rows={line.rows} />;
   }
