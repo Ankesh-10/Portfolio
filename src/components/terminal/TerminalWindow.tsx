@@ -30,7 +30,7 @@ export function TerminalWindow({
       <main
         id="content"
         tabIndex={-1}
-        className="min-h-0 pt-2 focus-visible:outline-offset-[-2px]"
+        className="relative min-h-0 pt-2 focus-visible:outline-offset-[-2px]"
         style={{ gridArea: "buffer", container: "buf / size" }}
       >
         {children}

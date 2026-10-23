@@ -14,10 +14,14 @@ import type { Line } from "@/lib/lines";
 import { tabFor, tabs } from "@/lib/routes";
 import { commandNames, copyResult, execute } from "@/lib/commands";
 import { setMotion } from "@/lib/motion-store";
+import { infoOf, schedule } from "@/lib/timeline";
+import type { Timing } from "@/lib/timeline";
 import { shortcutsPref, themePref } from "@/lib/prefs";
 
+export type Entry = { line: Line; timing?: Timing };
+
 type Terminal = {
-  entries: Line[];
+  entries: Entry[];
   announcement: string;
   history: string[];
   paletteOpen: boolean;
@@ -50,7 +54,7 @@ export function TerminalProvider({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [entries, setEntries] = useState<Line[]>([]);
+  const [entries, setEntries] = useState<Entry[]>([]);
   const [announcement, setAnnouncement] = useState("");
   // Session history (spec §8). Only read after interaction, never rendered on the server, so a lazy read is safe.
   const [history, setHistory] = useState<string[]>(() => {
@@ -82,7 +86,24 @@ export function TerminalProvider({
     setAnnouncement(msg + (lastAnnounce.current ? "​" : ""));
   }, []);
 
-  const append = useCallback((lines: Line[]) => setEntries((e) => [...e, ...lines]), []);
+  // Output of a command the visitor ran: the prompt commits instantly, the output streams (spec §9 `echo`).
+  // Starting a new command first completes the current output at once.
+  const append = useCallback((lines: Line[]) => {
+    const animate =
+      document.documentElement.dataset.motion !== "off" &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const times = animate ? schedule(lines.map(infoOf), "echo") : [];
+    const end = times.reduce((m, t) => Math.max(m, t.t + t.d), 0);
+    setEntries((prev) => [
+      ...prev.map((e) => ({ line: e.line })),
+      ...lines.map((line, i) => ({ line, timing: times[i] })),
+    ]);
+    if (animate)
+      setTimeout(
+        () => setEntries((cur) => cur.map((e) => (e.timing ? { line: e.line } : e))),
+        end + 100,
+      );
+  }, []);
 
   const run = useCallback(
     (raw: string) => {
@@ -176,6 +197,18 @@ export function TerminalProvider({
     const el = returnFocus.current;
     returnFocus.current = null;
     if (el && el !== document.body && document.contains(el)) el.focus();
+  }, []);
+
+  // Any key or click completes pending output at once (spec §9 "Interrupts").
+  useEffect(() => {
+    const settle = () =>
+      setEntries((cur) => (cur.some((e) => e.timing) ? cur.map((e) => ({ line: e.line })) : cur));
+    addEventListener("keydown", settle, true);
+    addEventListener("pointerdown", settle, true);
+    return () => {
+      removeEventListener("keydown", settle, true);
+      removeEventListener("pointerdown", settle, true);
+    };
   }, []);
 
   // Global keys. Single-key shortcuts only fire outside text fields and can be turned off (WCAG 2.1.4).

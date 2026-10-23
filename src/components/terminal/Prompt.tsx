@@ -4,11 +4,12 @@ export function Prompt({ cmd, path, heading }: { cmd: string; path: string; head
     <>
       {heading && <h2 className="sr-only">{heading}</h2>}
       <div aria-hidden className="whitespace-pre-wrap break-words text-t2">
-        <span className="text-t3">
+        <span className="rv-pfx text-t3">
           <span className="text-t2">ankesh@portfolio</span>:<span className="text-t2">{path}</span>
-          <span className="text-t4">$</span>
-        </span>{" "}
-        {cmd}
+          <span className="text-t4">$</span>{" "}
+        </span>
+        <span className="rv-type">{cmd}</span>
+        <span className="rv-cur" />
       </div>
     </>
   );

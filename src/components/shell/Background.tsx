@@ -154,7 +154,7 @@ export function Background() {
     <canvas
       ref={ref}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-0 h-full w-full"
+      className="bg-canvas pointer-events-none fixed inset-0 z-0 h-full w-full"
     />
   );
 }

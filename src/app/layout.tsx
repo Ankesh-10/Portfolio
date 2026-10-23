@@ -41,8 +41,10 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: "#070707", colorScheme: "dark" };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // Inline script: restore the `‖ motion` choice before first paint (spec §9).
-  const init = `try{if(localStorage.getItem("motion")==="off")document.documentElement.dataset.motion="off"}catch(e){}`;
+  // Inline boot script (≤ 1KB, runs before first paint — spec §9). It restores `‖ motion`, decides boot (first visit
+  // to /) vs landing (any other page load), lets any key / click skip, and removes the attribute at the 1.5s end
+  // state. No motion attribute is set when motion is paused or reduced, so those visitors never get the intro.
+  const init = `(function(){var d=document.documentElement;try{var off=localStorage.getItem("motion")==="off";if(off)d.dataset.motion="off";if(off||matchMedia("(prefers-reduced-motion: reduce)").matches)return;var s=sessionStorage,v=JSON.parse(s.getItem("visited")||"[]"),p=location.pathname.split("/")[1]||"home",a=p==="home"&&!v.length?"data-boot":"data-landing";if(v.indexOf(p)<0){v.push(p);s.setItem("visited",JSON.stringify(v))}d.setAttribute(a,"1");function k(){d.setAttribute(a,"skip");removeEventListener("keydown",k,true);removeEventListener("pointerdown",k,true)}addEventListener("keydown",k,true);addEventListener("pointerdown",k,true);setTimeout(function(){d.removeAttribute(a)},1600)}catch(e){}})()`;
   const resumeKb = Math.max(1, Math.round(statSync("public/resume.pdf").size / 1024));
   const qr = QRCode.create(githubUrl, { errorCorrectionLevel: "M" });
   const n = qr.modules.size;

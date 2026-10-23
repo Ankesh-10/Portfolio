@@ -10,12 +10,14 @@ Phase 1 (foundation) and the static half of Phase 2 (terminal chrome, output blo
 
 **Phase 4 (visual area) done:** `PhotoStack`, `ProjectPreview`, `CertDeck` (both `PhotoStack` and `CertDeck` use the shared `Fan`), `SkillGraphs` (bars, 26-week heatmap, language split; data from `src/lib/github.ts`, needs `GITHUB_TOKEN`, otherwise shows "# github stats unavailable right now"), `Lightbox` (native `<dialog>`), cross-panel hover/focus links via `VisualContext` + `HotTarget`, badge cursor tilt. Placeholder images live in `public/images|projects|certs`.
 
-**Not yet:** `BadgeSheet` and the phone layout (Phase 6; the aside is hidden below 768px); the `mail` form (the command currently points to `email`); `schedule()` timeline, boot sequence, typing/stream modes (Phase 5); tablet badge sizing, mail form + `/api/contact`, OG images, tests (Phase 6). Lightbox scales from the centre, not from the thumbnail. Real photo, screenshots, certificate images and content are still placeholders (spec §14).
+**Phase 5 (motion) done:** `src/lib/timeline.ts` `schedule()` (pure; boot, first/return visit, landing and command-echo schedules, clamped to the 1.5s hard end), CSS-driven reveals in `globals.css` ("Terminal text appearance": stream, type with a riding cursor, type-fast, draw), per-row timings emitted as CSS variables by `Buffer`/`Row`, the <1KB inline script in `layout.tsx` that sets `data-boot` / `data-landing` and handles skip, `Reveal` for client tab changes, `skip intro`, aria-busy while output prints, background fade-in, motion-off and reduced-motion paths. The text is always in the HTML; hidden lines use only opacity/width.
+
+**Not yet:** `BadgeSheet` and the phone layout (Phase 6; the aside is hidden below 768px, and the phone boot differs from desktop, see spec §12); the `mail` form (the command currently points to `email`); tablet badge sizing, mail form + `/api/contact`, OG images, Playwright tests checked into the repo, Lighthouse, deploy (Phase 6). Known gaps: the riding cursor only rides on typed prompts and the lead (not between streamed lines); retract/drop durations of the badge don't yet differ between first and return visits; lightbox scales from the centre, not the thumbnail. Real photo, screenshots, certificate images and content are still placeholders (spec §14).
 
 ## Commands
 
 - `npm run dev` / `npm run build` (checks `public/resume.pdf` exists, then `next build`) / `npm start`
-- `npm run lint` (ESLint), `npm run typecheck`, `npm run format` (Prettier), `npm run contrast` (fails if a readable text token drops below 4.5:1 on any surface)
+- `npm run lint` (ESLint), `npm run typecheck`, `npm run format` (Prettier), `npm run contrast` (fails if a readable text token drops below 4.5:1 on any surface), `npm run check:timeline` (checks `schedule()` against the spec §9 budgets)
 
 ## Source of truth
 

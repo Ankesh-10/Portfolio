@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "contrast": "node scripts/contrast.mjs"
+    "contrast": "node scripts/contrast.mjs",
+    "check:timeline": "node scripts/check-timeline.mts"
   },
   "dependencies": {
     "motion": "^14.6.0",

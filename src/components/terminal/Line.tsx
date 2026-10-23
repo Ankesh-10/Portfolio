@@ -27,7 +27,8 @@ export function Line({ line }: { line: LineT }) {
     case "lead":
       return (
         <p className="m-0 max-w-[60ch] text-[length:var(--fs-lead)] font-bold leading-[var(--lh-lead)] text-t1">
-          {line.text}
+          <span className="rv-type">{line.text}</span>
+          <span className="rv-cur" />
         </p>
       );
     case "text":
