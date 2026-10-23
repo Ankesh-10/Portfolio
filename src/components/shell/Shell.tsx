@@ -5,6 +5,8 @@ import { NavTracker } from "../terminal/NavTracker";
 import { TerminalProvider } from "../terminal/TerminalProvider";
 import { MatrixRain } from "../terminal/MatrixRain";
 import { VisualPanel } from "../visual/VisualPanel";
+import { VisualProvider } from "../visual/VisualContext";
+import type { GithubStats } from "@/lib/github";
 
 /** DOM order (spec §13): skip links → terminal window → visual aside. CSS places the aside on the left. */
 export function Shell({
@@ -12,30 +14,34 @@ export function Shell({
   build,
   qr,
   resumeKb,
+  gh,
 }: {
   children: ReactNode;
   build: { sha?: string; iso: string };
   qr: boolean[][];
   resumeKb?: number;
+  gh: GithubStats | null;
 }) {
   return (
     <TerminalProvider resumeKb={resumeKb}>
-      <Background />
-      <MatrixRain />
-      <NavTracker />
-      <a className="skip-link" href="#content">
-        Skip to content
-      </a>
-      <a className="skip-link" href="#sections">
-        Skip to sections
-      </a>
-      <a className="skip-link" href="#visual">
-        Skip to visual
-      </a>
-      <div className="relative z-10 flex h-dvh w-full max-md:block">
-        <TerminalWindow build={build}>{children}</TerminalWindow>
-        <VisualPanel qr={qr} />
-      </div>
+      <VisualProvider>
+        <Background />
+        <MatrixRain />
+        <NavTracker />
+        <a className="skip-link" href="#content">
+          Skip to content
+        </a>
+        <a className="skip-link" href="#sections">
+          Skip to sections
+        </a>
+        <a className="skip-link" href="#visual">
+          Skip to visual
+        </a>
+        <div className="relative z-10 flex h-dvh w-full max-md:block">
+          <TerminalWindow build={build}>{children}</TerminalWindow>
+          <VisualPanel qr={qr} gh={gh} />
+        </div>
+      </VisualProvider>
     </TerminalProvider>
   );
 }

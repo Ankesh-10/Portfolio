@@ -1,7 +1,7 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import { profile } from "@/content/profile";
 import { skills } from "@/content/skills";
 import { links } from "@/content/links";
@@ -64,6 +64,22 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
   const motionState = useMotion();
   const reduce = useReducedMotion();
   const still = reduce || motionState === "off";
+  // Subtle tilt toward the cursor, max 4° (spec §6.1). Stops with ‖ motion.
+  const tx = useSpring(useMotionValue(0), { stiffness: 80, damping: 18 });
+  const ty = useSpring(useMotionValue(0), { stiffness: 80, damping: 18 });
+  useEffect(() => {
+    if (still) {
+      tx.set(0);
+      ty.set(0);
+      return;
+    }
+    const onMove = (e: PointerEvent) => {
+      tx.set(((e.clientY / window.innerHeight) * 2 - 1) * -4);
+      ty.set(((e.clientX / window.innerWidth) * 2 - 1) * 4);
+    };
+    window.addEventListener("pointermove", onMove);
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [still, tx, ty]);
   const down = useRef<{ x: number; y: number } | null>(null);
   const github = links.find((l) => l.kind === "github")!;
   const tags = skills.flatMap((g) => g.items.map((i) => i.name)).slice(0, 8);
@@ -100,7 +116,7 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
       {/* sway: idle pendulum ±0.6° over ~6s; stops with ‖ motion */}
       <motion.div
         className="flex w-full flex-col items-center"
-        style={{ transformOrigin: "50% 0" }}
+        style={{ transformOrigin: "50% 0", rotateX: tx, rotateY: ty }}
         animate={still ? { rotate: 0 } : { rotate: [-0.6, 0.6] }}
         transition={
           still

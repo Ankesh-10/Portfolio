@@ -5,6 +5,7 @@ import QRCode from "qrcode";
 import "./globals.css";
 import { Shell } from "@/components/shell/Shell";
 import { buildInfo } from "@/lib/pages";
+import { getGithubStats } from "@/lib/github";
 import { githubUrl } from "@/content/links";
 import { profile } from "@/content/profile";
 
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { themeColor: "#070707", colorScheme: "dark" };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Inline script: restore the `‖ motion` choice before first paint (spec §9).
   const init = `try{if(localStorage.getItem("motion")==="off")document.documentElement.dataset.motion="off"}catch(e){}`;
   const resumeKb = Math.max(1, Math.round(statSync("public/resume.pdf").size / 1024));
@@ -54,7 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: init }} />
       </head>
       <body>
-        <Shell build={buildInfo()} qr={modules} resumeKb={resumeKb}>
+        <Shell build={buildInfo()} qr={modules} resumeKb={resumeKb} gh={await getGithubStats()}>
           {children}
         </Shell>
       </body>

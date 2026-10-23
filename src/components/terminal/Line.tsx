@@ -55,7 +55,7 @@ export function Line({ line }: { line: LineT }) {
     case "gitlog":
       return <GitLog rows={line.rows} id={line.id} />;
     case "tree":
-      return <Tree label={line.label} rows={line.rows} />;
+      return <Tree label={line.label} rows={line.rows} hotItems={line.hotItems} />;
     case "detail":
       return <Detail title={line.title} body={line.body} rows={line.rows} />;
     case "help":

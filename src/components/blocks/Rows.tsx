@@ -1,14 +1,15 @@
 import Link from "next/link";
+import { HotTarget, type Hot } from "../visual/VisualContext";
 
-type Featured = { name: string; href: string; summary: string; year: number };
-type Proj = { name: string; href: string; stack: string; year: number; status: string };
+type Featured = { name: string; href: string; summary: string; year: number; hot?: Hot };
+type Proj = { name: string; href: string; stack: string; year: number; status: string; hot?: Hot };
 
 /** `→ name   summary   year` */
 export function Featured({ rows }: { rows: Featured[] }) {
   return (
     <ul className="m-0 list-none p-0">
       {rows.map((r) => (
-        <li key={r.name}>
+        <HotTarget as="li" hot={r.hot} key={r.name}>
           <Link href={r.href} className="rowlink row-grid">
             <span aria-hidden className="row-arrow text-t4">
               →
@@ -19,7 +20,7 @@ export function Featured({ rows }: { rows: Featured[] }) {
             <span className="row-sum text-t2">{r.summary}</span>
             <span className="row-year text-t3">{r.year}</span>
           </Link>
-        </li>
+        </HotTarget>
       ))}
     </ul>
   );
@@ -30,7 +31,7 @@ export function Projects({ rows }: { rows: Proj[] }) {
   return (
     <ul className="m-0 list-none p-0">
       {rows.map((r) => (
-        <li key={r.name}>
+        <HotTarget as="li" hot={r.hot} key={r.name}>
           <Link href={r.href} className="rowlink row-grid">
             <span aria-hidden className="row-arrow text-t4">
               →
@@ -43,7 +44,7 @@ export function Projects({ rows }: { rows: Proj[] }) {
             </span>
             <span className="row-year text-t3">{r.year}</span>
           </Link>
-        </li>
+        </HotTarget>
       ))}
     </ul>
   );

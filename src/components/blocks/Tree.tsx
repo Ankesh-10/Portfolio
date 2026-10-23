@@ -1,5 +1,15 @@
+import { HotTarget } from "../visual/VisualContext";
+
 // Real <ul>; tree glyphs are decorative (aria-hidden) and never repeat on continuation rows.
-export function Tree({ label, rows }: { label: string; rows: { key: string; items: string[] }[] }) {
+export function Tree({
+  label,
+  rows,
+  hotItems = [],
+}: {
+  label: string;
+  rows: { key: string; items: string[] }[];
+  hotItems?: string[];
+}) {
   return (
     <div>
       <div className="text-t1">{label}</div>
@@ -19,7 +29,13 @@ export function Tree({ label, rows }: { label: string; rows: { key: string; item
                       ·{" "}
                     </span>
                   )}
-                  {it}
+                  <HotTarget
+                    as="span"
+                    hot={hotItems.includes(it) ? { group: "skill", id: it } : undefined}
+                    tabIndex={hotItems.includes(it) ? 0 : undefined}
+                  >
+                    {it}
+                  </HotTarget>
                 </span>
               ))}
             </span>
