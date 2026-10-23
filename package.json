@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
     "contrast": "node scripts/contrast.mjs",
-    "check:timeline": "node scripts/check-timeline.mts"
+    "check:timeline": "node scripts/check-timeline.mts",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "motion": "^14.6.0",
@@ -21,6 +22,8 @@
     "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.56.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.6.5",
     "@types/qrcode": "^1.5.6",

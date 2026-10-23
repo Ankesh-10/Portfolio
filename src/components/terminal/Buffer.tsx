@@ -51,7 +51,7 @@ export function Buffer({ title, lines, boot }: { title: string; lines: LineT[]; 
           />
         ))}
         <Output base={lines.length} />
-        <div aria-hidden className="relative mt-1 min-h-0 flex-1">
+        <div aria-hidden className="buf-fill relative mt-1 min-h-0 flex-1">
           <div className="absolute inset-0 overflow-hidden">
             {Array.from({ length: 40 }, (_, i) => (
               <div

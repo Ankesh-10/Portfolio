@@ -17,7 +17,7 @@ Phase 1 (foundation) and the static half of Phase 2 (terminal chrome, output blo
 ## Commands
 
 - `npm run dev` / `npm run build` (checks `public/resume.pdf` exists, then `next build`) / `npm start`
-- `npm run lint` (ESLint), `npm run typecheck`, `npm run format` (Prettier), `npm run contrast` (fails if a readable text token drops below 4.5:1 on any surface), `npm run check:timeline` (checks `schedule()` against the spec §9 budgets)
+- `npm run lint` (ESLint), `npm run typecheck`, `npm run format` (Prettier), `npm run contrast` (fails if a readable text token drops below 4.5:1 on any surface), `npm run check:timeline` (checks `schedule()` against the spec §9 budgets), `npm run test:e2e` (Playwright: layout/fold, motion/boot/no-JS, commands, mail form + API, axe + structure; builds and serves the production build on :3111)
 
 ## Source of truth
 

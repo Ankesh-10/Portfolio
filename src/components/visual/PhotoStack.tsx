@@ -30,12 +30,6 @@ export function PhotoStack({ onOpen }: { onOpen: (items: LightboxItem[], i: numb
           <span className="relative block h-full w-full overflow-hidden">
             <FallbackImage src={p.src} alt={p.alt} sizes="300px" />
           </span>
-          <span
-            aria-hidden
-            className="absolute bottom-2.5 left-3 text-[length:var(--fs-micro)] tracking-[.12em] text-t4"
-          >
-            {p.alt.toUpperCase()}
-          </span>
         </button>
       )}
     />

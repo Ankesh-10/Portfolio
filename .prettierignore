@@ -1,3 +1,5 @@
 .next
 node_modules
 PORTFOLIO_SPEC.md
+test-results
+playwright-report
