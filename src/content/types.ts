@@ -55,3 +55,6 @@ export type TimelineEntry = {
   orgHref?: string;
   photo?: string;
 };
+
+/** A photo in the about stack (spec §7.1). `TimelineEntry.photo` points at a `src` here. */
+export type Photo = { src: string; alt: string; caption: string };

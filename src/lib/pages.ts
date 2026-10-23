@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { statSync } from "node:fs";
+import { existsSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { profile } from "@/content/profile";
 import { links } from "@/content/links";
@@ -99,6 +99,7 @@ export function aboutPage(): Page {
           title: e.title,
           org: e.org,
           orgHref: e.orgHref,
+          visual: e.photo ? `photo:${e.photo}` : undefined,
         })),
       },
       prompt("cat now.txt", "~/about", "Now"),
@@ -195,6 +196,7 @@ export function certsPage(): Page {
               title: c.name,
               org: c.issuer,
               href: `/certs/${c.slug}`,
+              visual: `cert:${c.slug}`,
             })),
           }
         : { t: "comment", text: "total 0\n# nothing here yet — check back soon" },
@@ -228,6 +230,7 @@ export function certPage(slug: string): Page | undefined {
           title: x.name,
           org: x.issuer,
           href: `/certs/${x.slug}`,
+          visual: `cert:${x.slug}`,
         })),
       },
     ],
@@ -270,4 +273,9 @@ export function buildInfo() {
     );
   } catch {}
   return { sha: sha ? sha.slice(0, 7) : undefined, iso: new Date().toISOString(), resumeKb };
+}
+
+/** Which content images exist in `public/`, so missing ones render their fallback without a 404 (spec §13). */
+export function existingImages(paths: string[]): string[] {
+  return paths.filter((p) => p && existsSync(join(process.cwd(), "public", p)));
 }

@@ -8,7 +8,7 @@ export function Featured({ rows }: { rows: Featured[] }) {
   return (
     <ul className="m-0 list-none p-0">
       {rows.map((r) => (
-        <li key={r.name}>
+        <li key={r.name} data-visual={`project:${r.href.split("/").pop()}`}>
           <Link href={r.href} className="rowlink row-grid">
             <span aria-hidden className="row-arrow text-t4">
               →
@@ -30,7 +30,7 @@ export function Projects({ rows }: { rows: Proj[] }) {
   return (
     <ul className="m-0 list-none p-0">
       {rows.map((r) => (
-        <li key={r.name}>
+        <li key={r.name} data-visual={`project:${r.href.split("/").pop()}`}>
           <Link href={r.href} className="rowlink row-grid">
             <span aria-hidden className="row-arrow text-t4">
               →

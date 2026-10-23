@@ -40,6 +40,13 @@
 
   --win-margin: 24px;
   --visual-w: clamp(380px, 32vw, 520px);
+  /* projects/certs widen the visual area (spec §4) */
+  --visual-w-wide: clamp(420px, 42vw, 640px);
+}
+@media (max-width: 1279px) {
+  :root {
+    --visual-w-wide: 420px;
+  }
 }
 
 @media (max-width: 1023px) {
@@ -47,6 +54,7 @@
     --fs-lead: 18px;
     --fs-body: 14px;
     --visual-w: 40%;
+    --visual-w-wide: 40%;
   }
 }
 @media (max-width: 767px) {
@@ -358,4 +366,13 @@ html[data-motion="off"] .palette {
   .palette {
     animation: none;
   }
+}
+
+/* Visual-area images are monochrome (spec §6.7) */
+.mono {
+  filter: grayscale(1) contrast(1.05);
+}
+/* The lightbox draws its own fading backdrop */
+.lightbox::backdrop {
+  background: transparent;
 }

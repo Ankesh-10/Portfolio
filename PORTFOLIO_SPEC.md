@@ -312,7 +312,7 @@ Swaps the left visual per tab with `AnimatePresence` (see §7 and the timeline i
 Opens on `/` (when no text field is focused) and from the `/ commands` hint: a small floating list above the command line with fuzzy-matched commands, tabs, projects and certs, navigated with ↑/↓, Enter to run, Esc to close. Shows at most 8 results; with an empty query it shows the 6 tabs plus `resume` and `help`, each with a one-line plain-English description (`projects — things I've built`). Built as an ARIA combobox (`role="combobox"` input + `role="listbox"` results, `aria-activedescendant`). The highlighted row has a yellow left bar and `--text-1` text.
 
 ### 6.9 `<Lightbox />`
-Full-screen view for certificates and project screenshots over a dimmed background. Esc, a visible `✕ close` button (top-right, yellow) or clicking the backdrop closes it. It is a modal `<dialog>`: focus moves to the close button on open, is trapped inside, and returns to the thumbnail that opened it on close. The image has the project or certificate name as `alt`; `←/→` step through siblings.
+Full-screen view for certificates, project screenshots and about photos over a dimmed background. Images stay monochrome, like the rest of the visual area. Esc, a visible `✕ close` button (top-right, yellow) or clicking the backdrop closes it. It is a modal `<dialog>`: focus moves to the close button on open, is trapped inside, and returns to the thumbnail that opened it on close. The image has the project or certificate name as `alt`; `←/→` step through siblings.
 
 ---
 
@@ -415,7 +415,8 @@ Row heights (right column, px) plus five 8px block gaps total **468px** with the
   - Skill bars (self-rated), drawn with block characters: `typescript ████████▌  88`
   - GitHub contribution heatmap (last 26–40 weeks on desktop, last 12 weeks on phone) in the grey levels from §3. The current week is marked with a 1px `--text-1` outline (red stays reserved for availability).
   - Language split as a stacked bar from GitHub data.
-- Hovering or focusing a skill in the tree highlights its bar on the left.
+- Hovering or focusing a skill in the tree highlights its bar on the left. The skill names in the tree are plain text, not focusable controls; the bar list on the left carries the same names and levels as real text, so keyboard and screen-reader users get the data without extra tab stops.
+- The language split shows the top 4 languages by bytes plus `other`, in the heatmap greys, each with its name and percentage as text (colour is never the only cue).
 
 ### 7.4 · certs
 - `ls ~/certs` → `git log`-style list: `a3f9c21  2025-03  AWS Cloud Practitioner — Amazon` (hash decorative).
@@ -855,7 +856,7 @@ Fill these in before or during the build. Placeholders are used until then.
 
 ### Phase 4: Visual area
 - [ ] `IdBadge`: front/back, `↻ flip`, drag threshold, entrance, sway, cursor tilt, drag, flip, retract
-- [ ] `PhotoStack`, `ProjectPreview`, `SkillGraphs` (with GitHub data), `CertDeck`, `Lightbox`, `BadgeSheet`
+- [ ] `PhotoStack`, `ProjectPreview`, `SkillGraphs` (with GitHub data), `CertDeck`, `Lightbox` (`BadgeSheet` moves to Phase 6: it opens from the phone's mini badge)
 - [ ] `VisualPanel` transitions and the narrow ↔ wide resize
 
 ### Phase 5: Motion & background

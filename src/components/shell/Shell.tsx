@@ -5,22 +5,29 @@ import { NavTracker } from "../terminal/NavTracker";
 import { VisualPanel } from "../visual/VisualPanel";
 import { LiveRegion } from "../terminal/LiveRegion";
 import { Matrix } from "./Matrix";
+import { VisualSync } from "../visual/VisualSync";
+import type { GithubStats } from "@/lib/github";
 
 /** DOM order (spec §13): skip links → terminal window → visual aside. CSS places the aside on the left. */
 export function Shell({
   children,
   build,
   qr,
+  images,
+  github,
 }: {
   children: ReactNode;
   build: { sha?: string; iso: string; resumeKb?: number };
   qr: boolean[][];
+  images: string[];
+  github: GithubStats | null;
 }) {
   return (
     <>
       <Background />
       <Matrix />
       <LiveRegion />
+      <VisualSync />
       <NavTracker />
       <a className="skip-link" href="#content">
         Skip to content
@@ -33,7 +40,7 @@ export function Shell({
       </a>
       <div className="relative z-10 flex h-dvh w-full max-md:block">
         <TerminalWindow build={build}>{children}</TerminalWindow>
-        <VisualPanel qr={qr} />
+        <VisualPanel qr={qr} images={images} github={github} />
       </div>
     </>
   );

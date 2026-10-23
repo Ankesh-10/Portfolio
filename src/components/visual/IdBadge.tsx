@@ -1,6 +1,7 @@
 "use client";
-import { useRef } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useRef } from "react";
+import Image from "next/image";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import { profile } from "@/content/profile";
 import { skills } from "@/content/skills";
 import { links } from "@/content/links";
@@ -12,6 +13,7 @@ export type BadgeProps = {
   onFlip: () => void;
   onDrag?: () => void;
   qr: boolean[][];
+  hasPhoto?: (src: string) => boolean;
 };
 
 const statusDot =
@@ -59,11 +61,40 @@ function FlipButton({ flipped, onFlip }: { flipped: boolean; onFlip: () => void 
   );
 }
 
-export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
+export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto }: BadgeProps) {
   const motionState = useMotion();
   const reduce = useReducedMotion();
   const still = reduce || motionState === "off";
   const down = useRef<{ x: number; y: number } | null>(null);
+  const card = useRef<HTMLDivElement>(null);
+  const photo = hasPhoto?.(profile.photo);
+
+  // Subtle tilt toward the cursor, max 4° (spec §6.1). A motion value, so moving the pointer never
+  // re-renders React. Stops with ‖ motion and under reduced motion.
+  const tiltTarget = useMotionValue(0);
+  const tilt = useSpring(tiltTarget, { stiffness: 60, damping: 14 });
+  useEffect(() => {
+    if (still) {
+      tiltTarget.set(0);
+      return;
+    }
+    let raf = 0;
+    const on = (e: PointerEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = card.current?.getBoundingClientRect();
+        if (!r) return;
+        // Pivot is at the top: a cursor to the right swings the bottom right (negative rotate).
+        const dx = (e.clientX - (r.left + r.width / 2)) / 400;
+        tiltTarget.set(-Math.max(-1, Math.min(1, dx)) * 4);
+      });
+    };
+    window.addEventListener("pointermove", on);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", on);
+    };
+  }, [still, tiltTarget]);
   const github = links.find((l) => l.kind === "github")!;
   const tags = skills.flatMap((g) => g.items.map((i) => i.name)).slice(0, 8);
 
@@ -96,10 +127,11 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
       dragElastic={0.25}
       dragMomentum={false}
     >
-      {/* sway: idle pendulum ±0.6° over ~6s; stops with ‖ motion */}
+      {/* sway: idle pendulum ±0.6° over ~6s, plus the cursor tilt; both stop with ‖ motion */}
       <motion.div
+        ref={card}
         className="flex w-full flex-col items-center"
-        style={{ transformOrigin: "50% 0" }}
+        style={{ transformOrigin: "50% 0", rotateZ: tilt }}
         animate={still ? { rotate: 0 } : { rotate: [-0.6, 0.6] }}
         transition={
           still
@@ -167,7 +199,17 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
                 className="relative w-full overflow-hidden rounded-sm border border-line3 bg-[#0a0a0a]"
                 style={{ height: "var(--photo-h)" }}
               >
-                {/* TODO: replace with the real B&W photo (spec §14): next/image, priority, alt="Ankesh Jaiswal" */}
+                {photo && (
+                  <Image
+                    src={profile.photo}
+                    alt={`${profile.firstName} ${profile.lastName}`}
+                    fill
+                    priority
+                    sizes="296px"
+                    className="object-cover"
+                    style={{ filter: "grayscale(1) contrast(1.1)" }}
+                  />
+                )}
                 <div
                   aria-hidden
                   className="absolute inset-0"
@@ -176,12 +218,14 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
                       "repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 3px)",
                   }}
                 />
-                <span
-                  aria-hidden
-                  className="absolute inset-0 flex items-center justify-center text-6xl font-bold text-[#1a1a1a]"
-                >
-                  AJ
-                </span>
+                {!photo && (
+                  <span
+                    aria-hidden
+                    className="absolute inset-0 flex items-center justify-center text-6xl font-bold text-[#1a1a1a]"
+                  >
+                    AJ
+                  </span>
+                )}
                 <span
                   aria-hidden
                   className="absolute left-2 top-1.5 text-[length:var(--fs-micro)] tracking-[.12em] text-t4"

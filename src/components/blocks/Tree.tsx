@@ -12,7 +12,7 @@ export function Tree({ label, rows }: { label: string; rows: { key: string; item
             <span className="text-t3">{r.key}</span>
             <span className="text-t2">
               {r.items.map((it, j) => (
-                <span key={it}>
+                <span key={it} data-visual={`skill:${it}`}>
                   {j > 0 && (
                     <span aria-hidden className="text-t4">
                       {" "}

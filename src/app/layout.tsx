@@ -3,7 +3,11 @@ import localFont from "next/font/local";
 import QRCode from "qrcode";
 import "./globals.css";
 import { Shell } from "@/components/shell/Shell";
-import { buildInfo } from "@/lib/pages";
+import { buildInfo, existingImages } from "@/lib/pages";
+import { githubStats } from "@/lib/github";
+import { projects } from "@/content/projects";
+import { certificates } from "@/content/certificates";
+import { photos } from "@/content/about";
 import { githubUrl } from "@/content/links";
 import { profile } from "@/content/profile";
 
@@ -38,7 +42,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { themeColor: "#070707", colorScheme: "dark" };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Inline script: restore the `‖ motion` choice before first paint (spec §9).
   const init = `try{if(localStorage.getItem("motion")==="off")document.documentElement.dataset.motion="off"}catch(e){}`;
   const qr = QRCode.create(githubUrl, { errorCorrectionLevel: "M" });
@@ -46,13 +50,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const modules = Array.from({ length: n }, (_, y) =>
     Array.from({ length: n }, (_, x) => !!qr.modules.get(x, y)),
   );
+  const images = existingImages([
+    profile.photo,
+    ...projects.map((p) => p.image),
+    ...certificates.map((c) => c.image),
+    ...photos.map((p) => p.src),
+  ]);
+  const github = await githubStats(githubUrl.split("/").pop()!);
   return (
     <html lang="en" className={jb.variable}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: init }} />
       </head>
       <body>
-        <Shell build={buildInfo()} qr={modules}>
+        <Shell build={buildInfo()} qr={modules} images={images} github={github}>
           {children}
         </Shell>
       </body>

@@ -30,6 +30,7 @@ export type Line =
         org?: string;
         orgHref?: string;
         href?: string;
+        visual?: string;
       }[];
     }
   | { t: "tree"; label: string; rows: { key: string; items: string[] }[] }

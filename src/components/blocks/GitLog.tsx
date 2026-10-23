@@ -7,6 +7,8 @@ type Row = {
   org?: string;
   orgHref?: string;
   href?: string;
+  /** `kind:key` for the left visual (a cert, or a timeline photo). */
+  visual?: string;
 };
 
 // `* a3f9c21  2025-06  Title @ Org` — graph and hash are decorative (aria-hidden).
@@ -16,6 +18,7 @@ export function GitLog({ rows, id }: { rows: Row[]; id?: string }) {
       {rows.map((r) => (
         <li
           key={r.hash + r.date}
+          data-visual={r.visual}
           className="grid grid-cols-[2ch_7ch_8ch_1fr] gap-x-[2ch] max-[899px]:grid-cols-[2ch_8ch_1fr]"
         >
           <span aria-hidden className="text-t4">
