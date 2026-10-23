@@ -4,7 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Current state
 
-The repo contains **no application code yet**: only the build spec (`PORTFOLIO_SPEC.md`) and reference mockups (`docs/mockups/`). There are no build, lint or test commands until the project is scaffolded (spec §15, Phase 1: Next.js App Router + TypeScript + Tailwind v4 + Motion). Once it is, add the real commands here.
+Phase 1 (foundation) and the static half of Phase 2 (terminal chrome, output blocks, all routes) are built; the rest follows spec §15. Placeholder copy lives in `src/content/` and is marked as such.
+
+**Done:** Next.js 16 App Router + TS + Tailwind v4 + Motion, tokens in `src/app/globals.css`, self-hosted full JetBrains Mono, hex-dump background canvas, Shell/TerminalWindow/TitleBar/TmuxBar (CSS container-query tiers)/VimStatusLine/CommandLine (navigation + `0`–`5`/`:` shortcuts only), all output blocks, six routes + `/projects/[slug]` + `/certs/[slug]` + not-found + `/work` redirects, ID badge (front/back, real QR, spring drop, sway, drag, flip), `scripts/contrast.mjs`.
+
+**Not yet:** command parser/registry/palette/easter eggs (Phase 3); PhotoStack, ProjectPreview, SkillGraphs + GitHub data, CertDeck, Lightbox, BadgeSheet (Phase 4; the left panel shows a placeholder frame for those tabs); `schedule()` timeline, boot sequence, typing/stream modes (Phase 5); phone layout, mail form + `/api/contact`, OG images, tests (Phase 6). Real photo, screenshots, certificate images and content are still placeholders (spec §14).
+
+## Commands
+
+- `npm run dev` / `npm run build` (checks `public/resume.pdf` exists, then `next build`) / `npm start`
+- `npm run lint` (ESLint), `npm run typecheck`, `npm run format` (Prettier), `npm run contrast` (fails if a readable text token drops below 4.5:1 on any surface)
 
 ## Source of truth
 
