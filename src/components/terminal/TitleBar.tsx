@@ -17,7 +17,8 @@ export function TitleBar() {
       </div>
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 text-center text-t3 max-md:hidden"
+        translate="no"
+        className="pointer-events-none absolute inset-x-40 truncate text-center text-t3 max-md:hidden"
       >
         ankesh@portfolio: ~/{tab?.slug ?? "?"} — tmux
       </div>
@@ -26,6 +27,7 @@ export function TitleBar() {
         <a
           href="/resume.pdf"
           download
+          translate="no"
           className="ylink flex h-8 items-center whitespace-nowrap px-1"
         >
           <span aria-hidden>↓ </span>resume.pdf

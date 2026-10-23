@@ -25,7 +25,7 @@ function Rows({ rows, shadow, lh }: { rows: string[]; shadow: boolean; lh: strin
 
 export function Figlet() {
   return (
-    <div aria-hidden>
+    <div aria-hidden translate="no">
       <div className="fig-full" style={{ height: 156 }}>
         <Rows rows={[...figletFull.ankesh, ...figletFull.jaiswal]} shadow lh="13px" />
       </div>
