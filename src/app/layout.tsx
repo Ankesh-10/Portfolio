@@ -36,7 +36,11 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = { themeColor: "#070707", colorScheme: "dark" };
+export const viewport: Viewport = {
+  themeColor: "#070707",
+  colorScheme: "dark",
+  viewportFit: "cover", // lets the phone bars pad with env(safe-area-inset-*)
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   // Inline script: restore the `‖ motion` choice before first paint (spec §9).

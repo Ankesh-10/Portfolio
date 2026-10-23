@@ -3,7 +3,7 @@
 /* Tokens — spec §3. Single source of truth. */
 :root {
   --bg: #070707;
-  --term-bg: rgba(9, 9, 9, 0.72);
+  --term-bg: rgba(9, 9, 9, 0.84);
   --term-chrome: rgba(14, 14, 14, 0.92);
   --card: linear-gradient(160deg, #151515, #0b0b0b 60%);
 
@@ -40,6 +40,19 @@
 
   --win-margin: 24px;
   --visual-w: clamp(380px, 32vw, 520px);
+
+  /* Hairline + layered shadow: ambient + direct light, no glow (owner rejects glows). */
+  --hairline: rgba(255, 255, 255, 0.07);
+  --shadow-win:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 1px 2px rgba(0, 0, 0, 0.5),
+    0 12px 32px -8px rgba(0, 0, 0, 0.6), 0 32px 64px -16px rgba(0, 0, 0, 0.5);
+  --shadow-card:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 4px rgba(0, 0, 0, 0.5),
+    0 16px 40px -12px rgba(0, 0, 0, 0.7);
+
+  /* Phone chrome (spec §12) */
+  --phone-top: 44px;
+  --phone-bar: 88px;
 }
 
 @media (max-width: 1023px) {
@@ -53,6 +66,7 @@
   :root {
     --lh-lead: 24px;
     --win-margin: 0px;
+    --term-bg: rgba(7, 7, 7, 0.9);
   }
 }
 
@@ -80,13 +94,37 @@ html {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
   color-scheme: dark;
+}
+/* Desktop rubber-banding off for fine pointers only; phones keep pull-to-refresh. */
+@media (pointer: fine) {
+  html {
+    overscroll-behavior: none;
+  }
 }
 body {
   margin: 0;
   min-height: 100dvh;
   background: var(--bg);
   font-family: var(--font-mono);
+}
+
+/* Controls: no double-tap zoom delay, no grey tap flash */
+a,
+button,
+input,
+label,
+summary {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Anchored targets clear the chrome when jumped to */
+[id] {
+  scroll-margin-top: 16px;
 }
 
 /* Focus: 2px ring + 2px offset on everything focusable */
@@ -142,6 +180,27 @@ body {
 .cmd-input {
   caret-color: var(--yellow);
   caret-shape: block;
+}
+.cmd-input::placeholder {
+  color: var(--text-4);
+  opacity: 1;
+}
+
+/* Terminal window surface: hairline border + layered shadow; faint blur keeps the hex dump behind the text. */
+.term-win {
+  border: 1px solid var(--hairline);
+  box-shadow: var(--shadow-win);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  display: grid;
+  grid-template-rows: 36px minmax(0, 1fr) 28px 32px auto;
+  grid-template-areas: "title" "buffer" "status" "cmd" "tmux";
+}
+.buf-main {
+  container: buf / size;
+}
+.badge-face {
+  box-shadow: var(--shadow-card);
 }
 
 /* Figlet: three forms chosen by container query on the buffer (spec §7.0). Names are prefixed to avoid collisions. */
@@ -237,6 +296,9 @@ body {
   }
 }
 @container term (max-width: 699px) {
+  .tb-center {
+    display: none;
+  }
   .tm-motion-bar {
     display: none;
   }
@@ -272,6 +334,118 @@ body {
 .buf-scroll {
   scrollbar-width: thin;
   scrollbar-color: #222 transparent;
+  overscroll-behavior: contain;
+}
+
+/* Gutter numbers come from a CSS counter, so lines hidden at a breakpoint don't leave gaps. */
+.buf-lines {
+  counter-reset: ln;
+}
+.buf-row {
+  counter-increment: ln;
+}
+.buf-ln::before {
+  content: counter(ln);
+}
+
+/* ── Phone (< 768px), spec §12: page scrolls, top bar + fixed 2×4 bottom bar ── */
+@media (max-width: 767px) {
+  html {
+    scroll-padding-top: var(--phone-top);
+    scroll-padding-bottom: calc(var(--phone-bar) + env(safe-area-inset-bottom));
+  }
+  .ph-hide {
+    display: none !important;
+  }
+
+  .term-win {
+    display: block;
+    min-height: 100dvh;
+    padding-bottom: calc(var(--phone-bar) + env(safe-area-inset-bottom));
+    border: 0;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    overflow: visible;
+  }
+  .buf-main {
+    container: buf / inline-size;
+    padding-bottom: 16px;
+  }
+  .buf-scroll {
+    height: auto;
+    overflow: visible;
+  }
+
+  .title-bar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    height: var(--phone-top);
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(4px, env(safe-area-inset-right));
+    transition: transform 200ms var(--ease);
+  }
+  .title-bar[data-hidden="true"] {
+    transform: translateY(-100%);
+  }
+
+  /* tmux bar → fixed bottom bar: 2 rows × 4 equal cells, ≥ 44px each */
+  .tm-bar {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 40;
+    display: block;
+    min-height: 0;
+    padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    border-top: 1px solid var(--hairline);
+    background: rgba(10, 10, 10, 0.96);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+  .tm-tabs {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .tm-tabs > a,
+  .tm-tabs > button {
+    height: 44px;
+    justify-content: center;
+    padding: 0;
+  }
+  .tm-brackets,
+  .tm-digit,
+  .tm-right {
+    display: none;
+  }
+
+  /* Closed: parked below the screen but still focusable, so `❯ type` can focus it inside the tap (iOS keyboard). */
+  .cmd-row {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 50;
+    transform: translateY(110%);
+    pointer-events: none;
+  }
+  .cmd-row[data-open="true"] {
+    bottom: var(--kb, 0px);
+    transform: none;
+    pointer-events: auto;
+    height: 52px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    border-top: 1px solid var(--hairline);
+    background: rgb(12, 12, 12);
+  }
+  /* 16px stops iOS from zooming into the field */
+  .cmd-input {
+    font-size: 16px;
+  }
+  html[data-cmd-open] .tm-bar {
+    visibility: hidden;
+  }
 }
 
 /* Motion off (toggle or OS): stop continuous motion */
@@ -281,6 +455,9 @@ html[data-motion="off"] .cmd-blink {
 @media (prefers-reduced-motion: reduce) {
   .cmd-blink {
     animation: none !important;
+  }
+  .title-bar {
+    transition: none !important;
   }
 }
 

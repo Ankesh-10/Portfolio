@@ -14,7 +14,7 @@ export const tabs: Tab[] = [
     slug: "projects",
     label: "projects",
     href: "/projects",
-    desc: "projects — things I've built",
+    desc: "projects — things I’ve built",
   },
   { index: 3, slug: "skills", label: "skills", href: "/skills", desc: "skills — tools I use" },
   {

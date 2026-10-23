@@ -14,6 +14,7 @@ export function Links({ items }: { items: Item[] }) {
           {l.external ? (
             <a className="slink" href={l.href} target="_blank" rel="noopener noreferrer">
               {l.label}
+              <span className="sr-only"> (opens in a new tab)</span>
             </a>
           ) : (
             <a className="slink" href={l.href} {...(l.download ? { download: true } : {})}>

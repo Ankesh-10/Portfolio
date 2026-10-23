@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { tabs, tabFor } from "@/lib/routes";
 import { profile } from "@/content/profile";
 import { Clock } from "./Clock";
+import { openCommandLine } from "./CommandLine";
 import { MotionToggle } from "./MotionToggle";
 
 const word = {
@@ -61,7 +62,11 @@ export function TmuxBar() {
                 {t.index}:
               </span>
               <span aria-hidden>{t.label}</span>
-              {on && <span aria-hidden>*</span>}
+              {on && (
+                <span aria-hidden className="ph-hide">
+                  *
+                </span>
+              )}
               <span aria-hidden className="tm-brackets">
                 ]
               </span>
@@ -74,8 +79,22 @@ export function TmuxBar() {
             </Link>
           );
         })}
+        {/* Phone bottom bar only (spec §12): command line + résumé fill the last two cells. */}
+        <button
+          type="button"
+          onClick={openCommandLine}
+          className="hidden items-center gap-[1ch] text-t2 max-md:flex"
+        >
+          <span aria-hidden className="text-yellow">
+            ❯
+          </span>
+          type
+        </button>
+        <a href="/resume.pdf" download className="ylink hidden items-center gap-[1ch] max-md:flex">
+          <span aria-hidden>↓</span>resume
+        </a>
       </div>
-      <div className="ml-auto flex items-center gap-4 pl-4">
+      <div className="tm-right ml-auto flex items-center gap-4 pl-4">
         <StatusDot />
         <MotionToggle className="tm-motion-bar" />
         <Clock />

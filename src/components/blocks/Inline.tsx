@@ -11,6 +11,7 @@ export function Inlines({ parts }: { parts: Inline[] }) {
           <a key={i} className="slink" href={p.href} target="_blank" rel="noopener noreferrer">
             {p.label}
             <span aria-hidden> ↗</span>
+            <span className="sr-only"> (opens in a new tab)</span>
           </a>
         ) : (
           <Link key={i} className="slink" href={p.href}>
