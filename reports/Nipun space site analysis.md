@@ -1,0 +1,85 @@
+# Borrow nipun.space's discipline, not its effects
+
+nipun.space feels clean and smooth because of a few consistent habits, not heavy machinery. It is a client-rendered Vite + React 19 single-page app. Every page is a viewport-locked `100dvh` app shell with an inner scroll panel. It uses **one easing curve, `cubic-bezier(0.23, 1, 0.32, 1)`, in about 18 places**. Entrances are short (0.3–0.55 s) and move only 4–14 px. Navigation runs through a fixed bottom command bar with a `/` palette, and pointer effects write CSS variables instead of re-rendering React ([bundle](https://www.nipun.space/assets/index-Cv9N7JWJ.js)). It also has real weaknesses. It has no server rendering, so every deep link carries the home page's meta. About **1.42 MB of its ~2 MB home weight is two unoptimised PNGs**, and its hashed assets are served with `max-age=0`. It plays UI sounds with no mute control ([site](https://www.nipun.space/)). For the owner's portfolio, the most important point is that **nearly every feature that makes nipun.space feel alive is already specified in `PORTFOLIO_SPEC.md` but sits unbuilt in Phases 3–6**: the command palette, the boot sequence, text that appears like terminal output, the phone bottom bar, the lightbox and the contact form. The work is mostly building what the spec already describes, not inventing new features. Several of nipun.space's techniques break the owner's rules: fade/slide text entrances, glow on the active nav item, a rainbow command, a dot-grid spotlight, a blurred onboarding modal and a navigation bar outside the terminal. Each needs translating into terminal grammar rather than copying. Nothing below should be built yet; this report is input for the design discussion the owner asked for.
+
+## One curve, short timings and a locked viewport make nipun.space feel smooth
+
+The site has **12 top-level routes plus two dynamic detail routes** (`/work/:projectId`, `/writing/:slug`), and its sitemap lists 26 URLs: 10 sections, 11 projects and 5 posts ([sitemap.xml](https://www.nipun.space/sitemap.xml)). Unknown paths redirect silently to `/` rather than showing a 404. Navigation lives in a fixed bottom "terminal" bar with three rows. The first is a quick-nav strip of six section buttons. The second is an input where `/` opens a filterable command palette (↑/↓, Enter, Esc, with a ✓ on routes visited this session) and any other text goes to **LucBot**, a hybrid BM25 + embedding RAG assistant that streams its answers. The third is a status line showing the path and a session timer. Pressing `/` anywhere focuses the bar. Home adds a wheel-driven vertical menu at ≥1024 px ([bundle](https://www.nipun.space/assets/index-Cv9N7JWJ.js)). Content is typed data hard-coded in the bundle. Project READMEs and posts are built from typed blocks (`p`, `h`, `kv`, `code`, `list`, plus custom diagram blocks), which is the same "content is data" approach the owner's `src/content/` already takes.
+
+The smoothness comes from consistency. The animation library is Framer Motion 11.18.2. There is no GSAP, no Lenis runtime (only leftover Lenis CSS) and no View Transitions API ([animations chunk](https://www.nipun.space/assets/animations-BwHzEo7y.js), [CSS](https://www.nipun.space/assets/index-D_smUe9e.css)). **Routes swap instantly, with no exit animations.** Each page replays a staggered entrance on mount, `{opacity:0, y:14} → {1, 0}` over 0.55 s, delivered through one shared helper. Scroll reveals use `whileInView` with `once: true` and 30–70 px negative margins. Bars draw in with `scaleX` and the skills radar with `pathLength`. Ambient loops (caret blink, status pulse, rotating border, marquee) are pure CSS keyframes ([bundle](https://www.nipun.space/assets/index-Cv9N7JWJ.js)). Because every page is a `100dvh` shell that scrolls only inside an inner panel, there is no document scroll to smooth and no layout to shift. Measured CLS was **0.002–0.018** ([site](https://www.nipun.space/)). The cursor "spotlight" writes `--mx`/`--my` straight onto a DOM node via a ref, so following the pointer never re-renders React. Reduced motion is handled in two layers. In JavaScript, `useReducedMotion()` sets `initial={false}`, makes counters jump to their final value and skips the overlays. In CSS, a global catch-all sets every duration to 0.01 ms ([CSS](https://www.nipun.space/assets/index-D_smUe9e.css)).
+
+Responsiveness relies on **one structural breakpoint at `lg` (1024 px)**. Phone and tablet share a single-column layout; desktop switches to asymmetric `fr` grids such as `lg:grid-cols-[1.1fr_0.9fr]`. `clamp()` sizes are used only for display headings and card widths (for example `clamp(232px, 22vw, 300px)`), while UI mono text stays at fixed 11–16 px. On phones the input is 16 px so iOS does not zoom on focus, and the nav chip row scrolls sideways ([site/about](https://www.nipun.space/about)). The research notes disagree on method here: one says no browser could run, another ran headless Chrome through a Node script and captured screenshots (`research_notes/.../screens/`). The layout measurements come from the second note, so they are observed, not inferred.
+
+## Its speed comes from a small bundle and a CDN, not engineering discipline
+
+The site loads fast because about **300 KB of compressed JS and 13 KB of CSS** come from Vercel's edge. Unthrottled lab numbers were FCP 0.8–1.1 s and LCP 1.1–1.7 s ([site](https://www.nipun.space/)). Underneath, the weaknesses are things a Next.js 16 build fixes by default:
+
+- **Images.** PNG only, with no `srcset` and no dimensions. The portrait is downloaded twice in the DOM at the same 1023×1537 size on every device.
+- **Caching.** Hashed assets are sent with `cache-control: public, max-age=0, must-revalidate` ([asset headers](https://www.nipun.space/assets/index-Cv9N7JWJ.js)).
+- **Fonts.** They arrive through a CSS `@import` chain (HTML → CSS → Google Fonts CSS → woff2) that requests unused Libre Caslon faces.
+- **Analytics.** GA4's 184 KB `gtag.js` is the largest script after the app bundle.
+- **SEO.** Every route returns a byte-identical 5.7 KB shell. Per-route titles and canonicals exist only after JS runs, so link-preview bots see the home page's canonical and OG image on every deep link ([site/work](https://www.nipun.space/work)).
+- **Onboarding.** On first visit, a blocking, blurred "how to get around" modal covers the page ([site](https://www.nipun.space/)).
+
+Some things are worth copying as they are: the Person + WebSite JSON-LD, `max-image-preview:large`, a robots.txt that allows AI crawlers, an `llms.txt` summary for crawlers, a sitemap that includes every project slug ([robots.txt](https://www.nipun.space/robots.txt), [llms.txt](https://www.nipun.space/llms.txt)), and a contact form with a honeypot, inline `[ err ]` validation and a prefilled `mailto:` fallback when sending fails ([bundle](https://www.nipun.space/assets/index-Cv9N7JWJ.js)).
+
+## The owner's site already specifies most of this, but has built little of it
+
+The portfolio passes typecheck, lint, the contrast check and a production build, and server-renders 14 static pages ([CLAUDE.md](/home/user/Portfolio/CLAUDE.md)). It already beats nipun.space on the structural points: server-rendered semantic HTML per route, self-hosted full JetBrains Mono, a working `/work` redirect, and robots/sitemap routes. What it lacks is the "alive" layer.
+
+**Buffer text renders instantly on every navigation**, while the left side fades and the badge springs in. So motion is inconsistent between the two halves, and tab changes feel like abrupt swaps ([Buffer.tsx](/home/user/Portfolio/src/components/terminal/Buffer.tsx)). The command line understands only tab names and `cd`. It has no `help`, history, autocomplete, palette or echo of commands into the buffer ([CommandLine.tsx](/home/user/Portfolio/src/components/terminal/CommandLine.tsx)). The status line shows a hard-coded `1:1 Top`, which breaks the spec's own rule that every field is "real or removed" ([VimStatusLine.tsx](/home/user/Portfolio/src/components/terminal/VimStatusLine.tsx)). Below 768 px the left visual is simply `max-md:hidden`, so phones get a cramped desktop terminal with no badge and no thumb-reachable navigation ([VisualPanel.tsx](/home/user/Portfolio/src/components/visual/VisualPanel.tsx)). Content is placeholder (2 projects, 1 cert, no photo), so the site would look sparse regardless of features.
+
+The spec's motion model is stricter than nipun.space's, and better suited to a terminal. Spec §9 rules that **terminal text never fades, slides or blurs in**. Text types, streams or draws like stdout. The animation is CSS-driven from one pure `schedule()` function, the text is always in the HTML, any key or click skips it, and there are hard budgets: **terminal complete ≤ 830 ms on a first visit to a tab and ≤ 360 ms on a return visit, boot ≤ 1.5 s** ([PORTFOLIO_SPEC.md §9](/home/user/Portfolio/PORTFOLIO_SPEC.md)). That gives the same feel nipun.space gets from its fade stagger, which is that each page arrives with a short choreographed entrance, but it is honest to the terminal metaphor and works before hydration.
+
+## Eight nipun.space techniques need translating into terminal grammar
+
+The owner's rules allow red only for status dots and yellow only for the cursor, links and key hints. They forbid glows, grid backgrounds and coloured chrome, and they keep the command line inside the right-hand terminal ([CLAUDE.md](/home/user/Portfolio/CLAUDE.md)). These nipun.space features conflict with those rules, and each has a version that keeps the intent:
+
+| nipun.space feature | Conflict | Adaptation for the owner's site |
+|---|---|---|
+| Fade + 14 px slide entrances on all page content | Breaks "text never fades/slides" (§9) | Use `clear` → `type` → `stream`/`draw` from `schedule()`. Allow a fade only on non-text visuals in the left panel (already 200 ms) |
+| Bottom command bar outside any window, on every page | Command line must live only in the right terminal | Keep the `:` line inside the terminal. On phones, use the spec's `❯ type` cell that docks the terminal's input above the keyboard (§12) |
+| Active nav item grows, turns accent-coloured and gets a `text-shadow` glow | No glows; yellow only for interactive hints | Keep the existing 150 ms yellow underline on tmux tabs, with the active tab in `--text-1` bold |
+| Cursor spotlight revealing a dot grid | Grid backgrounds rejected | Optional: brighten the hex-dump text near the cursor by one grey step via `--mx/--my` CSS variables. Off on touch devices, under reduced motion and when `‖ motion` is paused. Discuss before building |
+| Rainbow `/services` command, animated conic border on "current" cards | Colour and eye-catchy effects | Drop them. Mark featured items with terminal grammar (`*` in `ls`, a `status: live` key/value row) |
+| Blocking blurred first-visit tour modal | Eye-catchy; blocks recruiters | Drop it. The home nudge (`new here? click a tab below — or type help`) and the visible `skip intro ⏎` already do this job |
+| Web Audio blips and vibration on every keystroke | Not in the spec; nipun.space has no mute | Skip, or make it an opt-in `sound on` easter-egg setting that is off by default and respects `‖ motion` |
+| Infinite drag carousel for projects | Card grid with coloured borders; not terminal-like | Keep `ls ~/projects` rows. Hovering a row swaps the left `ProjectPreview`; Enter or click opens it, like the carousel's Enter |
+
+Several nipun.space techniques transfer with no conflict. A single shared UI easing constant matches the spec's `cubic-bezier(0.2, 0, 0, 1)`; making it one exported token mirrors nipun.space's discipline. A ✓ on visited routes in the palette fits the spec's `lib/visited.ts`. Placeholder copy that changes with width (`matchMedia`) can become a container query. Setting `initial={false}` under reduced motion matches the existing `useReducedMotion` plan. Writing pointer coordinates through refs is the right way to implement the badge's missing 4° cursor tilt (§6.1). A `/map`-style overview corresponds to the spec's `ls` / `tree` output. nipun.space's typed README blocks support the idea of richer project detail pages built from the existing block types (`kv`, `tree`, `table`), without adding a markdown renderer.
+
+LucBot is the one large feature with no counterpart in the spec. It doubles as nipun.space's search and its easter-egg surface, and it needs a serverless endpoint, an embeddings file and an LLM bill. It fits the terminal metaphor (`ask <question>`), but it adds cost, abuse risk (nipun.space already shows a 403 "firewall" path) and JS weight against the spec's **150 KB gzipped budget** ([PORTFOLIO_SPEC.md §13](/home/user/Portfolio/PORTFOLIO_SPEC.md)). Treat it as a post-launch discussion item, not a gap.
+
+## Roadmap: polish first, then the phone layout, with LucBot last
+
+Priorities are ranked by how much each item closes the "smooth and responsive" gap a visitor actually notices, mapped onto the spec's phases ([PORTFOLIO_SPEC.md §15](/home/user/Portfolio/PORTFOLIO_SPEC.md)).
+
+| Priority | nipun.space feature | Owner's equivalent | Spec phase | Status / note |
+|---|---|---|---|---|
+| P1 | Per-page staggered entrance | `schedule()` CSS reveal: `clear`/`type`/`stream`/`draw`, riding cursor | 5 | Unbuilt. The biggest smoothness win; can ship before the boot |
+| P1 | `/` palette, ↑/↓/Enter/Esc, global `/` hotkey | `CommandPalette`, `lib/commands.ts`, history, Tab autocomplete, `help` | 3 | Unbuilt. Add visited ✓ from `lib/visited.ts` |
+| P1 | Phone layout: bottom nav, 16 px input, no horizontal scroll | 2×4 bottom bar, mini badge + sheet, keyboard-docked command line, inline visuals | 6 | Unbuilt. Move it ahead of Phase 4 visuals, because phones currently get no badge and no navigation |
+| P1 | Real per-route meta (nipun.space's weak point) | `generateMetadata`, `opengraph-image.tsx`, Person/WebSite JSON-LD | 6 | Partly built (robots/sitemap exist). JSON-LD and `llms.txt` are new, cheap additions |
+| P2 | Boot overlay (2.05 s, skippable, once per session) | Inline boot under `data-boot`, ≤ 1.5 s, skips on any key, no overlay | 5 | Unbuilt. The spec's version is shorter and runs before hydration |
+| P2 | Contact form via Web3Forms + honeypot + `mailto:` fallback | `MailForm` + `api/contact/route.ts` (validation, honeypot, rate limit) | 6 | Unbuilt. Copy the `[ err ]` inline messages and the `mailto:` fallback |
+| P2 | `/resume` command, always-visible résumé | `resume` command, `↓ resume.pdf` title-bar action, phone `↓ resume` cell | 3 / 6 | Title-bar file exists; the command is unbuilt |
+| P2 | Real status fields (clock, path, timer) | Live `line:col` / `Top`/`Bot` from scroll position | 2 (fix) | Currently hard-coded. Make it real or remove it |
+| P3 | Project carousel + README detail viewer | `ProjectPreview` + `Lightbox`, `/projects/[slug]` with block-typed sections | 4 | Unbuilt, and blocked on real screenshots (§14 assets) |
+| P3 | Skills radar with `pathLength` draw-in | `SkillGraphs` + GitHub data (heatmap) | 4 | Unbuilt. Monochrome; draw-in only on the left visual |
+| P3 | Achievements/certs with "view cert" | `CertDeck` + `Lightbox`, `verifyUrl` | 4 | Unbuilt. Blocked on cert images |
+| P3 | Global reduced-motion CSS catch-all | Add next to the existing `‖ motion` store | 5 | Cheap safety net; also guard every rAF loop |
+| P4 | Easter eggs via LucBot / rainbow command | `sudo hire-me`, `neofetch`, `matrix`, etc. | 3 | Spec list is enough |
+| Later | LucBot RAG assistant, writing/blog, services page | Not in spec | — | Discuss scope and cost first |
+| Skip | Sounds, haptics, onboarding modal, spotlight grid, glow nav, rainbow | — | — | Conflicts with the owner's preferences |
+
+The one sequencing change worth proposing is moving the phone layout (Phase 6) up to sit next to Phase 3. Visitors arriving from LinkedIn on a phone currently see no badge and no thumb-reachable navigation, and that hurts more than missing left-panel visuals on desktop.
+
+## Conclusion
+
+nipun.space proves that "smooth" is mostly restraint applied consistently: one curve, short distances, an instant route swap with a quick entrance, a viewport-locked shell and no re-render on pointer moves. Its biggest flaws are architectural (SPA-only meta, unoptimised images, no caching) and the owner's Next.js stack avoids them by default. The owner's spec has already chosen a stricter, more authentic answer to the same problem: stdout-style text that is in the HTML from first paint and animated by CSS under hard budgets. Reaching nipun.space's level of polish therefore means building the spec's existing Phase 3, 5 and 6 work, mainly `schedule()`, the palette and the phone layout, rather than importing new effects.
+
+Before anything is built, three decisions need the owner's call:
+
+- whether to pull the phone layout forward,
+- whether a cursor-proximity brightening of the hex dump counts as "eye-catchy",
+- whether any LucBot-style `ask` command belongs in a portfolio whose principle is "recruiter first, commands are accelerators."
