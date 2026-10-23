@@ -520,7 +520,7 @@ A **line** here is one logical line: one DOM element (a prompt line, a paragraph
 
 | Mode | Used for | Behavior | Timing |
 |---|---|---|---|
-| **type** | Commands after the prompt (always one visual row) | Characters appear one by one; the riding cursor sits right after the last character, then drops to the start of the next line | 18–28ms per char; capped at **150ms per command**, and **100ms per command during the boot**, so long commands type faster |
+| **type** | Commands after the prompt (always one visual row) | Characters appear one by one; the riding cursor sits right after the last character, then drops to the start of the next line | 25ms per char (in the 18–28ms range; the boot table's four 100ms prompts assume it); capped at **150ms per command**, and **100ms per command during the boot**, so long commands type faster |
 | **type-fast** | The home lead line during the desktop boot, only when it fits on one row (checked with a container query against its known length in `ch`; otherwise it uses `stream`) | Same as `type`, much faster, so the one sentence that matters prints in front of the visitor | 6ms per char, capped at **300ms** |
 | **stream** | All other output: text, tables, lists, links, git log, comments | Lines appear one at a time, top to bottom; the cursor waits at the start of the next empty line | 25ms per line, capped at **200ms per block** (blocks with more than 8 lines go faster; there is no minimum) |
 | **draw** | The figlet name and the compact name | Rows appear top to bottom; each row first shows as solid `█` blocks for one frame, then resolves into the letters | 25ms per row (full figlet 12 rows = 300ms; compact name 3 rows = 75ms) |
@@ -548,6 +548,7 @@ A **line** here is one logical line: one DOM element (a prompt line, a paragraph
 - **Assistive tech.** Hidden lines use only `opacity` and `clip-path`, never `display` or `visibility`, so screen readers can read the full text from first paint. There is no `aria-busy` during the boot. For output from commands the visitor runs, the buffer is `aria-busy` while it prints, then the live region announces it once (§13).
 - **Layout.** Hidden lines keep their full height, so revealing them never shifts layout. Gutter line numbers appear with their line. `~` rows fill below the last visible line.
 - **Interrupts.** Any key, click or `skip intro` completes every pending line at once. Running a new command mid-animation completes the current output instantly first.
+- **Tests.** `npm test` checks `schedule()` against every budget in this section (boot moments, hard end state, first/return visits with and without a resize, deep-link landing, command output).
 
 ### Tab-change timelines (budgets are hard limits)
 
@@ -759,7 +760,7 @@ One site, one URL, separate layouts. No separate mobile site.
 - Left-panel visuals (photos, graphs, certificates) render **inline** right after their text block. The heatmap shows the last 12 weeks with 14px cells.
 - Background: static (no scroll animation), slightly dimmer.
 - Line-number gutter shrinks to 32px; vim status line shows the file name only.
-- **Phone boot** (first visit to `/`): the name, role and status beside the mini badge are visible from first paint, and the mini badge drops in. The `cat intro.txt` prompt and the lead line are `instant` at first paint (the lead line is the phone's LCP). The remaining intro lines and nudge `stream` at 15ms per line. The four later blocks each type their prompt (≤ 100ms) and stream their output, about 125ms each. The buffer is complete in **≈ 0.6s**, and skippable like desktop.
+- **Phone boot** (first visit to `/`; until the phone layout lands, phones get the deep-link landing timeline instead): the name, role and status beside the mini badge are visible from first paint, and the mini badge drops in. The `cat intro.txt` prompt and the lead line are `instant` at first paint (the lead line is the phone's LCP). The remaining intro lines and nudge `stream` at 15ms per line. The four later blocks each type their prompt (≤ 100ms) and stream their output, about 125ms each. The buffer is complete in **≈ 0.6s**, and skippable like desktop.
 
 ---
 

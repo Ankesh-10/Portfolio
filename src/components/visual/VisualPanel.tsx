@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { tabFor, wideTabs } from "@/lib/routes";
 import { useVisual } from "@/lib/visual-store";
+import { visitFor } from "@/lib/visited";
 import type { GithubStats } from "@/lib/github";
 import { sortedProjects } from "@/content/projects";
 import { certificates } from "@/content/certificates";
@@ -32,6 +33,10 @@ export function VisualPanel({
   const slug = tabFor(pathname)?.slug ?? "";
   const deep = pathname.split("/")[2];
   const reduce = useReducedMotion();
+  // Visual timings follow the terminal's (spec §9): a new visual enters at 400ms on a first visit
+  // and 240ms on a return; the badge drops at 100ms in the boot; a deep link shows it at once.
+  const visit = visitFor(pathname);
+  const enter = { boot: 0.1, land: 0, instant: 0, first: 0.4, return: 0.24 }[visit];
   const hasBadge = slug === "home" || slug === "contact";
   const [flipped, setFlipped] = useState(slug === "contact");
   const [hintGone, setHintGone] = useState(false); // `# drag me · ↻ flip` goes away after the first drag or flip
@@ -136,10 +141,11 @@ export function VisualPanel({
       style={{
         order: -1,
         width: wide ? "var(--visual-w-wide)" : "var(--visual-w)",
-        transition: reduce ? "none" : "width 180ms cubic-bezier(0.2, 0, 0, 1)",
+        // The width tweens only inside the gap after `clear`, so text never reflows on screen.
+        transition: reduce ? "none" : "width 180ms cubic-bezier(0.2, 0, 0, 1) 60ms",
       }}
     >
-      <AnimatePresence>
+      <AnimatePresence custom={visit}>
         {hasBadge ? (
           <IdBadgeSlot
             key="badge"
@@ -152,6 +158,7 @@ export function VisualPanel({
             showHint={slug === "home" && !hintGone}
             qr={qr}
             photo={exists}
+            delay={enter}
           />
         ) : (
           <motion.div
@@ -160,7 +167,7 @@ export function VisualPanel({
             initial={{ opacity: reduce ? 1 : 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.06 } }}
-            transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
+            transition={{ duration: 0.2, delay: reduce ? 0 : enter, ease: [0.2, 0, 0, 1] }}
           >
             {visual}
           </motion.div>
@@ -189,6 +196,7 @@ function IdBadgeSlot({
   showHint: boolean;
   qr: boolean[][];
   photo: (src: string) => boolean;
+  delay: number;
 }) {
   return (
     <div className="absolute inset-x-0 top-0 [--badge-w:296px] [--photo-h:370px] [--rest-offset:clamp(96px,14vh,160px)] max-[1279px]:[--badge-w:272px] max-[1279px]:[--photo-h:300px] [@media(max-height:820px)]:[--badge-w:252px] [@media(max-height:820px)]:[--photo-h:200px]">

@@ -8,7 +8,11 @@ export function Prompt({ cmd, path, heading }: { cmd: string; path: string; head
           <span className="text-t2">ankesh@portfolio</span>:<span className="text-t2">{path}</span>
           <span className="text-t4">$</span>
         </span>{" "}
-        {cmd}
+        {/* The command types and a block cursor rides its edge (spec §9 `type`); CSS only. */}
+        <span className="rv-cmdwrap">
+          <span className="rv-cmd">{cmd}</span>
+          <span className="rv-cur" />
+        </span>
       </div>
     </>
   );

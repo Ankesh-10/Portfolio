@@ -6,6 +6,7 @@ import { VisualPanel } from "../visual/VisualPanel";
 import { LiveRegion } from "../terminal/LiveRegion";
 import { Matrix } from "./Matrix";
 import { VisualSync } from "../visual/VisualSync";
+import { RevealController } from "../terminal/RevealController";
 import type { GithubStats } from "@/lib/github";
 
 /** DOM order (spec §13): skip links → terminal window → visual aside. CSS places the aside on the left. */
@@ -24,10 +25,11 @@ export function Shell({
 }) {
   return (
     <>
-      <Background />
+      <Background sha={build.sha} />
       <Matrix />
       <LiveRegion />
       <VisualSync />
+      <RevealController />
       <NavTracker />
       <a className="skip-link" href="#content">
         Skip to content

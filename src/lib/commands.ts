@@ -15,7 +15,8 @@ export type Effect =
   | { k: "clear" }
   | { k: "motion"; v: "on" | "off" }
   | { k: "shortcuts"; v: "on" | "off" }
-  | { k: "matrix" };
+  | { k: "matrix" }
+  | { k: "theme"; v: "hex" | "log" };
 
 /** `echo: false` for commands that replace the buffer (navigation) or wipe it (clear). */
 export type Result = { lines: Line[]; effects: Effect[]; announce?: string; echo?: boolean };
@@ -232,12 +233,16 @@ export const commands: Command[] = [
   {
     name: "theme",
     args: () => ["hex", "log"],
-    run: (args) =>
-      args[0] === "hex"
-        ? say("theme: hex (already active)")
-        : args[0] === "log"
-          ? say("theme: the log background isn't built yet — hex stays on")
-          : note("# usage: theme hex|log"),
+    run: (args) => {
+      const v = args[0];
+      if (v !== "hex" && v !== "log") return note("# usage: theme hex|log");
+      const text = v === "hex" ? "background: hex dump" : "background: system log";
+      return {
+        lines: [{ t: "text", parts: [text] }],
+        effects: [{ k: "theme", v }],
+        announce: text,
+      };
+    },
   },
   // ── easter eggs (spec §8): runnable, never listed or completed ──
   {
@@ -473,6 +478,8 @@ export const paletteItems: PaletteItem[] = [
     desc: "enable single-key shortcuts",
     cmd: "shortcuts on",
   },
+  { id: "theme-log", label: "theme log", desc: "system-log background", cmd: "theme log" },
+  { id: "theme-hex", label: "theme hex", desc: "hex-dump background", cmd: "theme hex" },
   { id: "clear", label: "clear", desc: "tidy the buffer", cmd: "clear" },
   { id: "history", label: "history", desc: "commands you ran", cmd: "history" },
 ];

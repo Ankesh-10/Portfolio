@@ -27,7 +27,7 @@ export function Line({ line }: { line: LineT }) {
       return <Figlet />;
     case "lead":
       return (
-        <p className="m-0 max-w-[60ch] text-[length:var(--fs-lead)] font-bold leading-[var(--lh-lead)] text-t1">
+        <p className="rv-lead m-0 max-w-[60ch] text-[length:var(--fs-lead)] font-bold leading-[var(--lh-lead)] text-t1">
           {line.text}
         </p>
       );

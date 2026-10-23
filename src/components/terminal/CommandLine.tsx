@@ -7,6 +7,7 @@ import type { Line } from "@/lib/lines";
 import { appendOutput, clearOutput, pushHistory, readHistory } from "@/lib/session";
 import { setMotion } from "@/lib/motion-store";
 import { setShortcuts, shortcutsOn } from "@/lib/shortcuts-store";
+import { setTheme } from "@/lib/theme-store";
 import { MATRIX_EVENT, PALETTE_EVENT, RUN_EVENT, type RunDetail } from "@/lib/term-events";
 import { markNudgeDone } from "./Nudge";
 import { announce } from "./LiveRegion";
@@ -99,6 +100,9 @@ export function CommandLine({ resumeKb }: { resumeKb?: number }) {
             break;
           case "matrix":
             window.dispatchEvent(new Event(MATRIX_EVENT));
+            break;
+          case "theme":
+            setTheme(e.v);
             break;
         }
       }

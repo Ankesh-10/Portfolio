@@ -376,3 +376,254 @@ html[data-motion="off"] .palette {
 .lightbox::backdrop {
   background: transparent;
 }
+
+/* ── Terminal text appearance (spec §9) ────────────────────────────────────────────────────
+   Every line is in the HTML from first paint; these rules only decide when it becomes visible.
+   Hidden lines use opacity and clip-path, never display/visibility, so layout never shifts and
+   screen readers read everything at once. Timings come from schedule() as --t/--d/--s/--h:
+   the server emits --l* (landing), --b* (boot, full figlet) and --c* (boot, compact name);
+   <html data-reveal> picks one. Tab changes and command output set --t… directly, scoped by
+   [data-rv] on the buffer or the session output. */
+html[data-reveal="land"] .rv {
+  --t: var(--lt);
+  --d: var(--ld);
+  --s: var(--ls);
+  --h: var(--lh);
+}
+html[data-reveal="boot"] .rv {
+  --t: var(--ct);
+  --d: var(--cd);
+  --s: var(--cs);
+  --h: var(--ch);
+}
+@container buf (min-width: 560px) and (min-height: 640px) {
+  html[data-reveal="boot"] .rv {
+    --t: var(--bt);
+    --d: var(--bd);
+    --s: var(--bs);
+    --h: var(--bh);
+  }
+}
+@keyframes rv-show {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes rv-type {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+@keyframes rv-draw {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+@keyframes rv-ride {
+  from {
+    left: 0;
+  }
+  to {
+    left: 100%;
+  }
+}
+@keyframes rv-drop {
+  from {
+    top: 0;
+  }
+  to {
+    top: 100%;
+  }
+}
+@keyframes rv-on {
+  from,
+  to {
+    opacity: 1;
+  }
+}
+.rv-cmdwrap {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: top;
+}
+.rv-cmd {
+  display: inline-block;
+  max-width: 100%;
+}
+.rv-cur {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 100%;
+  width: 1ch;
+  background: var(--text-1);
+  opacity: 0;
+  pointer-events: none;
+}
+.fig-full,
+.fig-compact,
+.fig-stacked {
+  position: relative;
+  width: max-content;
+}
+.fig-full {
+  --fn: 12;
+}
+.fig-compact {
+  --fn: 3;
+}
+.fig-stacked {
+  --fn: 6;
+}
+/* the one-frame █ flash: a solid bar on the row about to resolve */
+.fig-full::after,
+.fig-compact::after,
+.fig-stacked::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: calc(100% / var(--fn));
+  background: var(--text-1);
+  opacity: 0;
+  pointer-events: none;
+}
+:is(html[data-reveal="boot"], html[data-reveal="land"], [data-rv="first"], [data-rv="return"]) .rv {
+  animation: rv-show 0s var(--t) both;
+}
+:is(html[data-reveal="boot"], html[data-reveal="land"], [data-rv="first"], [data-rv="return"])
+  .rv.rv-p
+  .rv-cmd {
+  animation: rv-type var(--d) steps(var(--n-chars, 1), end) var(--t) both;
+}
+:is(html[data-reveal="boot"], html[data-reveal="land"], [data-rv="first"], [data-rv="return"])
+  .rv.rv-p
+  .rv-cur {
+  animation:
+    rv-ride var(--d) steps(var(--n-chars, 1), end) var(--t) both,
+    rv-on calc(var(--d) + var(--h)) var(--t) none;
+}
+:is(html[data-reveal="boot"], html[data-reveal="land"], [data-rv="first"], [data-rv="return"])
+  .rv.rv-l
+  .rv-lead {
+  animation: rv-type var(--d) steps(var(--n-chars, 1), end) var(--t) both;
+}
+:is(html[data-reveal="boot"], html[data-reveal="land"], [data-rv="first"], [data-rv="return"])
+  .rv.rv-f
+  pre {
+  animation: rv-draw var(--d) steps(var(--fn), end) var(--t) both;
+}
+:is(html[data-reveal="boot"], html[data-reveal="land"], [data-rv="first"], [data-rv="return"])
+  .rv.rv-f
+  :is(.fig-full, .fig-compact, .fig-stacked)::after {
+  animation:
+    rv-drop var(--d) steps(var(--fn), end) var(--t) both,
+    rv-on var(--d) var(--t) none;
+}
+/* list rows stream one by one */
+:is(html[data-reveal="boot"], html[data-reveal="land"], [data-rv="first"], [data-rv="return"])
+  .rv.rv-o
+  li {
+  animation: rv-show 0s calc(var(--t) + var(--i, 0) * var(--s)) both;
+}
+/* command output (echo): the prompt commits at once, its output streams */
+[data-rv="echo"] .rvs {
+  animation: rv-show 0s var(--t) both;
+}
+[data-rv="echo"] .rvs-o li {
+  animation: rv-show 0s calc(var(--t) + var(--i, 0) * var(--s)) both;
+}
+:is(.rv-o, .rvs-o) li:nth-child(2) {
+  --i: 1;
+}
+:is(.rv-o, .rvs-o) li:nth-child(3) {
+  --i: 2;
+}
+:is(.rv-o, .rvs-o) li:nth-child(4) {
+  --i: 3;
+}
+:is(.rv-o, .rvs-o) li:nth-child(5) {
+  --i: 4;
+}
+:is(.rv-o, .rvs-o) li:nth-child(6) {
+  --i: 5;
+}
+:is(.rv-o, .rvs-o) li:nth-child(7) {
+  --i: 6;
+}
+:is(.rv-o, .rvs-o) li:nth-child(8) {
+  --i: 7;
+}
+:is(.rv-o, .rvs-o) li:nth-child(9) {
+  --i: 8;
+}
+:is(.rv-o, .rvs-o) li:nth-child(10) {
+  --i: 9;
+}
+:is(.rv-o, .rvs-o) li:nth-child(11) {
+  --i: 10;
+}
+:is(.rv-o, .rvs-o) li:nth-child(12) {
+  --i: 11;
+}
+:is(.rv-o, .rvs-o) li:nth-child(13) {
+  --i: 12;
+}
+:is(.rv-o, .rvs-o) li:nth-child(14) {
+  --i: 13;
+}
+:is(.rv-o, .rvs-o) li:nth-child(15) {
+  --i: 14;
+}
+:is(.rv-o, .rvs-o) li:nth-child(16) {
+  --i: 15;
+}
+:is(.rv-o, .rvs-o) li:nth-child(n + 17) {
+  --i: 16;
+}
+/* Interrupted, finished, paused or reduced: everything shows at once. (After the boot or landing,
+   <html data-reveal> is "skip"/"done", which simply matches no reveal rule.) */
+[data-rv="done"] .rv,
+[data-rv="done"] .rv *,
+html[data-motion="off"] :is(.rv, .rvs),
+html[data-motion="off"] :is(.rv, .rvs) *,
+html[data-motion="off"] .rv *::after {
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.rv, .rvs),
+  :is(.rv, .rvs) *,
+  .rv *::after {
+    animation: none !important;
+  }
+}
+/* `skip intro ⏎`: first in <main>, top-right of the buffer, only during the boot (spec §9) */
+.skip-intro {
+  display: none;
+  position: absolute;
+  top: 8px;
+  right: 24px;
+  z-index: 1;
+  height: 24px;
+  padding: 0 4px;
+}
+html[data-reveal="boot"] .skip-intro {
+  display: block;
+}
+
+/* Boot: chrome is there from first paint; the background fades in over 200ms (spec §9) */
+@keyframes bg-in {
+  from {
+    opacity: 0;
+  }
+}
+html[data-reveal="boot"] .bg-canvas {
+  animation: bg-in 200ms var(--ease) both;
+}

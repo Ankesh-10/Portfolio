@@ -43,8 +43,11 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: "#070707", colorScheme: "dark" };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // Inline script: restore the `‖ motion` choice before first paint (spec §9).
-  const init = `try{if(localStorage.getItem("motion")==="off")document.documentElement.dataset.motion="off"}catch(e){}`;
+  // Inline script, before first paint (spec §9, ≤ 1KB): restores `‖ motion` and picks the reveal:
+  // `boot` on the first visit of a session to `/` (desktop and tablet), `land` on any other first
+  // paint, nothing when motion is paused or reduced. Any key or click skips; at 1.6s it is done,
+  // so the text is complete even if the main bundle never loads. No JS: no attribute, no animation.
+  const init = `try{var d=document.documentElement,s=sessionStorage,m=localStorage.getItem("motion")=="off",r;if(m)d.dataset.motion="off";if(!m&&!matchMedia("(prefers-reduced-motion: reduce)").matches){r=location.pathname=="/"&&!s.getItem("rv-booted")&&matchMedia("(min-width: 768px)").matches?"boot":"land";d.dataset.reveal=r;var k=function(){if(d.dataset.reveal==r)d.dataset.reveal="skip";removeEventListener("keydown",k,!0);removeEventListener("pointerdown",k,!0)};addEventListener("keydown",k,!0);addEventListener("pointerdown",k,!0);setTimeout(function(){if(d.dataset.reveal==r)d.dataset.reveal="done"},1600)}s.setItem("rv-booted","1")}catch(e){}`;
   const qr = QRCode.create(githubUrl, { errorCorrectionLevel: "M" });
   const n = qr.modules.size;
   const modules = Array.from({ length: n }, (_, y) =>
@@ -58,7 +61,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   ]);
   const github = await githubStats(githubUrl.split("/").pop()!);
   return (
-    <html lang="en" className={jb.variable}>
+    <html lang="en" className={jb.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: init }} />
       </head>

@@ -14,6 +14,8 @@ export type BadgeProps = {
   onDrag?: () => void;
   qr: boolean[][];
   hasPhoto?: (src: string) => boolean;
+  /** When the drop starts (s): 0.1 in the boot, 0.4 / 0.24 on first / return tab changes (spec §9). */
+  delay?: number;
 };
 
 const statusDot =
@@ -61,7 +63,7 @@ function FlipButton({ flipped, onFlip }: { flipped: boolean; onFlip: () => void 
   );
 }
 
-export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto }: BadgeProps) {
+export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto, delay = 0 }: BadgeProps) {
   const motionState = useMotion();
   const reduce = useReducedMotion();
   const still = reduce || motionState === "off";
@@ -113,13 +115,20 @@ export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto }: BadgeProps) {
       style={{ transformOrigin: "50% 0" }}
       initial={reduce ? { opacity: 0 } : { y: "-110vh", rotate: 0 }}
       animate={reduce ? { opacity: 1 } : { y: 0, rotate: -3 }}
-      exit={
-        reduce
-          ? { opacity: 0, transition: { duration: 0.15 } }
-          : { y: "-110vh", transition: { duration: 0.4, ease: [0.2, 0, 0, 1] } }
-      }
+      // Retract: 400ms when leaving for a tab visited for the first time, 240ms for a return visit.
+      // AnimatePresence passes the destination's visit as `custom`.
+      variants={{
+        gone: (visit: string) =>
+          reduce
+            ? { opacity: 0, transition: { duration: 0.15 } }
+            : {
+                y: "-110vh",
+                transition: { duration: visit === "return" ? 0.24 : 0.4, ease: [0.2, 0, 0, 1] },
+              },
+      }}
+      exit="gone"
       transition={
-        reduce ? { duration: 0.15 } : { type: "spring", stiffness: 120, damping: 9, mass: 1 }
+        reduce ? { duration: 0.15 } : { type: "spring", stiffness: 120, damping: 9, mass: 1, delay }
       }
       drag={!reduce}
       dragSnapToOrigin
