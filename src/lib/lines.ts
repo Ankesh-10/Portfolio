@@ -3,11 +3,11 @@
 export type Inline = string | { href: string; label: string; external?: boolean };
 
 export type Line =
-  | { t: "prompt"; cmd: string; path: string; heading?: string }
+  | { t: "prompt"; cmd: string; heading?: string }
   | { t: "figlet" }
   | { t: "lead"; text: string }
   | { t: "text"; parts: Inline[] }
-  | { t: "comment"; text: string; id?: string }
+  | { t: "comment"; text: string }
   | { t: "table"; cols: { label: string; value: string; href?: string }[] }
   | { t: "links"; items: { label: string; href: string; external?: boolean; download?: boolean }[] }
   | { t: "dirs" }

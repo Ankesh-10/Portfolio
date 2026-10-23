@@ -1,48 +1,20 @@
 import type { Line as LineT } from "@/lib/lines";
-import { Line, gutterLh } from "./Line";
+import { Line } from "./Line";
 
-/** The vim-style buffer: gutter + lines + `~` fill (spec §6.3). Text is always real HTML. */
+// Space above a line: commands open a new block; the lead sits apart from the name above it.
+const gap: Partial<Record<LineT["t"], number>> = { prompt: 32, lead: 24 };
+
+/** The buffer: output blocks on a quiet column, with breathing room between commands (spec §6.3). */
 export function Buffer({ title, lines }: { title: string; lines: LineT[] }) {
-  let lastPrompt = -1;
-  lines.forEach((l, i) => {
-    if (l.t === "prompt") lastPrompt = i;
-  });
-
   return (
     <div className="buf-scroll h-full overflow-y-auto overflow-x-hidden" tabIndex={-1}>
       <h1 className="sr-only">{title}</h1>
-      <div className="flex min-h-full flex-col">
+      <div className="px-6 pb-10 pt-4 max-md:px-4">
         {lines.map((l, i) => (
-          <div
-            key={i}
-            className="grid grid-cols-[48px_1fr] pr-6 max-md:grid-cols-[32px_1fr] max-md:pr-4"
-            style={{ marginTop: l.t === "prompt" && i > 0 ? 8 : 0 }}
-          >
-            <span
-              aria-hidden
-              className={`select-none pr-3 text-right text-[length:var(--fs-ui)] ${i === lastPrompt ? "text-t3" : "text-t5"}`}
-              style={{ lineHeight: `${gutterLh(l)}px` }}
-            >
-              {i + 1}
-            </span>
-            <div className="min-w-0">
-              <Line line={l} />
-            </div>
+          <div key={i} className="min-w-0" style={{ marginTop: i === 0 ? 0 : (gap[l.t] ?? 4) }}>
+            <Line line={l} />
           </div>
         ))}
-        <div aria-hidden className="relative mt-1 min-h-0 flex-1">
-          <div className="absolute inset-0 overflow-hidden">
-            {Array.from({ length: 40 }, (_, i) => (
-              <div
-                key={i}
-                className="grid h-6 grid-cols-[48px_1fr] leading-6 max-md:grid-cols-[32px_1fr]"
-              >
-                <span />
-                <span className="text-t6">~</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );

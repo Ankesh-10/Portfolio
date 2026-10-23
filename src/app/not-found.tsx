@@ -9,9 +9,9 @@ export default function NotFound() {
     <Buffer
       title="Not found"
       lines={[
-        { t: "prompt", cmd: `cd ~${path}`, path: "~", heading: "Not found" },
+        { t: "prompt", cmd: `cd ~${path}`, heading: "Not found" },
         { t: "text", parts: [`cd: no such file or directory: ~${path}`] },
-        { t: "prompt", cmd: "ls ~", path: "~", heading: "Sections" },
+        { t: "prompt", cmd: "ls ~", heading: "Sections" },
         { t: "dirs" },
       ]}
     />

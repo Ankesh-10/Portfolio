@@ -16,12 +16,7 @@ const hash = (date: string, title: string) =>
     .digest("hex")
     .slice(0, 7);
 
-const prompt = (cmd: string, path: string, heading?: string): Line => ({
-  t: "prompt",
-  cmd,
-  path,
-  heading,
-});
+const prompt = (cmd: string, heading?: string): Line => ({ t: "prompt", cmd, heading });
 const ext = (href: string) => /^https?:/.test(href);
 const link = (label: string, href: string) => ({ label, href, external: ext(href) });
 
@@ -31,9 +26,7 @@ export function homePage(): Page {
   return {
     title: `${profile.firstName} ${profile.lastName}`,
     lines: [
-      prompt("figlet ankesh jaiswal", "~"),
       { t: "figlet" },
-      prompt("cat intro.txt", "~", "Intro"),
       { t: "lead", text: profile.tagline },
       {
         t: "text",
@@ -44,8 +37,7 @@ export function homePage(): Page {
         ],
       },
       { t: "text", parts: profile.intro },
-      { t: "comment", text: "# new here? click a tab below — or type help", id: "nudge" },
-      prompt("ls ~/projects --featured", "~", "Featured projects"),
+      prompt("ls ~/projects --featured", "Featured projects"),
       {
         t: "featured",
         rows: featured.map((p) => ({
@@ -55,19 +47,7 @@ export function homePage(): Page {
           year: p.year,
         })),
       },
-      prompt("ls ~", "~", "Sections"),
-      { t: "dirs" },
-      prompt("ls ~/links", "~", "Links"),
-      {
-        t: "links",
-        items: links.map((l) => ({
-          label: l.label,
-          href: l.href,
-          external: ext(l.href),
-          download: l.kind === "resume",
-        })),
-      },
-      prompt("stat --summary", "~", "Summary"),
+      prompt("stat --summary", "Summary"),
       {
         t: "table",
         cols: [
@@ -85,9 +65,9 @@ export function aboutPage(): Page {
   return {
     title: "About",
     lines: [
-      prompt("cat about.md", "~/about", "About"),
+      prompt("cat about.md", "About"),
       ...aboutParagraphs.map((p): Line => ({ t: "text", parts: [p] })),
-      prompt("git log --oneline --graph", "~/about", "Experience"),
+      prompt("git log --oneline --graph", "Experience"),
       {
         t: "gitlog",
         id: "experience",
@@ -99,7 +79,7 @@ export function aboutPage(): Page {
           orgHref: e.orgHref,
         })),
       },
-      prompt("cat now.txt", "~/about", "Now"),
+      prompt("cat now.txt", "Now"),
       { t: "text", parts: [nowText] },
     ],
   };
@@ -110,7 +90,7 @@ export function projectsPage(): Page {
   return {
     title: "Projects",
     lines: [
-      prompt("ls ~/projects", "~/projects", "Projects"),
+      prompt("ls ~/projects", "Projects"),
       list.length
         ? {
             t: "projects",
@@ -146,9 +126,9 @@ export function projectPage(slug: string): Page | undefined {
   return {
     title: p.name,
     lines: [
-      prompt(`open ${p.slug}`, "~/projects", p.name),
+      prompt(`open ${p.slug}`, p.name),
       { t: "detail", title: p.name, body: p.description, rows },
-      prompt("ls ~/projects", "~/projects", "All projects"),
+      prompt("ls ~/projects", "All projects"),
       {
         t: "projects",
         rows: sortedProjects().map((x) => ({
@@ -167,13 +147,13 @@ export function skillsPage(): Page {
   return {
     title: "Skills",
     lines: [
-      prompt("skills --tree", "~/skills", "Skills"),
+      prompt("skills --tree", "Skills"),
       {
         t: "tree",
         label: "skills",
         rows: skills.map((g) => ({ key: g.group, items: g.items.map((i) => i.name) })),
       },
-      prompt("cat philosophy.txt", "~/skills", "Philosophy"),
+      prompt("cat philosophy.txt", "Philosophy"),
       ...philosophy.map((p): Line => ({ t: "text", parts: [p] })),
     ],
   };
@@ -183,7 +163,7 @@ export function certsPage(): Page {
   return {
     title: "Certificates",
     lines: [
-      prompt("ls ~/certs", "~/certs", "Certificates"),
+      prompt("ls ~/certs", "Certificates"),
       certificates.length
         ? {
             t: "gitlog",
@@ -206,7 +186,7 @@ export function certPage(slug: string): Page | undefined {
   return {
     title: c.name,
     lines: [
-      prompt(`open ${c.slug}`, "~/certs", c.name),
+      prompt(`open ${c.slug}`, c.name),
       {
         t: "kv",
         rows: [
@@ -217,7 +197,7 @@ export function certPage(slug: string): Page | undefined {
           ...(c.verifyUrl ? [{ k: "verify", v: [link("verify ↗", c.verifyUrl)] }] : []),
         ],
       },
-      prompt("ls ~/certs", "~/certs", "All certificates"),
+      prompt("ls ~/certs", "All certificates"),
       {
         t: "gitlog",
         rows: certificates.map((x) => ({
@@ -237,7 +217,7 @@ export function contactPage(): Page {
   return {
     title: "Contact",
     lines: [
-      prompt("cat contact.txt", "~/contact", "Contact"),
+      prompt("cat contact.txt", "Contact"),
       {
         t: "kv",
         rows: [
@@ -255,10 +235,4 @@ export function contactPage(): Page {
       },
     ],
   };
-}
-
-/** Real build info (spec §4): only present when the host injects it. */
-export function buildInfo() {
-  const sha = process.env.VERCEL_GIT_COMMIT_SHA;
-  return { sha: sha ? sha.slice(0, 7) : undefined, iso: new Date().toISOString() };
 }

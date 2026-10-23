@@ -3,7 +3,7 @@
 /* Tokens — spec §3. Single source of truth. */
 :root {
   --bg: #070707;
-  --term-bg: rgba(9, 9, 9, 0.72);
+  --term-bg: rgba(8, 8, 8, 0.9);
   --term-chrome: rgba(14, 14, 14, 0.92);
   --card: linear-gradient(160deg, #151515, #0b0b0b 60%);
 
@@ -209,62 +209,35 @@ body {
   }
 }
 
-/* tmux bar tiers (spec §4): driven by the window's own width, so there is no JS and no flicker. */
+/* Terminal layout: top line, buffer, then one bottom bar holding the command input and the tabs.
+   Driven by the window's own width (container query), so there is no JS and no flicker. */
 .term-win {
   container: term / inline-size;
 }
-.tm-brackets {
-  color: var(--text-4);
+.term-grid {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "title title"
+    "buffer buffer"
+    "cmd nav";
 }
-.tm-clock {
-  display: inline;
+.term-cmd,
+.term-nav {
+  border-top: 1px solid var(--line-1);
 }
-.tm-motion-bar {
-  display: inline-flex;
-}
-.tm-motion-title {
-  display: none;
-}
-.tm-status-long {
-  display: inline;
-}
-.tm-status-short {
-  display: none;
-}
-@container term (max-width: 779px) {
-  .tm-clock {
+@container term (max-width: 759px) {
+  .term-clock {
     display: none;
   }
-}
-@container term (max-width: 699px) {
-  .tm-motion-bar {
-    display: none;
-  }
-  .tm-motion-title {
-    display: inline-flex;
-  }
-  .tm-status-long {
-    display: none;
-  }
-  .tm-status-short {
-    display: inline;
-  }
-}
-@container term (max-width: 569px) {
-  .tm-brackets {
-    display: none;
-  }
-}
-@container term (max-width: 479px) {
-  .tm-digit {
-    display: none;
-  }
-  .tm-bar {
-    flex-wrap: wrap;
-    min-height: 56px;
-  }
-  .tm-tabs {
-    width: 100%;
+  .term-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "title"
+      "buffer"
+      "nav"
+      "cmd";
   }
 }
 

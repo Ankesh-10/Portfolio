@@ -18,7 +18,7 @@ export function Clock() {
     return () => clearInterval(id);
   }, []);
   return (
-    <span aria-hidden className="tm-clock min-w-[8ch] text-right text-t3">
+    <span aria-hidden className="term-clock min-w-[9ch] whitespace-nowrap text-right">
       {t && `${t} IST`}
     </span>
   );

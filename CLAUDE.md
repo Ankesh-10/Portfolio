@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Phase 1 (foundation) and the static half of Phase 2 (terminal chrome, output blocks, all routes) are built; the rest follows spec §15. Placeholder copy lives in `src/content/` and is marked as such.
 
-**Done:** Next.js 16 App Router + TS + Tailwind v4 + Motion, tokens in `src/app/globals.css`, self-hosted full JetBrains Mono, hex-dump background canvas, Shell/TerminalWindow/TitleBar/TmuxBar (CSS container-query tiers)/VimStatusLine/CommandLine (navigation + `0`–`5`/`:` shortcuts only), all output blocks, six routes + `/projects/[slug]` + `/certs/[slug]` + not-found + `/work` redirects, ID badge (front/back, real QR, spring drop, sway, drag, flip), `scripts/contrast.mjs`.
+**Done:** Next.js 16 App Router + TS + Tailwind v4 + Motion, tokens in `src/app/globals.css`, self-hosted full JetBrains Mono, hex-dump background canvas, Shell/TerminalWindow (minimal: top line, buffer, one bottom bar with the command input and Nav tabs)/TitleBar/Nav/CommandLine (navigation + `0`–`5`/`:`/`/` shortcuts only), all output blocks, six routes + `/projects/[slug]` + `/certs/[slug]` + not-found + `/work` redirects, ID badge (front/back, real QR, spring drop, sway, drag, flip), `scripts/contrast.mjs`.
 
 **Not yet:** command parser/registry/palette/easter eggs (Phase 3); PhotoStack, ProjectPreview, SkillGraphs + GitHub data, CertDeck, Lightbox, BadgeSheet (Phase 4; the left panel shows a placeholder frame for those tabs); `schedule()` timeline, boot sequence, typing/stream modes (Phase 5); phone layout, mail form + `/api/contact`, OG images, tests (Phase 6). Real photo, screenshots, certificate images and content are still placeholders (spec §14).
 
@@ -23,14 +23,14 @@ Phase 1 (foundation) and the static half of Phase 2 (terminal chrome, output blo
 
 - **Two zones on one unbroken background.** A frameless visual area on the left (`clamp(380px, 32vw, 520px)`, widening to ~42% on `work`/`certs`) and a floating, semi-transparent terminal window on the right. A fixed full-viewport canvas of dim terminal text (hex dump by default, syslog as the alternative, set by `BACKGROUND_MODE`) sits behind both and shows faintly through the terminal.
 - **Left = visuals only, right = text only.** Each tab swaps the left visual (`VisualPanel`) and "runs" a command in the right-hand vim-style buffer. The ID badge is an independent component shown on home and contact.
-- **The terminal window is the whole UI chrome:** title bar → `Buffer` (line-number gutter, `~` fill) → vim status line → `:` command line (the only text input) → tmux bar (tabs `0:home … 5:contact`, which are the main navigation).
+- **The terminal window is the whole UI chrome, kept minimal:** a quiet top line (`~/tab`, status, clock, `‖`, `resume ↓`) → `Buffer` (plain column, `$ cmd` labels, no gutter or `~` fill) → one bottom bar with the `❯` command input and the tabs as plain words (the main navigation).
 - **Each tab is a real route** (`/`, `/about`, `/work`, `/skills`, `/certs`, `/contact`), server-rendered as semantic HTML. The terminal look is styling, not canvas text.
 - **Content is data.** All copy lives in typed files under `src/content/`, and buffer output is built from line types (`prompt`, `lead`, `text`, `figlet`, `table`, `links`, `gitlog`, `tree`, …). Changing content should not require touching components.
 
 ## Gotchas
 
 - **Fonts:** the Google Fonts / Fontsource *latin* subset of JetBrains Mono has no box-drawing glyphs (`┌─┐│█╗`). Self-host the full `JetBrainsMono-*.woff2` from the official release, or the figlet name and box art break.
-- **Figlet art** (ANSI Shadow font) is pre-generated into `src/content/figlet.ts`; there is no runtime figlet dependency. Multi-row art counts as one buffer line (one gutter number).
+- **Figlet art** (ANSI Shadow font) is pre-generated into `src/content/figlet.ts`; there is no runtime figlet dependency. Multi-row art counts as one buffer line.
 - **CSS class names:** generic names like `.pl`, `.cur` or `.c` collided during mockups and broke layout. Use component-scoped styles or Tailwind.
 - Every animation needs a `prefers-reduced-motion` path (spec §9).
 
@@ -40,4 +40,5 @@ Phase 1 (foundation) and the static half of Phase 2 (terminal chrome, output blo
 - **Rejected backgrounds:** line grids, dot matrices and character "blueprint" grids ("cheap"). Use terminal text (hex dump or logs), kept very dim.
 - The ID badge is a **monochrome tech card with a real black-and-white photo**: not a colored card, not ASCII art, and not an illustrated face placeholder.
 - The command line lives **inside the right-hand terminal only**.
+- The terminal must stay **minimal** (inspired by nipun.space): no window dots, line numbers, `~` filler, vim status line or bracketed tmux tabs. The owner called that version "very cluttered".
 - The user prefers to discuss design before anything is built. When they say a message is a discussion, don't create files.

@@ -8,19 +8,11 @@ import { GitLog } from "../blocks/GitLog";
 import { Tree } from "../blocks/Tree";
 import { Detail, Kv } from "../blocks/Detail";
 import { Inlines } from "../blocks/Inline";
-import { Nudge } from "./Nudge";
-
-/** Gutter line-height per block: matches the baseline of the line's first text row (spec §3). */
-export function gutterLh(l: LineT): number {
-  if (l.t === "lead") return 28;
-  if (l.t === "table") return 16;
-  return 24;
-}
 
 export function Line({ line }: { line: LineT }) {
   switch (line.t) {
     case "prompt":
-      return <Prompt cmd={line.cmd} path={line.path} heading={line.heading} />;
+      return <Prompt cmd={line.cmd} heading={line.heading} />;
     case "figlet":
       return <Figlet />;
     case "lead":
@@ -36,11 +28,7 @@ export function Line({ line }: { line: LineT }) {
         </p>
       );
     case "comment":
-      return line.id === "nudge" ? (
-        <Nudge text={line.text} />
-      ) : (
-        <p className="m-0 max-w-[70ch] whitespace-pre-line text-t2">{line.text}</p>
-      );
+      return <p className="m-0 max-w-[70ch] whitespace-pre-line text-t3">{line.text}</p>;
     case "table":
       return <Table cols={line.cols} />;
     case "links":

@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import QRCode from "qrcode";
 import "./globals.css";
 import { Shell } from "@/components/shell/Shell";
-import { buildInfo } from "@/lib/pages";
 import { githubUrl } from "@/content/links";
 import { profile } from "@/content/profile";
 
@@ -52,9 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: init }} />
       </head>
       <body>
-        <Shell build={buildInfo()} qr={modules}>
-          {children}
-        </Shell>
+        <Shell qr={modules}>{children}</Shell>
       </body>
     </html>
   );

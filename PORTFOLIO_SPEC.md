@@ -1,6 +1,6 @@
 # ankesh.dev — Portfolio Build Spec
 
-A terminal-themed, highly animated personal portfolio. The screen is split into a **visual area** on the left (a dangling ID badge, photos, graphs, certificates) and a **floating terminal window** on the right (all text, a vim-style buffer, the command line and tmux tabs). Everything sits on a dim, live terminal-text background.
+A terminal-themed, highly animated personal portfolio. The screen is split into a **visual area** on the left (a dangling ID badge, photos, graphs, certificates) and a **floating terminal window** on the right (all text, a plain buffer, the command line and the tabs). Everything sits on a dim, live terminal-text background.
 
 > Reference mockups: [`docs/mockups/home-hex-bg.png`](docs/mockups/home-hex-bg.png) (default) and [`docs/mockups/home-log-bg.png`](docs/mockups/home-log-bg.png) (alternative background).
 
@@ -34,12 +34,12 @@ A terminal-themed, highly animated personal portfolio. The screen is split into 
 - **Readable means AA.** Any text a visitor needs to read is `--text-3` or brighter (≥ 4.5:1 on every surface it sits on) and at least 11px **as rendered** (after any scaling). Tiers `--text-4` and dimmer are decoration only and are `aria-hidden`.
 - **Real or decorative.** Every value that looks like data (SHA, deploy time, counts, years) is either real, computed at build time, or rendered as decoration (`--text-4`, `aria-hidden`). Nothing fake is presented as information.
 - **Accents are rare and meaningful.**
-  - Red `#ff3b30`: the availability status dot only (`● open to work` on the badge and in the tmux bar), always next to its word. Nothing else is red.
+  - Red `#ff3b30`: the availability status dot only (`● open to work` on the badge and in the top line), always next to its word. Nothing else is red.
   - Yellow `#ffd60a`: means "you can interact with this", without exception, in **two tiers** so it stays rare:
     - **Yellow at rest (primary):** `↓ resume.pdf`, `↻ flip`, `skip intro`, `[ send ⏎ ]`, `✕ close`, the index digits of the inactive tabs (counted together as **one** navigation control), the cursor of a focused text field, and the focus ring. At most 6 yellow controls on any screen (home at rest: tab digits, résumé, flip, and the focused command-line cursor = 4; 5 during the boot with `skip intro`).
     - **Yellow on hover/focus only (secondary):** every other link, row and button. At rest they are `--text-1` with a 1px `--yellow-dim` underline (links) or a `→` marker in `--text-4` (rows); on hover/focus the text, underline and marker turn yellow.
     - Anything that is not interactive is never yellow, including hint text: in the command-line hint only the clickable words (`help`, `/ commands`) get secondary-link styling.
-- **Authentic terminal grammar.** Real prompts (`ankesh@portfolio:~$`), real-looking output (`figlet`, `cat`, `ls`, `stat`, `git log`), vim buffer conventions (line numbers, `~` on empty lines, a `NORMAL` status line), tmux tabs.
+- **Authentic terminal grammar.** Quiet `$ cmd` prompts and real-looking output (`figlet`, `cat`, `ls`, `stat`, `git log`), with minimal chrome (no gutter, `~` filler or status line; see §4), and the tabs as plain words in the bottom bar.
 - **Everything monospace,** aligned to the character grid and a 4px vertical rhythm.
 - **Motion has a purpose.** Animations explain state changes (a command runs, output arrives, the badge swaps out). The badge is the one sanctioned ambient element: its idle sway and cursor tilt are deliberate character, and they stop with the `‖ motion` toggle. No decorative glow, no neon.
 
@@ -115,7 +115,7 @@ Four readable steps on a 4px rhythm: lead → body ×1.33, body → ui ×1.25. L
 |---|---|---|---|---|
 | `--fs-lead` | 20px / 28px | 18px / 28px | 18px / 24px | Lead line on home, badge name, phone name (h1, bold, 20px / 28px on phone) |
 | `--fs-body` | 15px / 24px | 14px / 24px | 14px / 24px | Every buffer line except the lead and tables' label row: prompt + command on one line (prompt and command both **regular**; prompt `--text-3`, command `--text-2`), body text `--text-2`, stat values and project names bold `--text-1`, list rows |
-| `--fs-ui` | 12px / 16px | 12px / 16px | 12px / 16px | Chrome: title bar, status line, command line, tmux tabs (medium weight), gutter numbers, badge role and field values, phone bar labels |
+| `--fs-ui` | 12px / 16px | 12px / 16px | 12px / 16px | Chrome: top line, command line, nav tabs, prompts, badge role and field values, phone bar labels |
 | `--fs-label` | 11px / 16px, letter-spacing .14em, UPPERCASE | 11px / 16px | 11px / 16px | Table headers, stat labels, card field labels. **Smallest size for readable text, measured as rendered** |
 | `--fs-micro` | 10px, letter-spacing .12–.2em | 10px | 10px | Decorative only (`aria-hidden`): card serial, `IMG_0001.RAW`, `B/W · 4:5`, lanyard text. Never carries information that isn't repeated elsewhere |
 
@@ -138,57 +138,38 @@ Four readable steps on a 4px rhythm: lead → body ×1.33, body → ui ×1.25. L
 
 ```
 ┌──────────────────────┬──────────────────────────────────────────────────┐
-│        ║             │ ●●●  ankesh@portfolio: ~/home — tmux ↓ resume.pdf│
-│        ║ lanyard     ├──────────────────────────────────────────────────┤
-│     ┌──╨──┐          │  1  ankesh@portfolio:~$ figlet ankesh jaiswal    │
-│     │ ID  │          │  2  █████╗ ███╗   ██╗ ...                        │
-│     │CARD │          │  …  (vim buffer: line numbers, output, ~)        │
-│     └─↻───┘          │                                                  │
+│        ║             │ ~/home          ● open to work  14:22 IST ‖ resume ↓
+│        ║ lanyard     │                                                  │
+│     ┌──╨──┐          │  ANKESH  (figlet)                                │
+│     │ ID  │          │  JAISWAL                                         │
+│     │CARD │          │  Full-stack developer building …                 │
+│     └─↻───┘          │  $ ls ~/projects --featured                      │
+│                      │  → project-name   summary              2025      │
 │                      ├──────────────────────────────────────────────────┤
-│                      │ NORMAL ~/home.md   main@a3f9c21 · 2h ago 17:1 All│
-│                      │ : █         click a tab below · help · / commands│
-│ # drag me · ↻ flip   │ [0:home*] [1:about] [2:projects] … ● open ‖ 14:22│
+│ # drag me · ↻ flip   │ ❯ type a page name…    › home  about  projects … │
 └──────────────────────┴──────────────────────────────────────────────────┘
    visual area             floating terminal window
 ```
 
 - **Visual area width:** `clamp(380px, 32vw, 520px)`. It has no frame; it sits directly on the background.
 - **Terminal window:** fills the rest (`flex: 1`), with a 24px margin.
-- **Visual-heavy tabs** (`projects`, `certs`) widen the visual area with a 180ms tween, timed inside the tab-change gap so terminal text never reflows on screen (see §9): to `clamp(420px, 42vw, 640px)` at ≥ 1280px, and only to `420px` between 1024 and 1279px so the terminal keeps room for the tmux bar.
+- **Visual-heavy tabs** (`projects`, `certs`) widen the visual area with a 180ms tween, timed inside the tab-change gap so terminal text never reflows on screen (see §9): to `clamp(420px, 42vw, 640px)` at ≥ 1280px, and only to `420px` between 1024 and 1279px so the terminal keeps room for the bottom bar.
 - Right-side text is capped at about **70ch** per line for readability.
 - The background texture spans the **entire viewport**, behind both areas, unbroken.
 
 ### Terminal window anatomy (top → bottom)
 
-1. **Title bar** (36px): three dim window dots (decorative) · centered `ankesh@portfolio: ~/<tab> — tmux` in `--text-3` · on the right a persistent **`↓ resume.pdf`** action (yellow, always visible on every tab, one click to download, feedback in §8 `resume`).
-2. **Buffer** (flex): vim-style gutter (48px, right-aligned line numbers, `aria-hidden`) + content.
-3. **Vim status line** (28px): `NORMAL` mode block · file name (`~/home.md`) · spacer · real build info shown as `main@a3f9c21 · 2h ago`. The commit SHA and deploy time are injected at build from Vercel env vars, and the SHA links to the commit on GitHub. The time is a `<time datetime="…">`: the server renders the absolute date (`2025-10-23`), and the client converts it to relative time and refreshes it every minute, so it never goes stale; `title` gives the full timestamp. Then `line:col` (the buffer's top visible line, i.e. the real scroll position) · `All/Top/Bot` (also from scroll position). Every field is either real or removed.
-4. **Command line** (32px): `:` + yellow block cursor; hint on the right in `--text-3`: `click a tab below · help · / commands`, where `help` (runs `help`) and `/ commands` (opens the palette) are secondary-link buttons.
-5. **tmux status bar** (32px, tabs are 32px-tall hit targets): tabs (left-anchored) · spacer · `● open to work` · `‖ motion` pause toggle · live clock `14:22 IST`. There is no `[ankesh]` session label; the title bar already names the session.
+Minimal by design (revamp, Oct 2026): the window is a quiet, mostly opaque panel (`--term-bg` at 0.9, 1px `--line-1` border, 10px radius) with only two chrome rows. There are no window dots, no line-number gutter, no `~` filler, no vim status line and no bracketed tmux tabs.
 
-**Tabs read as navigation at rest, not only on hover.**
-- Each tab renders as a bracketed item: `[1:about]`. At rest the brackets are `--text-4` (decorative), the index digit is **yellow** (it is the keyboard shortcut and marks the item as clickable) and the label is `--text-2`.
-- Hover and keyboard focus: the whole tab turns yellow, a 1px yellow underline grows left → right (150ms), pointer cursor.
-- Active tab: `[0:home*]` with the digit and label in `--text-1` bold and a 2px `--text-1` bar on top. It is not yellow (you are already there).
-- They are real `<a>` elements in a `<nav aria-label="Sections">` with `aria-current="page"` on the active one. Each has a clean accessible name and its shortcut: `aria-label="About"` and `aria-keyshortcuts="1"`. The brackets, digit and `*` are `aria-hidden`, so a screen reader says "About, link, current page", not "1 colon about star".
-- Each tab has a `title` tooltip with the palette's description, e.g. `about — experience & background`.
+1. **Top line** (40px, no border): `~/<tab>` in `--text-4` on the left; on the right `● open to work` · live clock `14:22 IST` · `‖` motion toggle · **`resume ↓`** (yellow, on every tab, one click to download).
+2. **Buffer** (flex): output blocks in one column with 24px side padding. Each command block starts 32px below the previous one.
+3. **Bottom bar** (44px, 1px `--line-1` top border): the `❯` command input on the left (placeholder `type a page name, or press 0–5`; errors show to its right in `--text-3`), the tabs on the right.
 
-**tmux bar overflow (measured, not breakpoint-based).** The bar renders the richest tier whose **measured content width** fits the bar. Each tier is measured offscreen; the check re-runs on resize and font load.
-- On a tab change, the tier is chosen from the terminal's **target** width before the width tween starts, and `ResizeObserver` updates are ignored during the tween, so the bar never flickers between tiers.
-- Tabs are left-anchored and every tier only removes items to their right, so changing tier never moves a tab under the pointer.
-- Tabs never truncate, and a status **word** is always visible next to the dot.
+**Tabs.** Plain lowercase words in `--fs-ui`: `home about projects skills certs contact`. At rest `--text-3`; hover and focus yellow; the active tab is `--text-1` with a yellow `›` before it. They are real `<a>` elements in a `<nav aria-label="Sections">` with `aria-current="page"`, a clean `aria-label` ("About") and `aria-keyshortcuts` for the digit; the `title` tooltip shows `1 · about — experience & background`.
 
-| Tier | tmux bar shows | Approx. width at 12px (7.2px/char) |
-|---|---|---|
-| T1 | tabs · `● open to work` · `‖ motion` · clock | ~ 740px |
-| T2 | tabs · `● open to work` · `‖ motion` | ~ 660px |
-| T3 | tabs · `● open` — `‖` moves to the title bar, left of `↓ resume.pdf` | ~ 530px |
-| T4 | tabs without brackets (`0:home* 1:about 2:projects …`) · `● open` | ~ 440px |
-| T5 | two-row bar (56px = 2 × 28px): row 1 the tab labels only (`home* about projects skills certs contact`, ~300px; digits stay available through `aria-keyshortcuts` and the palette); row 2 `● open to work` | ≥ 300px (always true, since phones use the phone layout) |
+**Narrow windows** (container query on the window, < 760px): the clock is dropped and the bottom bar splits into two rows, tabs above the command input. The tab row scrolls horizontally rather than wrapping.
 
-Status words per state: `open to work` / short `open`; `building` / `building`; `busy` / `busy`. The `‖` control is always reachable: in the bar (T1–T2) or in the title bar (T3–T5).
-
-**First-visit nudge.** On the first visit of a session, a comment line sits directly under the home intro in `--text-2`: `# new here? click a tab below — or type help`. It prints as part of the intro (≈ 875ms into the boot with the full figlet, ≈ 650ms with the compact name, or immediately when the boot is skipped or motion is reduced), never after the rest of home, and disappears after the first tab click or command.
+**First-visit hint.** The hint lives in the command input's placeholder, so it never takes a buffer line.
 
 ---
 
@@ -261,18 +242,16 @@ A physical-feeling, monochrome tech badge that hangs from the top edge of the sc
 - **Drag hint:** the `# drag me · ↻ flip` hint sits 16px below the card's rest position and moves with the layout, never under the card.
 
 ### 6.2 `<TerminalWindow />`
-Owns the window chrome and composes, in DOM order, `<TitleBar />` (`<header>`), `<TmuxBar />` (`<nav>`, placed at the bottom with CSS grid), `<Buffer />` (`<main>`), then `<VimStatusLine />` and `<CommandLine />` (`<footer>`). See §13 for why the nav comes before the buffer.
+Owns the window and composes, in DOM order, `<TitleBar />` (`<header>`, the top line), `<Nav />` (`<nav>`, placed in the bottom bar with CSS grid), `<Buffer />` (`<main>`), then `<CommandLine />` (`<footer>`). See §13 for why the nav comes before the buffer.
 
 ### 6.3 `<Buffer />`
 - Renders an array of **lines**. Each line is one of: `prompt`, `text`, `lead`, `figlet`, `table`, `links`, `featured`, `dirs`, `list`, `gitlog`, `comment`, `blank`. Each line has an appearance mode (§9) and keeps its full height while hidden, so revealing it never shifts layout.
-- Gutter: right-aligned line numbers in `--text-5`; the line that holds the latest output's prompt is in `--text-3` (brighter, not yellow: it isn't interactive).
-- Multi-row ASCII art counts as **one** logical line (a single gutter number).
-- After the last line, fill the remaining height with `~` rows in `--text-6`.
+- No gutter and no `~` filler: the buffer is a plain column. Commands are separated by 32px, the lead sits 24px below the name, other lines 4px apart.
 - **One cursor at a time.** While output is printing, a `--text-1` block cursor rides at the buffer's write position (§9 "Terminal text appearance"). When printing finishes it returns to the command line. Whichever text field has focus (command line, palette search, a mail-form field) shows the cursor in yellow; no other cursor is visible.
-- Scrolls inside the window when content overflows. The tmux tabs and status lines stay fixed.
+- Scrolls inside the window when content overflows. The top line and bottom bar stay fixed.
 
 ### 6.4 `<Prompt />`
-`ankesh@portfolio:~$` in `--fs-body` regular `--text-3` (user and path one step brighter, `--text-2`; the `$` glyph in `--text-4`), followed by the command in the same `--fs-body` size, **regular `--text-2`**. Prompt and command share one size and one character grid, and stay quieter than the content they produce: the page is about the output, not the syntax. The path reflects the current tab (`~/projects`). The whole prompt string is `aria-hidden`; each command block is preceded by a visually hidden `<h2>` that names the section (e.g. "Projects") for screen readers.
+`$ cmd` in `--fs-ui`: the `$` in `--text-4`, the command in `--text-3`. Prompts are quiet labels above each block, not the content; there is no `user@host:path` (the top line already shows the path). The prompt is `aria-hidden`; each command block is preceded by a visually hidden `<h2>` that names the section. Home starts with the name and lead directly, with no prompt above them.
 
 ### 6.5 Output blocks
 | Block | Look |
@@ -299,11 +278,10 @@ Owns the window chrome and composes, in DOM order, `<TitleBar />` (`<header>`), 
 | `list` (tree) | Branch label and items on one row | Items wrap under the items column; tree glyphs never repeat on continuation rows |
 | `figlet` | Full ANSI Shadow block (see §7.0 for the gate) | Compact name; never scaled or clipped |
 
-### 6.6 `<VimStatusLine />`, `<CommandLine />`, `<TmuxBar />`
-- Status line updates file name (`~/projects.md`), `line:col` and position as content changes. Build info is static per deploy.
-- The command line is the main text input; the others are the palette's search field (§6.8) and the mail form's real fields (§7.5). Focus it with `:` or by clicking it. Cursor rules are in §6.3.
-- The tmux bar tabs are links (see §4 "Tabs read as navigation"). The clock updates every minute and is `aria-hidden` (decorative).
-- `‖ motion` toggles all continuous motion (background scroll, cursor blink, badge idle sway, cursor tilt and device tilt) off/on; state persists in `localStorage`. It is a real `<button aria-pressed>`.
+### 6.6 `<CommandLine />`, `<Nav />`
+- The command line is the main text input; the others are the palette's search field (§6.8) and the mail form's real fields (§7.5). Focus it with `:` or `/`, or by clicking it. Cursor rules are in §6.3.
+- The nav tabs are links (see §4 "Tabs"). The clock updates every minute and is `aria-hidden` (decorative).
+- `‖` toggles all continuous motion (background scroll, cursor blink, badge idle sway, cursor tilt and device tilt) off/on; state persists in `localStorage`. It is a real `<button aria-pressed>` and shows `▶` while paused.
 
 ### 6.7 `<VisualPanel />`
 Swaps the left visual per tab with `AnimatePresence` (see §7 and the timeline in §9). All visuals stay monochrome to match the badge.
@@ -340,29 +318,20 @@ Expanding a project or certificate updates the URL to its `/<tab>/<slug>` route 
 The home buffer is designed to fit **481px** (the buffer height on a 1366×768 laptop: 657px viewport − 48px window margin − 128px chrome) with the compact name, so the work and the onramp are above the fold on the most common recruiter screen. This is verified by a Playwright screenshot test at 1366×657 and 1280×720 inner sizes: the last stats row must be fully visible without scrolling.
 
 ```
-ankesh@portfolio:~$ figlet ankesh jaiswal                             24
-<name: full figlet or compact, see below>                       48 / 156
+<name: full figlet or compact, see below>
+Full-stack developer building fast, thoughtful web apps.  ← lead
+Currently building project-name — one line on what it does.
+Previously interned at company. Based in India.
 
-ankesh@portfolio:~$ cat intro.txt                                     24
-Full-stack developer building fast, thoughtful web apps.  ← lead      28
-Currently building project-name — one line on what it does.           24
-Previously interned at company. Based in India.                       24
-# new here? click a tab below — or type help                          24
+$ ls ~/projects --featured
+→ project-name     one-line summary of what it does    2025
+→ project-two      one-line summary of what it does    2024
 
-ankesh@portfolio:~$ ls ~/projects --featured                          24
-→ project-name     one-line summary of what it does    2025           24
-→ project-two      one-line summary of what it does    2024           24
-
-ankesh@portfolio:~$ ls ~                                              24
-about/   projects/   skills/   certs/   contact/                      24
-
-ankesh@portfolio:~$ ls ~/links                                        24
-→ github   → linkedin   → email   → resume.pdf                        24
-
-ankesh@portfolio:~$ stat --summary                                    24
-PROJECTS     YEARS CODING     CERTIFICATES     NOW                    16
-6            4                5                project-name ↗         24
+$ stat --summary
+PROJECTS     YEARS CODING     CERTIFICATES     NOW
+6            4                5                project-name ↗
 ```
+The `ls ~` (dirs) and `ls ~/links` blocks were removed in the minimal revamp: the tabs are always in the bottom bar, `resume ↓` is in the top line, and the other links live on contact and the badge.
 Row heights (right column, px) plus five 8px block gaps total **468px** with the compact name and **576px** with the full figlet. Blank lines between blocks are 8px gaps, not 24px vim blank lines.
 
 - **Name, two designed forms.** Both are figlet output; neither is a fallback.
@@ -373,7 +342,6 @@ Row heights (right column, px) plus five 8px block gaps total **468px** with the
 - **The nudge** sits directly under the intro, so it is always above the fold on first visit; it disappears after the first tab click or command.
 - **Wrapping:** if the lead wraps (narrow windows), the fold test above still has to pass. When it doesn't, the first thing dropped from home is `stat --summary`, never the featured projects or the nudge.
 - **Stats** are computed at build: `PROJECTS` = `projects.length`, `YEARS CODING` = current year − `profile.since`, `CERTIFICATES` = `certificates.length`. No `+` hedging. `NOW` is a link when `profile.now.href` is set, otherwise `--text-1`.
-- The `ls ~` row repeats the navigation where the eye already is (`dirs` block).
 
 ### 7.1 · about
 - `cat about.md` → 2–3 short paragraphs (who you are, what you care about, what you're looking for).
@@ -455,9 +423,9 @@ Row heights (right column, px) plus five 8px block gaps total **468px** with the
 ### Navigation
 | Input | Action |
 |---|---|
-| Click a tmux tab or an `ls ~` entry | Jump to the tab (primary path) |
+| Click a nav tab or an `ls ~` entry | Jump to the tab (primary path) |
 | `home` `about` `projects` `skills` `certs` `contact` | Open the tab (also `cd ~/projects`). Aliases: `work` → projects; `experience`, `jobs`, `education` → about (scrolled to the timeline); `cv` → `resume` |
-| `0`–`5` keys | Jump to the tab matching its tmux index |
+| `0`–`5` keys | Jump to the tab matching its index (0 home … 5 contact) |
 | `/` | Open the command palette (never "search") |
 | `:` | Focus the command line |
 | `Esc` | Close the palette, lightbox, badge sheet or mail form; otherwise blur the command line |
@@ -613,7 +581,7 @@ Subtract 180ms when the width doesn't change. **Visual interactive ≤ 650ms on 
 - **Phone:** the lead line is `instant` at first paint, so LCP = first paint.
 - **Every other route:** no boot, so the text is visible at first paint.
 
-**Pause control** (`‖ motion` in the tmux bar or title bar on desktop/tablet per §4 tiers, in the top bar and the palette on phone; WCAG 2.2.2): stops the background scroll, cursor blink, badge idle sway, cursor tilt and device tilt for anyone, regardless of OS settings. While paused, text uses `instant` mode instead of typing and streaming (the inline boot script reads the same `localStorage` key, so a paused visitor never gets the boot). Tab changes and flips still run. Persisted in `localStorage`.
+**Pause control** (`‖` in the top line on every size, and in the palette; WCAG 2.2.2): stops the background scroll, cursor blink, badge idle sway, cursor tilt and device tilt for anyone, regardless of OS settings. While paused, text uses `instant` mode instead of typing and streaming (the inline boot script reads the same `localStorage` key, so a paused visitor never gets the boot). Tab changes and flips still run. Persisted in `localStorage`.
 
 **Reduced motion** (`prefers-reduced-motion: reduce`):
 - No boot sequence, and all text `instant` (no typing or streaming; the cursor doesn't blink).
@@ -696,7 +664,7 @@ src/
   components/
     shell/        Shell.tsx  Background.tsx
     terminal/     TerminalWindow.tsx  TitleBar.tsx  Buffer.tsx  Line.tsx
-                  Prompt.tsx  VimStatusLine.tsx  CommandLine.tsx  TmuxBar.tsx
+                  Prompt.tsx  CommandLine.tsx  Nav.tsx
                   CommandPalette.tsx  LiveRegion.tsx  MailForm.tsx  MotionToggle.tsx
     blocks/       Figlet.tsx  Lead.tsx  Text.tsx  Table.tsx  Links.tsx  Dirs.tsx
                   GitLog.tsx  Tree.tsx  Comment.tsx
@@ -728,7 +696,7 @@ One site, one URL, separate layouts. No separate mobile site.
 - Keep the split; visual area `40%`.
 - Terminal sizes follow the tablet column of the §3 type scale (lead 18/28, body 14/24; ui and label unchanged). The home name uses the compact form.
 - The badge is rendered at a **smaller layout size** (card width 252px, photo shrinks), not scaled with a transform, so its labels stay 11px as rendered.
-- The tmux bar follows the measured overflow tiers in §4 (usually T4 or T5).
+- The bottom bar splits into two rows (tabs above the input) per §4 "Narrow windows".
 
 ### Phone (< 768px)
 ```
@@ -769,10 +737,10 @@ One site, one URL, separate layouts. No separate mobile site.
 - **Hidden from assistive tech:** the background canvas, figlet ASCII, prompt strings, line-number gutter, `~` rows, tree glyphs (`├─ └─`), commit hashes and graph `*`, arrows, window dots, brackets around tabs, the clock, the art inside the phone mini-badge button, the decorative badge fields (`ID//…`, `ACCESS root`, barcode, front QR pattern) and all `--fs-micro` labels.
 - **DOM structure (one source of truth).** `<Shell>` renders, in this DOM order:
   1. skip links: "Skip to content", "Skip to sections", "Skip to visual";
-  2. `<TerminalWindow>`, which renders `<header>` (title bar) → `<nav aria-label="Sections">` (tmux tabs + `‖` when it lives there) → `<main tabindex="-1">` (buffer) → `<footer>` (status line, then command line, matching their visual order);
+  2. `<TerminalWindow>`, which renders `<header>` (top line) → `<nav aria-label="Sections">` (tabs) → `<main tabindex="-1">` (buffer) → `<footer>` (command line, matching their visual order);
   3. `<aside aria-label="Visual">` (`<VisualPanel>`).
-  CSS grid places the aside on the left and the tmux nav at the bottom of the window. Those are the only two places where visual order differs from DOM order, and both are deliberate: the content comes before decoration, and navigation comes before content. The three skip links make each region one keystroke away.
-- **Focus order (follows the DOM):** skip links → `‖ motion` (when in the title bar) → `↓ resume.pdf` → tabs → `‖ motion` (when in the tmux bar) → `skip intro` (during boot only; it is the first element of `<main>` and sits visually at the top-right of the buffer, so DOM and visual order agree) → buffer content (links, rows, mail form) → status-line SHA link → command line → command-line hint buttons (`help`, `/ commands`) → visual area (`↻ flip`, badge links, thumbnails). The first Tab press during the boot also completes it (any key does).
+  CSS grid places the aside on the left and the nav in the bottom bar of the window. Those are the only two places where visual order differs from DOM order, and both are deliberate: the content comes before decoration, and navigation comes before content. The three skip links make each region one keystroke away.
+- **Focus order (follows the DOM):** skip links → `‖` → `resume ↓` → tabs → `skip intro` (during boot only; it is the first element of `<main>` and sits visually at the top-right of the buffer, so DOM and visual order agree) → buffer content (links, rows, mail form) → command line → visual area (`↻ flip`, badge links, thumbnails). The first Tab press during the boot also completes it (any key does).
 - **Focus on route change:**
   - Navigated by clicking or pressing Enter on a tab → focus stays on that tab; the live region announces "Projects, 5 items".
   - Navigated from the command line → focus stays in the command line; same announcement.
@@ -843,7 +811,7 @@ Fill these in before or during the build. Placeholders are used until then.
 - [ ] Content types + placeholder content
 
 ### Phase 2: Terminal
-- [ ] `TerminalWindow`, `TitleBar`, `Buffer` with gutter and `~` fill, `VimStatusLine`, `TmuxBar` with live clock and the overflow rules
+- [ ] `TerminalWindow` (minimal), `TitleBar` top line with live clock, `Buffer`, `Nav` + `CommandLine` bottom bar
 - [ ] All output blocks (figlet, lead, text, table, links, dirs, gitlog, tree, comment)
 - [ ] Routes for all 6 tabs rendering their static output, plus `/projects/[slug]`, `/certs/[slug]`, `not-found` and the `/work` redirects
 - [ ] Landmarks, skip links, hidden headings, `aria-hidden` decoration, focus rules on route change, live region
