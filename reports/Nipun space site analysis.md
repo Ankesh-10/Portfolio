@@ -100,6 +100,21 @@ On 23 October 2026 I drove the live site in a real Chromium using `@playwright/c
   - Skills opening with AI / ML preselected;
   - form errors that clear as the visitor edits.
 
+A second pass added three files to the research folder:
+- [site_content.md](../research_notes/Nipun%20space%20site%20analysis/site_content.md): all rendered text, covering 19 project cards, 11 project READMEs file by file, 5 posts, 10 section pages and every skills sector.
+- [animation_timings.md](../research_notes/Nipun%20space%20site%20analysis/animation_timings.md): live entrance timings for each route, plus a sound map.
+- `live/data/*.json`: the raw data behind both.
+
+What the timings show:
+- Every entrance pairs a WAAPI opacity fade with a frame-by-frame JavaScript `translateY` tween of 6–14 px. Both use one curve, `cubic-bezier(0.23, 1, 0.32, 1)`.
+- The header drops in over 500 ms. Content staggers by 50–80 ms.
+- Every route has settled within 0.6–1.0 s. For comparison, the owner's spec budget is a 830 ms terminal on a first visit.
+
+Three items left open in the first pass are now settled:
+- The /about mind map *is* draggable.
+- There is no Uni-Verse hover card.
+- The home wheel ignores the keyboard.
+
 For the owner's site, this strengthens two earlier recommendations:
 - **Reserve space for any status or hint line inside the terminal.** It should never float over the buffer.
 - **Never block first paint with a modal.**

@@ -11,6 +11,8 @@ Observed 23 October 2026 in a real Chromium (Playwright 1.63 build 1243, headles
 - **Screenshots.** They are in `live/` as JPEG quality 70 at viewport size. Names follow `<width>-<route>.jpg`, plus named states such as `1440-lucbot-q2-done.jpg`.
 - **Forms.** Nothing was submitted. Requests to `api.web3forms.com` were intercepted and aborted, and none fired.
 
+A follow-up pass (`animation_timings.md`, `site_content.md`) settled the items left open here; the follow-up notes are marked inline.
+
 Legend used below: **✔ confirmed**, **✎ corrected**, **＋ new** (not in the code-only notes).
 
 ---
@@ -136,7 +138,7 @@ See `1440-work_serenity.jpg`, `1440-about.jpg` and `375-home.jpg`.
 - **Draggable badges / nodes** ✎.
   - I found **no draggable badges on /achievements**: no `cursor-grab`, `[draggable]` or drag handlers. Wins are static cards, and certs are an accordion.
   - The /about "drag the nodes" mind map is custom SVG/DOM, **not React Flow**: `.react-flow__node` count = 0, even though React Flow CSS ships in the bundle.
-  - Drag on the mind map was not confirmed.
+  - Follow-up: the mind map **is draggable**. Its nodes have `cursor: grab`, and a dragged node stays where it is dropped. React Flow is used instead for the architecture diagrams inside project READMEs (see `animation_timings.md`).
 - **Skills radar filters** ✔/＋.
   - The page opens with **AI / ML preselected**, not ALL. The centre reads 82 and the breakdown lists 6 AI skills.
   - Clicking BACKEND shows centre 76 and the backend skills.
@@ -152,10 +154,10 @@ See `1440-work_serenity.jpg`, `1440-about.jpg` and `375-home.jpg`.
   - wheel step → `square@600`;
   - about pointer → `sine@160, sine@240`;
   - typing in the command bar → no sound;
-  - hovering a wheel item → no blip captured (the throttled hover blip may need the context already running).
+  - hovering a wheel item → no blip. Follow-up: the 900 Hz triangle tick plays when the pointer enters a /work card or the back/home buttons, and a 540 → 820 Hz confirm chirp plays on palette Enter. Hovering or clicking wheel items, Esc and typing are silent. The full map is in `animation_timings.md`.
   - **No mute control exists** (✔). No button or `aria-label` mentions sound, mute or audio.
 - **Haptics** ✔. `navigator.vibrate(5)` fires once per keystroke in the command input (3 keys → `[5,5,5]`).
-- **Home "Uni-Verse" hover card**. Not captured; my selector found no "BUILDING" popover. Unverified.
+- **Home "Uni-Verse" hover card** ✎. Follow-up: there is none. Hovering the link adds no DOM nodes, and the link is a plain `<a target="_blank">` to uni-verse.co.in.
 - **Mic button** ✔. It is present in Chromium, which exposes `webkitSpeechRecognition`.
 
 ## 5. LucBot
@@ -232,7 +234,7 @@ Each width's first load was cold, and LCP/CLS came from a buffered `PerformanceO
 3. The **quick-nav strip appears only below 1024 px**. Desktop has no visible section links except on home (the wheel).
 4. The playful status words are an **always-on idle ticker**, not LucBot's thinking state. LucBot shows "retrieving…".
 5. LucBot's navigation buttons read **"↵ see <page>"**, not "take me to".
-6. **No draggable achievement badges** were found, and the /about mind map is **not React Flow**.
+6. **No draggable achievement badges** were found. The /about mind map is **not React Flow**, but its nodes are draggable; React Flow draws the project README diagrams.
 7. The home wheel nav responded to the mouse wheel and to clicks only. Arrow keys, j/k and Enter did not drive it in my run.
 8. /about has measurable **layout shift** (0.068–0.09 on desktop).
 9. Skills opens with **AI / ML preselected**, not ALL.
@@ -249,6 +251,8 @@ Each width's first load was cold, and LCP/CLS came from a buffered `PerformanceO
 9. LucBot **printed raw HTML** for a "hire" question.
 10. **Enter on /work opens the centred card, not the hovered one.**
 11. **Form errors clear on edit**.
+12. There is **no Uni-Verse hover card** on home.
+13. The home wheel is a **3D drum**: each item sits at `translateZ` plus `rotateX`.
 
 **Confirmed**
 - Routes, titles and the redirect for unknown paths.

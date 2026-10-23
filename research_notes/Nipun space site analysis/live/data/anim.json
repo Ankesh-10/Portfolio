@@ -1,0 +1,2606 @@
+{
+ "routes": {
+  "/work": {
+   "url": "https://www.nipun.space/work",
+   "waapiAndCss": [
+    {
+     "kind": "CSSTransition",
+     "name": "background-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "backgroundColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 137
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-bottom-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderBottomColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 137
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-left-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderLeftColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 137
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-right-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderRightColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 137
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-top-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderTopColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 137
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "box-shadow",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "boxShadow",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 137
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-pulse",
+     "dur": 1800,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "rect.term-pulse \"\"",
+     "firstSeenMs": 137
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 80,
+     "delay": 0,
+     "easing": "ease-out",
+     "iter": 1,
+     "props": "transform",
+     "target": "SPAN. \"❯\"",
+     "firstSeenMs": 278
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "spin-bd",
+     "dur": 3200,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "",
+     "target": "DIV.group relative flex h-[66vh] w-[clamp(232px,22vw,300px)] shrink-0  \"● CURRENT 2026 Next.js · Supa\"",
+     "firstSeenMs": 278
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/projects · things I've shi\"",
+     "firstSeenMs": 278
+    }
+   ],
+   "inlineTweens": [
+    {
+     "el": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "startMs": 16,
+     "endMs": 16,
+     "frames": 3,
+     "from": "|",
+     "to": "|"
+    },
+    {
+     "el": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/projects · things I've shi\"",
+     "startMs": 206,
+     "endMs": 708,
+     "frames": 14,
+     "from": "0|translateY(-8.06716px)",
+     "to": "1|none"
+    }
+   ]
+  },
+  "/about": {
+   "url": "https://www.nipun.space/about",
+   "waapiAndCss": [
+    {
+     "kind": "CSSTransition",
+     "name": "background-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "backgroundColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 63
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-bottom-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderBottomColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 63
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-left-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderLeftColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 63
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-right-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderRightColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 63
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-top-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderTopColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 63
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "box-shadow",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "boxShadow",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 63
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 80,
+     "delay": 0,
+     "easing": "ease-out",
+     "iter": 1,
+     "props": "transform",
+     "target": "SPAN. \"❯\"",
+     "firstSeenMs": 63
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-pulse",
+     "dur": 1800,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "rect.term-pulse \"\"",
+     "firstSeenMs": 63
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-blink",
+     "dur": 1050,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "SPAN.term-caret \"_\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-blink",
+     "dur": 1000,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "SPAN.ml-0.5 inline-block \"▌\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "mapdash",
+     "dur": 4500,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "strokeDashoffset",
+     "target": "path. \"\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "scroll-bob",
+     "dur": 1500,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "transform",
+     "target": "SPAN.scroll-bob text-[14px] \"▼\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/about · system monitor // \"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 50,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.mb-4 \"SKILLS: Python JavaScript Rea\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 150,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.mb-4 \"CURRENTLY: Building Uni-Verse\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 250,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV. \"LET'S CONNECT: github.com/Luc\"",
+     "firstSeenMs": 206
+    }
+   ],
+   "inlineTweens": [
+    {
+     "el": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "startMs": 7,
+     "endMs": 7,
+     "frames": 3,
+     "from": "|",
+     "to": "|"
+    },
+    {
+     "el": "PRE.m-0 select-none whitespace-pre will-change-transform \"......................... \"",
+     "startMs": 156,
+     "endMs": 1812,
+     "frames": 42,
+     "from": "|",
+     "to": "|translate(-2.84012px, -0.61545px) scale(1.01395)"
+    },
+    {
+     "el": "SPAN. \"▼\"",
+     "startMs": 164,
+     "endMs": 1812,
+     "frames": 81,
+     "from": "|none",
+     "to": "|translateY(0.0349396px)"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.95|",
+     "to": "0.95|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.28|",
+     "to": "0.28|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.16|",
+     "to": "0.16|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.95|",
+     "to": "0.95|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.28|",
+     "to": "0.28|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.16|",
+     "to": "0.16|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.95|",
+     "to": "0.95|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.28|",
+     "to": "0.28|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.16|",
+     "to": "0.16|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.95|",
+     "to": "0.95|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.28|",
+     "to": "0.28|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.16|",
+     "to": "0.16|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.95|",
+     "to": "0.95|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.28|",
+     "to": "0.28|"
+    },
+    {
+     "el": "SPAN.pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 ro \"\"",
+     "startMs": 176,
+     "endMs": 1814,
+     "frames": 93,
+     "from": "0.16|",
+     "to": "0.16|"
+    },
+    {
+     "el": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/about · system monitor // \"",
+     "startMs": 204,
+     "endMs": 697,
+     "frames": 19,
+     "from": "0|translateY(-6.67122px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.mb-4 \"SKILLS: Python JavaScript Rea\"",
+     "startMs": 237,
+     "endMs": 726,
+     "frames": 20,
+     "from": "0|translateY(6.3829px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.mb-4 \"CURRENTLY: Building Uni-Verse\"",
+     "startMs": 316,
+     "endMs": 828,
+     "frames": 21,
+     "from": "0|translateY(7.86599px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV. \"LET'S CONNECT: github.com/Luc\"",
+     "startMs": 427,
+     "endMs": 942,
+     "frames": 23,
+     "from": "0|translateY(7.11489px)",
+     "to": "1|none"
+    }
+   ]
+  },
+  "/skills": {
+   "url": "https://www.nipun.space/skills",
+   "waapiAndCss": [
+    {
+     "kind": "CSSTransition",
+     "name": "background-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "backgroundColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 62
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-bottom-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderBottomColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 62
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-left-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderLeftColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 62
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-right-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderRightColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 62
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-top-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderTopColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 62
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "box-shadow",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "boxShadow",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 62
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 80,
+     "delay": 0,
+     "easing": "ease-out",
+     "iter": 1,
+     "props": "transform",
+     "target": "SPAN. \"❯\"",
+     "firstSeenMs": 63
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-pulse",
+     "dur": 1800,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "rect.term-pulse \"\"",
+     "firstSeenMs": 63
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-blink",
+     "dur": 1050,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "SPAN.term-caret \"_\"",
+     "firstSeenMs": 168
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "scroll-bob",
+     "dur": 1500,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "transform",
+     "target": "SPAN.scroll-bob text-[14px] \"▼\"",
+     "firstSeenMs": 168
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/skills · calibrated loadou\"",
+     "firstSeenMs": 168
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 350,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.rounded-sm border p-3 transition-colors duration-200 \"GenAI & LLMs 88 Claude Gemini \"",
+     "firstSeenMs": 168
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 350,
+     "delay": 50,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.rounded-sm border p-3 transition-colors duration-200 \"RAG & Vector Search 85 Embeddi\"",
+     "firstSeenMs": 168
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 350,
+     "delay": 100,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.rounded-sm border p-3 transition-colors duration-200 \"Agentic AI 82 Google ADK MCP i\"",
+     "firstSeenMs": 168
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 350,
+     "delay": 150.00000000000003,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.rounded-sm border p-3 transition-colors duration-200 \"NLP & Fine-tuning 80 PyTorch H\"",
+     "firstSeenMs": 168
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 350,
+     "delay": 200,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.rounded-sm border p-3 transition-colors duration-200 \"Prompt Engineering 85 Claude G\"",
+     "firstSeenMs": 169
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 350,
+     "delay": 250,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.rounded-sm border p-3 transition-colors duration-200 \"Computer Vision 72 YOLOv8 Open\"",
+     "firstSeenMs": 169
+    }
+   ],
+   "inlineTweens": [
+    {
+     "el": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "startMs": 8,
+     "endMs": 8,
+     "frames": 3,
+     "from": "|",
+     "to": "|"
+    },
+    {
+     "el": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/skills · calibrated loadou\"",
+     "startMs": 84,
+     "endMs": 592,
+     "frames": 28,
+     "from": "0|translateY(-9.22272px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.rounded-sm border p-3 transition-colors duration-200 \"GenAI & LLMs 88 Claude Gemini \"",
+     "startMs": 84,
+     "endMs": 449,
+     "frames": 19,
+     "from": "0|translateX(7.11489px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.rounded-sm border p-3 transition-colors duration-200 \"RAG & Vector Search 85 Embeddi\"",
+     "startMs": 154,
+     "endMs": 498,
+     "frames": 19,
+     "from": "0|translateX(5.31018px)",
+     "to": "1|none"
+    },
+    {
+     "el": "SPAN.block h-full \"\"",
+     "startMs": 202,
+     "endMs": 886,
+     "frames": 41,
+     "from": "|scaleX(0.13835)",
+     "to": "|scaleX(0.88)"
+    },
+    {
+     "el": "DIV.rounded-sm border p-3 transition-colors duration-200 \"Agentic AI 82 Google ADK MCP i\"",
+     "startMs": 202,
+     "endMs": 546,
+     "frames": 20,
+     "from": "0|translateX(5.56379px)",
+     "to": "1|none"
+    },
+    {
+     "el": "SPAN.block h-full \"\"",
+     "startMs": 237,
+     "endMs": 936,
+     "frames": 41,
+     "from": "|scaleX(0.0625246)",
+     "to": "|scaleX(0.85)"
+    },
+    {
+     "el": "DIV.rounded-sm border p-3 transition-colors duration-200 \"NLP & Fine-tuning 80 PyTorch H\"",
+     "startMs": 237,
+     "endMs": 592,
+     "frames": 20,
+     "from": "0|translateX(6.83681px)",
+     "to": "1|none"
+    },
+    {
+     "el": "SPAN.block h-full \"\"",
+     "startMs": 298,
+     "endMs": 987,
+     "frames": 41,
+     "from": "|scaleX(0.109446)",
+     "to": "|scaleX(0.82)"
+    },
+    {
+     "el": "DIV.rounded-sm border p-3 transition-colors duration-200 \"Prompt Engineering 85 Claude G\"",
+     "startMs": 298,
+     "endMs": 643,
+     "frames": 21,
+     "from": "0|translateX(5.91114px)",
+     "to": "1|none"
+    },
+    {
+     "el": "SPAN.block h-full \"\"",
+     "startMs": 329,
+     "endMs": 1036,
+     "frames": 43,
+     "from": "|scaleX(0.00991965)",
+     "to": "|scaleX(0.8)"
+    },
+    {
+     "el": "DIV.rounded-sm border p-3 transition-colors duration-200 \"Computer Vision 72 YOLOv8 Open\"",
+     "startMs": 329,
+     "endMs": 687,
+     "frames": 22,
+     "from": "0|translateX(7.79667px)",
+     "to": "1|none"
+    },
+    {
+     "el": "SPAN.block h-full \"\"",
+     "startMs": 392,
+     "endMs": 1086,
+     "frames": 43,
+     "from": "|scaleX(0.0836322)",
+     "to": "|scaleX(0.85)"
+    },
+    {
+     "el": "SPAN.block h-full \"\"",
+     "startMs": 432,
+     "endMs": 1136,
+     "frames": 44,
+     "from": "|scaleX(0.0265611)",
+     "to": "|scaleX(0.72)"
+    }
+   ]
+  },
+  "/services": {
+   "url": "https://www.nipun.space/services",
+   "waapiAndCss": [
+    {
+     "kind": "CSSTransition",
+     "name": "background-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "backgroundColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 71
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-bottom-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderBottomColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 71
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-left-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderLeftColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 71
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-right-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderRightColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 71
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-top-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderTopColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 71
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "box-shadow",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "boxShadow",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 71
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 80,
+     "delay": 0,
+     "easing": "ease-out",
+     "iter": 1,
+     "props": "transform",
+     "target": "SPAN. \"❯\"",
+     "firstSeenMs": 71
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-pulse",
+     "dur": 1800,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "rect.term-pulse \"\"",
+     "firstSeenMs": 71
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-blink",
+     "dur": 1050,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "SPAN.term-caret \"_\"",
+     "firstSeenMs": 192
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "ring-spin",
+     "dur": 28000,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "transform",
+     "target": "DIV.ring-spin h-0 w-0 \"e-commerce · stores · drops e\"",
+     "firstSeenMs": 192
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "scroll-bob",
+     "dur": 1500,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "transform",
+     "target": "SPAN.scroll-bob text-[14px] \"▼\"",
+     "firstSeenMs": 192
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/services · for hire ◉ 20:2\"",
+     "firstSeenMs": 192
+    }
+   ],
+   "inlineTweens": [
+    {
+     "el": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "startMs": 6,
+     "endMs": 6,
+     "frames": 3,
+     "from": "|",
+     "to": "|"
+    },
+    {
+     "el": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/services · for hire ◉ 20:2\"",
+     "startMs": 115,
+     "endMs": 630,
+     "frames": 15,
+     "from": "0|translateY(-9.22272px)",
+     "to": "1|none"
+    },
+    {
+     "el": "SECTION.group/panel relative overflow-hidden rounded-md border transit \"01 SVC 01 Web Development S\"",
+     "startMs": 115,
+     "endMs": 630,
+     "frames": 15,
+     "from": "0|translateY(12.9118px)",
+     "to": "1|none"
+    },
+    {
+     "el": "SECTION.group/panel relative overflow-hidden rounded-md border transit \"02 SVC 02 Custom AI Applicat\"",
+     "startMs": 115,
+     "endMs": 630,
+     "frames": 15,
+     "from": "0|translateY(12.9118px)",
+     "to": "1|none"
+    },
+    {
+     "el": "SECTION.group/panel relative overflow-hidden rounded-md border transit \"03 SVC 03 RAG · Chatbots · A\"",
+     "startMs": 115,
+     "endMs": 630,
+     "frames": 15,
+     "from": "0|translateY(12.9118px)",
+     "to": "1|none"
+    }
+   ]
+  },
+  "/achievements": {
+   "url": "https://www.nipun.space/achievements",
+   "waapiAndCss": [
+    {
+     "kind": "CSSTransition",
+     "name": "background-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "backgroundColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 85
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-bottom-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderBottomColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 85
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-left-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderLeftColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 85
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-right-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderRightColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 85
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-top-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderTopColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 85
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "box-shadow",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "boxShadow",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 85
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 80,
+     "delay": 0,
+     "easing": "ease-out",
+     "iter": 1,
+     "props": "transform",
+     "target": "SPAN. \"❯\"",
+     "firstSeenMs": 85
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-pulse",
+     "dur": 1800,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "rect.term-pulse \"\"",
+     "firstSeenMs": 85
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "transform",
+     "target": "DIV.group relative flex flex-col overflow-hidden rounded-md border tra \"2026 [ cohort 1 · 2026 ] Googl\"",
+     "firstSeenMs": 192
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-blink",
+     "dur": 1050,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "SPAN.term-caret \"_\"",
+     "firstSeenMs": 192
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "scroll-bob",
+     "dur": 1500,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "transform",
+     "target": "SPAN.scroll-bob text-[14px] \"▼\"",
+     "firstSeenMs": 192
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/achievements · certs and w\"",
+     "firstSeenMs": 192
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 70,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.group relative flex flex-col overflow-hidden rounded-md border tra \"2025 [ research · 2025 ] Paper\"",
+     "firstSeenMs": 192
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 140,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.group relative flex flex-col overflow-hidden rounded-md border tra \"2022→ [ builder · 2022→ ] 15+ \"",
+     "firstSeenMs": 192
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 210.00000000000003,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.group relative flex flex-col overflow-hidden rounded-md border tra \"school [ 2nd place · school ] \"",
+     "firstSeenMs": 192
+    }
+   ],
+   "inlineTweens": [
+    {
+     "el": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "startMs": 8,
+     "endMs": 8,
+     "frames": 3,
+     "from": "|",
+     "to": "|"
+    },
+    {
+     "el": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/achievements · certs and w\"",
+     "startMs": 116,
+     "endMs": 593,
+     "frames": 18,
+     "from": "0|translateY(-7.74159px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.mb-14 grid gap-px overflow-hidden rounded-md border sm:grid-cols-3 \"GPA 8.24 / 10 · B.E. AI & DS\"",
+     "startMs": 116,
+     "endMs": 593,
+     "frames": 18,
+     "from": "0|translateY(6.19327px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.group relative flex flex-col overflow-hidden rounded-md border tra \"2026 [ cohort 1 · 2026 ] Googl\"",
+     "startMs": 149,
+     "endMs": 660,
+     "frames": 20,
+     "from": "0|translateY(10.1605px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.group relative flex flex-col overflow-hidden rounded-md border tra \"2025 [ research · 2025 ] Paper\"",
+     "startMs": 207,
+     "endMs": 728,
+     "frames": 20,
+     "from": "0|translateY(11.2683px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.group relative flex flex-col overflow-hidden rounded-md border tra \"2022→ [ builder · 2022→ ] 15+ \"",
+     "startMs": 291,
+     "endMs": 789,
+     "frames": 19,
+     "from": "0|translateY(9.86454px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.group relative flex flex-col overflow-hidden rounded-md border tra \"school [ 2nd place · school ] \"",
+     "startMs": 342,
+     "endMs": 853,
+     "frames": 19,
+     "from": "0|translateY(11.799px)",
+     "to": "1|none"
+    }
+   ]
+  },
+  "/writing": {
+   "url": "https://www.nipun.space/writing",
+   "waapiAndCss": [
+    {
+     "kind": "CSSTransition",
+     "name": "background-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "backgroundColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 57
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-bottom-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderBottomColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 57
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-left-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderLeftColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 57
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-right-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderRightColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 57
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-top-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderTopColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 57
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "box-shadow",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "boxShadow",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 57
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 80,
+     "delay": 0,
+     "easing": "ease-out",
+     "iter": 1,
+     "props": "transform",
+     "target": "SPAN. \"❯\"",
+     "firstSeenMs": 57
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-pulse",
+     "dur": 1800,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "rect.term-pulse \"\"",
+     "firstSeenMs": 57
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "transform",
+     "target": "BUTTON.group relative mb-12 block w-full cursor-pointer overflow-hidde \"26' [ latest ] 18 Jun 2026 · 2\"",
+     "firstSeenMs": 161
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-blink",
+     "dur": 1050,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "SPAN.term-caret \"_\"",
+     "firstSeenMs": 161
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "scroll-bob",
+     "dur": 1500,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "transform",
+     "target": "SPAN.scroll-bob text-[14px] \"▼\"",
+     "firstSeenMs": 161
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/writing · notes and posts \"",
+     "firstSeenMs": 161
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 550,
+     "delay": 50,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "BUTTON.group relative mb-12 block w-full cursor-pointer overflow-hidde \"26' [ latest ] 18 Jun 2026 · 2\"",
+     "firstSeenMs": 161
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 450,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "BUTTON.group flex w-full cursor-pointer items-baseline gap-5 border-b  \"02 02 Jun 2026 · 2 min Why I'm\"",
+     "firstSeenMs": 161
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 450,
+     "delay": 60,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "BUTTON.group flex w-full cursor-pointer items-baseline gap-5 border-b  \"03 14 May 2026 · 2 min Giving \"",
+     "firstSeenMs": 161
+    }
+   ],
+   "inlineTweens": [
+    {
+     "el": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "startMs": 7,
+     "endMs": 7,
+     "frames": 3,
+     "from": "|",
+     "to": "|"
+    },
+    {
+     "el": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/writing · notes and posts \"",
+     "startMs": 101,
+     "endMs": 627,
+     "frames": 19,
+     "from": "0|translateY(-9.13969px)",
+     "to": "1|none"
+    },
+    {
+     "el": "BUTTON.group flex w-full cursor-pointer items-baseline gap-5 border-b  \"02 02 Jun 2026 · 2 min Why I'm\"",
+     "startMs": 116,
+     "endMs": 627,
+     "frames": 18,
+     "from": "0|translateX(-8.77224px)",
+     "to": "1|none"
+    },
+    {
+     "el": "BUTTON.group relative mb-12 block w-full cursor-pointer overflow-hidde \"26' [ latest ] 18 Jun 2026 · 2\"",
+     "startMs": 156,
+     "endMs": 729,
+     "frames": 19,
+     "from": "0|translateY(12.3753px)",
+     "to": "1|none"
+    },
+    {
+     "el": "BUTTON.group flex w-full cursor-pointer items-baseline gap-5 border-b  \"03 14 May 2026 · 2 min Giving \"",
+     "startMs": 180,
+     "endMs": 627,
+     "frames": 16,
+     "from": "0|translateX(-8.40173px)",
+     "to": "1|none"
+    }
+   ]
+  },
+  "/writing/rag-with-a-job": {
+   "url": "https://www.nipun.space/writing/rag-with-a-job",
+   "waapiAndCss": [
+    {
+     "kind": "CSSAnimation",
+     "name": "term-pulse",
+     "dur": 1800,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "KBD.term-pulse rounded border px-1.5 py-[1px] text-[12px] leading-none \"/\"",
+     "firstSeenMs": 16
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "scroll-bob",
+     "dur": 1500,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "transform",
+     "target": "SPAN.scroll-bob text-[14px] \"▼\"",
+     "firstSeenMs": 142
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "cmd-pop",
+     "dur": 950,
+     "delay": 0,
+     "easing": "linear",
+     "iter": 1,
+     "props": "boxShadow",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯ / to start\"",
+     "firstSeenMs": 142
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/writing/rag-with-a-job · r\"",
+     "firstSeenMs": 142
+    }
+   ],
+   "inlineTweens": [
+    {
+     "el": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/writing/rag-with-a-job · r\"",
+     "startMs": 24,
+     "endMs": 555,
+     "frames": 26,
+     "from": "0|translateY(-9.91965px)",
+     "to": "1|none"
+    },
+    {
+     "el": "ARTICLE.mx-auto w-full max-w-[720px] px-5 py-10 sm:px-8 \"← cd ~/writing 18 June 2026 · \"",
+     "startMs": 24,
+     "endMs": 555,
+     "frames": 26,
+     "from": "0|translateY(11.9036px)",
+     "to": "1|none"
+    }
+   ]
+  },
+  "/work/serenity": {
+   "url": "https://www.nipun.space/work/serenity",
+   "waapiAndCss": [
+    {
+     "kind": "CSSAnimation",
+     "name": "term-pulse",
+     "dur": 1800,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "rect.term-pulse \"\"",
+     "firstSeenMs": 16
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "dashdraw",
+     "dur": 500,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "strokeDashoffset",
+     "target": "path.react-flow__edge-path \"\"",
+     "firstSeenMs": 183
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "scroll-bob",
+     "dur": 1500,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "transform",
+     "target": "SPAN.scroll-bob text-[14px] \"▼\"",
+     "firstSeenMs": 183
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "cmd-pop",
+     "dur": 950,
+     "delay": 0,
+     "easing": "linear",
+     "iter": 1,
+     "props": "boxShadow",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯ / to start\"",
+     "firstSeenMs": 183
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/projects/serenity · Python\"",
+     "firstSeenMs": 183
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "background-color",
+     "dur": 150,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "backgroundColor",
+     "target": "DIV.flex items-start gap-3 rounded-md px-3 py-2 transition-colors \"1 User Input CheckIn · ChatC\"",
+     "firstSeenMs": 1022
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-bottom-color",
+     "dur": 150,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderBottomColor",
+     "target": "SPAN.mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded- \"1\"",
+     "firstSeenMs": 1022
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-left-color",
+     "dur": 150,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderLeftColor",
+     "target": "SPAN.mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded- \"1\"",
+     "firstSeenMs": 1022
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-right-color",
+     "dur": 150,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderRightColor",
+     "target": "SPAN.mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded- \"1\"",
+     "firstSeenMs": 1022
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-top-color",
+     "dur": 150,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderTopColor",
+     "target": "SPAN.mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded- \"1\"",
+     "firstSeenMs": 1022
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "color",
+     "dur": 150,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "color",
+     "target": "SPAN.mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded- \"1\"",
+     "firstSeenMs": 1022
+    }
+   ],
+   "inlineTweens": [
+    {
+     "el": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/projects/serenity · Python\"",
+     "startMs": 60,
+     "endMs": 560,
+     "frames": 11,
+     "from": "0|translateY(-7.58214px)",
+     "to": "1|none"
+    },
+    {
+     "el": "SPAN.mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded- \"1\"",
+     "startMs": 1001,
+     "endMs": 1001,
+     "frames": 3,
+     "from": "|",
+     "to": "|"
+    },
+    {
+     "el": "SPAN.mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded- \"2\"",
+     "startMs": 1001,
+     "endMs": 1001,
+     "frames": 3,
+     "from": "|",
+     "to": "|"
+    }
+   ]
+  },
+  "/contact": {
+   "url": "https://www.nipun.space/contact",
+   "waapiAndCss": [
+    {
+     "kind": "CSSTransition",
+     "name": "background-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "backgroundColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 68
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-bottom-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderBottomColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 68
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-left-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderLeftColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 68
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-right-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderRightColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 68
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-top-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderTopColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 68
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "box-shadow",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "boxShadow",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 68
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 80,
+     "delay": 0,
+     "easing": "ease-out",
+     "iter": 1,
+     "props": "transform",
+     "target": "SPAN. \"❯\"",
+     "firstSeenMs": 68
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-blink",
+     "dur": 1050,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "SPAN.term-caret \"_\"",
+     "firstSeenMs": 68
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/contact · open a channel ◉\"",
+     "firstSeenMs": 173
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 80,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "FORM.space-y-5 \"from: reply-to: body: :send\"",
+     "firstSeenMs": 173
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 160,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "ASIDE. \"$ channels --list email nipun\"",
+     "firstSeenMs": 173
+    }
+   ],
+   "inlineTweens": [
+    {
+     "el": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "startMs": 6,
+     "endMs": 6,
+     "frames": 3,
+     "from": "|",
+     "to": "|"
+    },
+    {
+     "el": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/contact · open a channel ◉\"",
+     "startMs": 90,
+     "endMs": 584,
+     "frames": 26,
+     "from": "0|translateY(-8.22045px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.mb-10 \"> compose --to nipun_ lands s\"",
+     "startMs": 90,
+     "endMs": 584,
+     "frames": 26,
+     "from": "0|translateY(8.22045px)",
+     "to": "1|none"
+    },
+    {
+     "el": "FORM.space-y-5 \"from: reply-to: body: :send\"",
+     "startMs": 158,
+     "endMs": 664,
+     "frames": 28,
+     "from": "0|translateY(9.13969px)",
+     "to": "1|none"
+    },
+    {
+     "el": "ASIDE. \"$ channels --list email nipun\"",
+     "startMs": 244,
+     "endMs": 731,
+     "frames": 29,
+     "from": "0|translateY(8.71866px)",
+     "to": "1|none"
+    }
+   ]
+  },
+  "/map": {
+   "url": "https://www.nipun.space/map",
+   "waapiAndCss": [
+    {
+     "kind": "CSSTransition",
+     "name": "background-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "backgroundColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-bottom-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderBottomColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-left-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderLeftColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-right-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderRightColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-top-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderTopColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "box-shadow",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "boxShadow",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-blink",
+     "dur": 1050,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "SPAN.term-caret \"_\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-pulse",
+     "dur": 1800,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "SPAN.term-pulse ml-1.5 \"●\"",
+     "firstSeenMs": 206
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 80,
+     "delay": 0,
+     "easing": "ease-out",
+     "iter": 1,
+     "props": "transform",
+     "target": "SPAN. \"❯\"",
+     "firstSeenMs": 312
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/map · site blueprint ◉ 20:\"",
+     "firstSeenMs": 312
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 450,
+     "delay": 100,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.absolute -translate-x-1/2 \"HOME ✓ terminal hero\"",
+     "firstSeenMs": 312
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 450,
+     "delay": 150.00000000000003,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.absolute -translate-x-1/2 \"WORK ✓ 11 modules\"",
+     "firstSeenMs": 312
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 450,
+     "delay": 200,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.absolute -translate-x-1/2 \"ABOUT ✓ system monitor\"",
+     "firstSeenMs": 312
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 450,
+     "delay": 250,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.absolute -translate-x-1/2 \"SKILLS ✓ radar\"",
+     "firstSeenMs": 312
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 450,
+     "delay": 300.00000000000006,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.absolute -translate-x-1/2 \"SERVICES ✓ for hire\"",
+     "firstSeenMs": 312
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 450,
+     "delay": 350,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.absolute -translate-x-1/2 \"WRITING ✓ 5 posts\"",
+     "firstSeenMs": 312
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 450,
+     "delay": 400,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.absolute -translate-x-1/2 \"ACHIEVEMENTS ✓ unlocked\"",
+     "firstSeenMs": 312
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 450,
+     "delay": 450.00000000000006,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.absolute -translate-x-1/2 \"OPEN SOURCE public code\"",
+     "firstSeenMs": 312
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 450,
+     "delay": 500,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.absolute -translate-x-1/2 \"CONTACT ✓ open a channel\"",
+     "firstSeenMs": 312
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 600,
+     "easing": "ease-out",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.absolute -translate-x-1/2 border px-4 py-2 text-center \"LUCBOT● daemon · answers from \"",
+     "firstSeenMs": 312
+    }
+   ],
+   "inlineTweens": [
+    {
+     "el": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "startMs": 7,
+     "endMs": 7,
+     "frames": 3,
+     "from": "|",
+     "to": "|"
+    },
+    {
+     "el": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/map · site blueprint ◉ 20:\"",
+     "startMs": 212,
+     "endMs": 712,
+     "frames": 29,
+     "from": "0|translateY(-9.6597px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.absolute -translate-x-1/2 \"HOME ✓ terminal hero\"",
+     "startMs": 325,
+     "endMs": 758,
+     "frames": 27,
+     "from": "0|translateY(6.64861px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.absolute -translate-x-1/2 \"WORK ✓ 11 modules\"",
+     "startMs": 366,
+     "endMs": 808,
+     "frames": 28,
+     "from": "0|translateY(7.38928px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.absolute -translate-x-1/2 \"ABOUT ✓ system monitor\"",
+     "startMs": 437,
+     "endMs": 858,
+     "frames": 28,
+     "from": "0|translateY(5.79695px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.absolute -translate-x-1/2 \"SKILLS ✓ radar\"",
+     "startMs": 462,
+     "endMs": 908,
+     "frames": 29,
+     "from": "0|translateY(7.61381px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.absolute -translate-x-1/2 \"SERVICES ✓ for hire\"",
+     "startMs": 508,
+     "endMs": 958,
+     "frames": 29,
+     "from": "0|translateY(7.92407px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.absolute -translate-x-1/2 \"WRITING ✓ 5 posts\"",
+     "startMs": 559,
+     "endMs": 1008,
+     "frames": 29,
+     "from": "0|translateY(7.84284px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.absolute -translate-x-1/2 \"ACHIEVEMENTS ✓ unlocked\"",
+     "startMs": 610,
+     "endMs": 1058,
+     "frames": 29,
+     "from": "0|translateY(7.77365px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.absolute -translate-x-1/2 \"OPEN SOURCE public code\"",
+     "startMs": 658,
+     "endMs": 1108,
+     "frames": 29,
+     "from": "0|translateY(7.92407px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.absolute -translate-x-1/2 \"CONTACT ✓ open a channel\"",
+     "startMs": 712,
+     "endMs": 1163,
+     "frames": 29,
+     "from": "0|translateY(7.61381px)",
+     "to": "1|none"
+    }
+   ]
+  },
+  "/opensource": {
+   "url": "https://www.nipun.space/opensource",
+   "waapiAndCss": [
+    {
+     "kind": "CSSTransition",
+     "name": "background-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "backgroundColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 75
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-bottom-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderBottomColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 75
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-left-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderLeftColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 75
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-right-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderRightColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 75
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-top-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderTopColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 75
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "box-shadow",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "boxShadow",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 75
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 80,
+     "delay": 0,
+     "easing": "ease-out",
+     "iter": 1,
+     "props": "transform",
+     "target": "SPAN. \"❯\"",
+     "firstSeenMs": 75
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-blink",
+     "dur": 1050,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "SPAN.term-caret \"_\"",
+     "firstSeenMs": 75
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "transform",
+     "target": "A.group relative block overflow-hidden rounded-md border px-7 py-7 tra \"[ mcp server ] GodProfile An \"",
+     "firstSeenMs": 180
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/opensource · public code ◉\"",
+     "firstSeenMs": 181
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 500,
+     "delay": 80,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "A.group relative block overflow-hidden rounded-md border px-7 py-7 tra \"[ learning resource ] learning\"",
+     "firstSeenMs": 181
+    }
+   ],
+   "inlineTweens": [
+    {
+     "el": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "startMs": 13,
+     "endMs": 13,
+     "frames": 3,
+     "from": "|",
+     "to": "|"
+    },
+    {
+     "el": "HEADER.relative z-50 flex shrink-0 items-baseline justify-between px-4 \"✶ ~/opensource · public code ◉\"",
+     "startMs": 92,
+     "endMs": 586,
+     "frames": 23,
+     "from": "0|translateY(-8.46711px)",
+     "to": "1|none"
+    },
+    {
+     "el": "A.group relative block overflow-hidden rounded-md border px-7 py-7 tra \"[ mcp server ] GodProfile An \"",
+     "startMs": 92,
+     "endMs": 586,
+     "frames": 23,
+     "from": "0|translateY(10.5589px)",
+     "to": "1|none"
+    },
+    {
+     "el": "A.group relative block overflow-hidden rounded-md border px-7 py-7 tra \"[ learning resource ] learning\"",
+     "startMs": 172,
+     "endMs": 673,
+     "frames": 22,
+     "from": "0|translateY(10.5589px)",
+     "to": "1|none"
+    }
+   ]
+  },
+  "/": {
+   "url": "https://www.nipun.space/",
+   "waapiAndCss": [
+    {
+     "kind": "CSSTransition",
+     "name": "background-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "backgroundColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 41
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-bottom-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderBottomColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 41
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-left-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderLeftColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 41
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-right-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderRightColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 41
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "border-top-color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "borderTopColor",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 41
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "box-shadow",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "boxShadow",
+     "target": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "firstSeenMs": 41
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 80,
+     "delay": 0,
+     "easing": "ease-out",
+     "iter": 1,
+     "props": "transform",
+     "target": "SPAN. \"❯\"",
+     "firstSeenMs": 41
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-blink",
+     "dur": 1050,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "SPAN.term-caret \"_\"",
+     "firstSeenMs": 41
+    },
+    {
+     "kind": "CSSAnimation",
+     "name": "term-pulse",
+     "dur": 1800,
+     "delay": 0,
+     "easing": "linear",
+     "iter": null,
+     "props": "opacity",
+     "target": "SPAN.term-pulse ml-1.5 \"●\"",
+     "firstSeenMs": 41
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "opacity",
+     "dur": 350,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "LI.absolute left-1/2 top-1/2 \"skills\"",
+     "firstSeenMs": 170
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "transform",
+     "dur": 450,
+     "delay": 0,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "transform",
+     "target": "LI.absolute left-1/2 top-1/2 \"skills\"",
+     "firstSeenMs": 170
+    },
+    {
+     "kind": "CSSTransition",
+     "name": "color",
+     "dur": 200,
+     "delay": 0,
+     "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+     "iter": 1,
+     "props": "color",
+     "target": "BUTTON.relative block whitespace-nowrap px-3 py-1 text-center outline- \"skills\"",
+     "firstSeenMs": 170
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 550,
+     "delay": 40,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "HEADER.absolute inset-x-0 top-0 z-50 flex items-center justify-between \"✶ welcome to nipun.os · portfo\"",
+     "firstSeenMs": 170
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 550,
+     "delay": 140,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.select-none \"\"",
+     "firstSeenMs": 170
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 550,
+     "delay": 400,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.mt-10 flex items-start gap-2 \"› AI engineer building produc\"",
+     "firstSeenMs": 170
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 550,
+     "delay": 480,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.mt-8 h-px w-full max-w-[52ch] \"\"",
+     "firstSeenMs": 170
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 550,
+     "delay": 520,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.mt-7 grid shrink-0 grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-4 \"PROJECTS SHIPPED 12+ AI APPL\"",
+     "firstSeenMs": 170
+    },
+    {
+     "kind": "Animation",
+     "name": "",
+     "dur": 550,
+     "delay": 300,
+     "easing": "cubic-bezier(0.23, 1, 0.32, 1)",
+     "iter": 1,
+     "props": "opacity",
+     "target": "DIV.relative hidden min-h-0 flex-col overflow-hidden pb-16 pl-3 pr-0 p \"SYSTEM CPU 18% MEM 24% DISK 3\"",
+     "firstSeenMs": 170
+    }
+   ],
+   "inlineTweens": [
+    {
+     "el": "DIV.flex min-w-0 flex-1 cursor-text items-center gap-2 rounded-md bord \"❯\"",
+     "startMs": 6,
+     "endMs": 6,
+     "frames": 3,
+     "from": "|",
+     "to": "|"
+    },
+    {
+     "el": "BUTTON.relative block whitespace-nowrap px-3 py-1 text-center outline- \"skills\"",
+     "startMs": 81,
+     "endMs": 81,
+     "frames": 4,
+     "from": "|",
+     "to": "|"
+    },
+    {
+     "el": "BUTTON.relative block whitespace-nowrap px-3 py-1 text-center outline- \"home\"",
+     "startMs": 81,
+     "endMs": 81,
+     "frames": 4,
+     "from": "|",
+     "to": "|"
+    },
+    {
+     "el": "LI.absolute left-1/2 top-1/2 \"work\"",
+     "startMs": 81,
+     "endMs": 81,
+     "frames": 3,
+     "from": "0.52|translate(-50%, calc(-50% + 92px)) translateZ(-96px) rotateX(-40deg)",
+     "to": "0.52|translate(-50%, calc(-50% + 92px)) translateZ(-96px) rotateX(-40deg)"
+    },
+    {
+     "el": "LI.absolute left-1/2 top-1/2 \"about\"",
+     "startMs": 81,
+     "endMs": 81,
+     "frames": 3,
+     "from": "0|translate(-50%, calc(-50% - 138px)) translateZ(-144px) rotateX(60deg)",
+     "to": "0|translate(-50%, calc(-50% - 138px)) translateZ(-144px) rotateX(60deg)"
+    },
+    {
+     "el": "HEADER.absolute inset-x-0 top-0 z-50 flex items-center justify-between \"✶ welcome to nipun.os · portfo\"",
+     "startMs": 196,
+     "endMs": 714,
+     "frames": 21,
+     "from": "0|translateY(6.69451px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.select-none \"\"",
+     "startMs": 223,
+     "endMs": 806,
+     "frames": 23,
+     "from": "0|translateY(13.5637px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.relative hidden min-h-0 flex-col overflow-hidden pb-16 pl-3 pr-0 p \"SYSTEM CPU 18% MEM 24% DISK 3\"",
+     "startMs": 398,
+     "endMs": 937,
+     "frames": 21,
+     "from": "0|translateY(12.057px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.mt-10 flex items-start gap-2 \"› AI engineer building produc\"",
+     "startMs": 494,
+     "endMs": 1041,
+     "frames": 22,
+     "from": "0|translateY(12.47px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.mt-8 h-px w-full max-w-[52ch] \"\"",
+     "startMs": 563,
+     "endMs": 1115,
+     "frames": 24,
+     "from": "0|translateY(13.5637px)",
+     "to": "1|none"
+    },
+    {
+     "el": "DIV.mt-7 grid shrink-0 grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-4 \"PROJECTS SHIPPED 12+ AI APPL\"",
+     "startMs": 619,
+     "endMs": 1171,
+     "frames": 24,
+     "from": "0|translateY(11.946px)",
+     "to": "1|none"
+    }
+   ]
+  }
+ },
+ "css": {
+  "keyframes": [
+   "dashdraw",
+   "term-blink",
+   "term-pulse",
+   "term-scan",
+   "spin-bd",
+   "mapdash",
+   "ring-spin",
+   "kick-l",
+   "kick-r",
+   "net-pulse",
+   "rainbow-slide",
+   "shimmer",
+   "aurora-shift-1",
+   "aurora-shift-2",
+   "marquee-scroll",
+   "cmd-pop",
+   "scroll-bob"
+  ],
+  "animationRules": []
+ },
+ "checks": [
+  "wheel nav keys: start=home; ArrowDown after clicking page=home; ArrowDown with pointer over nav=home; ArrowDown with nav focused=home; activeElement=BODY.",
+  "wheel nav listeners: <nav aria-label=\"Site navigation\" class=\"fixed left-1/2 top-[40%] z-40 hidden -translate-x-1/2 -translate-y-1/2 select-none lg:block\" style=\"opacity: 1; transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1);\"><div aria-hidden=\"true\" class=\"pointer-events-none absolute left-1/2 top-1/2 -translate-x",
+  "ERR hover sound: TimeoutError: locator.hover: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('h3').filter({ hasText: 'Pragati' }).first()\u001b[22m\n\u001b[2m    - locator resolved to <h3 class=\"mt-1 text-lg\">Pr",
+  "universe link: href=https://uni-verse.co.in target=_blank; DOM nodes 1814 -> 1814; popover text: › | AI engineer building production AI systems and the full-stack around them. | Currently building  | Uni-Verse | , an on-the-record platform for college life. | PROJECTS SHIPPED | 12+ | AI APPLICATIONS | 8+ | CURRENT | Uni-Verse | YEARS CODING | 4+",
+  "mind-map node FULL-STACK: P.mb-2 text-xs tracking-[0.16em] cursor=grab transform=; drag (1046,654) -> (906,729)",
+  "edge scroll: headless rAF=43 fps; pointer at x=1435 (outer 1%): 198 px/s; pointer at x=1300 (inside the 10% zone edge): 0 px/s"
+ ]
+}
