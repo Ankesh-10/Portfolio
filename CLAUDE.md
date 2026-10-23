@@ -30,7 +30,7 @@ Phases 1–2 and Phase 3 (commands) are built; the rest follows spec §15. Place
 
 ## Gotchas
 
-- **Fonts:** the Google Fonts / Fontsource *latin* subset of JetBrains Mono has no box-drawing glyphs (`┌─┐│█╗`). Self-host the full `JetBrainsMono-*.woff2` from the official release, or the figlet name and box art break.
+- **Fonts:** the Google Fonts / Fontsource _latin_ subset of JetBrains Mono has no box-drawing glyphs (`┌─┐│█╗`). Self-host the full `JetBrainsMono-*.woff2` from the official release, or the figlet name and box art break.
 - **Figlet art** (ANSI Shadow font) is pre-generated into `src/content/figlet.ts`; there is no runtime figlet dependency. Multi-row art counts as one buffer line (one gutter number).
 - **CSS class names:** generic names like `.pl`, `.cur` or `.c` collided during mockups and broke layout. Use component-scoped styles or Tailwind.
 - Every animation needs a `prefers-reduced-motion` path (spec §9).
