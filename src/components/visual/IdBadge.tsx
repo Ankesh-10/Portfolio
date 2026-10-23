@@ -118,7 +118,9 @@ export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto, delay = 0 }: Ba
       style={{ transformOrigin: "50% 0" }}
       // Drops in tilted and swings to rest straight (0°).
       initial={reduce ? { opacity: 0 } : { y: "-110vh", rotate: 14 }}
-      animate={reduce ? { opacity: 1 } : { y: 0, rotate: 0 }}
+      // Reduced motion still resets y/rotate: the server renders the drop's start position before
+      // the browser knows the preference, so only fading opacity would leave the badge off-screen.
+      animate={reduce ? { opacity: 1, y: 0, rotate: 0 } : { y: 0, rotate: 0 }}
       // Retract: 400ms when leaving for a tab visited for the first time, 240ms for a return visit.
       // AnimatePresence passes the destination's visit as `custom`.
       variants={{
@@ -133,7 +135,7 @@ export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto, delay = 0 }: Ba
       exit="gone"
       transition={
         reduce
-          ? { duration: 0.15 }
+          ? { duration: 0.15, y: { duration: 0 }, rotate: { duration: 0 } }
           : {
               y: { type: "spring", stiffness: 120, damping: 9, mass: 1, delay },
               rotate: { type: "spring", stiffness: 45, damping: 3.2, mass: 1, delay },

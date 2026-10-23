@@ -828,7 +828,7 @@ Every failure keeps the terminal voice, says what happened in plain words, and o
 
 Fill these in before or during the build. Placeholders are used until then.
 
-- [ ] **Photo:** black-and-white, head-and-shoulders, 4:5 crop, plain background, high contrast (min 800×1000px)
+- [x] **Photo:** black-and-white, head-and-shoulders, 4:5 crop, plain background, high contrast (min 800×1000px). `public/images/me-bw.jpg`, made with `scripts/bw-photo.py` (white backdrop → card tone)
 - [ ] **2–4 extra photos** for the About stack (workspace, events), B&W or convertible
 - [ ] **Tagline** (one line) + intro (2 lines)
 - [ ] **About** text (2–3 short paragraphs) + "now" line
