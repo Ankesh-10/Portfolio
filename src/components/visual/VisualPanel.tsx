@@ -199,7 +199,7 @@ function IdBadgeSlot({
   delay: number;
 }) {
   return (
-    <div className="absolute inset-x-0 top-0 [--badge-w:296px] [--photo-h:370px] [--rest-offset:clamp(96px,14vh,160px)] max-[1279px]:[--badge-w:272px] max-[1279px]:[--photo-h:300px] [@media(max-height:820px)]:[--badge-w:252px] [@media(max-height:820px)]:[--photo-h:200px]">
+    <div className="absolute inset-x-0 top-0 [--badge-w:296px] [--rest-offset:clamp(96px,14vh,160px)] max-[1279px]:[--badge-w:272px] [@media(max-height:820px)]:[--badge-w:252px]">
       <IdBadge {...props} hasPhoto={photo} />
       {showHint && (
         <p className="m-0 mt-4 px-6 text-[length:var(--fs-ui)] text-t3">

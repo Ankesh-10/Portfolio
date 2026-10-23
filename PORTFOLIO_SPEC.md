@@ -127,7 +127,7 @@ Four readable steps on a 4px rhythm: lead → body ×1.33, body → ui ×1.25. L
 
 - Base unit: **4px**. Every line height and block gap is a multiple of 4px; body lines are 24px.
 - Terminal window: margin `24px` (top/right/bottom), radius `12px`. Every spacing value is on the 4px grid.
-- ID card: radius `14px`, width `296px`.
+- ID card: radius `14px`, width `296px`, CR80 proportions (1 : 1.586).
 - Z-index: background `0` → visual area `10` → terminal `20` → command palette `40` → modals/lightbox/badge sheet `50`.
 
 ---
@@ -245,9 +245,9 @@ A physical-feeling, monochrome tech badge that hangs from the top edge of the sc
 - Links (`github.com/ankesh-10`, socials) are ordinary `<a>` elements, never inside a button. The hidden face is `inert`.
 
 **Behavior**
-- **Entrance:** drops in from above the viewport (spring: stiffness 120, damping 9), overshoots, then swings and settles at about −3°.
-- **Idle:** slow pendulum sway of ±0.6° over about 6s, plus a subtle tilt toward the cursor (max 4°). Both stop when `‖ motion` is off.
-- **Drag:** grab and pull it (Motion `drag`, constrained). On release it springs back and swings.
+- **Entrance:** drops in from above the viewport (spring: stiffness 120, damping 9) tilted 14°, and swings back and forth on a looser spring (stiffness 45, damping 3.2) until it hangs straight at 0°.
+- **Idle:** pendulum sway of ±1.5° over about 5s, plus a tilt toward the cursor (max 4°) on a lightly damped spring, so it overshoots and settles like a badge on a lanyard. Both stop when `‖ motion` is off.
+- **Drag:** grab and pull it (Motion `drag`, elastic 0.4). Pulling sideways swings the card (up to 16°); on release it springs back and keeps swinging until it settles.
 - **Hint:** on desktop home, a comment line `# drag me · ↻ flip` in `--text-3` sits at the bottom-left of the visual area (readable, not yellow: it is an instruction, not a control). It disappears after the first drag or flip and doesn't return in the session.
 - **Click:** 3D flip (`rotateY` 180°, 600ms) between front and back, via `↻ flip`, Enter/Space on it, or a pointer click anywhere on the card surface that isn't a link. A pointer gesture that moved more than 4px between `pointerdown` and `pointerup` is a drag, never a flip.
 - **Tab change away:** the lanyard retracts upward and pulls the card off-screen (400ms on a first-visit tab change, 240ms on a return-visit change, see §9); the new visual fades in. Coming back, the badge drops in again with the same spring (§9 lists every entrance and exit). Between home and contact the badge stays and flips in place instead.
@@ -255,8 +255,9 @@ A physical-feeling, monochrome tech badge that hangs from the top edge of the sc
 
 **Geometry**
 - **Rest position:** the lanyard hangs from the top edge of the viewport. The card's top edge rests at `clamp(96px, 14vh, 160px)`.
-- **Drop:** starts with the whole badge above the viewport (translateY = −(rest offset + card height + 24px)). The spring stays at stiffness 120, damping 9, mass 1: ζ ≈ 0.41, about 24% overshoot peaking at ~310ms, settling to 2% in ~0.87s.
-- **Vertical fit:** the card plus its rest offset must fit within the viewport minus 64px. Below that (short laptop screens), the card switches to its **compact layout**: width 252px, photo 160×200, the same 11px+ text sizes, never a transform scale. The overshoot may briefly pass the bottom edge.
+- **Drop:** starts with the whole badge above the viewport (translateY = −(rest offset + card height + 24px)). The vertical spring stays at stiffness 120, damping 9, mass 1: ζ ≈ 0.41, about 24% overshoot peaking at ~310ms, settling to 2% in ~0.87s. The swing (rotation) settles in about 1.8s and is decorative, exempt from budgets.
+- **Proportions:** a standard ID card (CR80, 54 × 85.6 mm) held upright, 1 : 1.586, on both faces (296 × 469px at the default width). The photo stays 4:5 and takes whatever height the text leaves. On the back the QR sits beside the links so the back fits the same card.
+- **Vertical fit:** the card plus its rest offset must fit within the viewport minus 64px. Below that (short laptop screens), the card switches to its **compact layout**: width 252px (≈ 400px tall), the same 11px+ text sizes, never a transform scale. The overshoot may briefly pass the bottom edge.
 - **Clipping:** the visual area is `overflow: clip`, so the overshoot never draws over the terminal.
 - **Drag hint:** the `# drag me · ↻ flip` hint sits 16px below the card's rest position and moves with the layout, never under the card.
 

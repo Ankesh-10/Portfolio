@@ -74,7 +74,9 @@ export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto, delay = 0 }: Ba
   // Subtle tilt toward the cursor, max 4° (spec §6.1). A motion value, so moving the pointer never
   // re-renders React. Stops with ‖ motion and under reduced motion.
   const tiltTarget = useMotionValue(0);
-  const tilt = useSpring(tiltTarget, { stiffness: 60, damping: 14 });
+  // Low damping: the card overshoots and swings back a few times, like a badge on a lanyard.
+  const tilt = useSpring(tiltTarget, { stiffness: 55, damping: 5 });
+  const dragging = useRef(false);
   useEffect(() => {
     if (still) {
       tiltTarget.set(0);
@@ -82,6 +84,7 @@ export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto, delay = 0 }: Ba
     }
     let raf = 0;
     const on = (e: PointerEvent) => {
+      if (dragging.current) return;
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const r = card.current?.getBoundingClientRect();
@@ -113,8 +116,9 @@ export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto, delay = 0 }: Ba
     <motion.div
       className="relative mx-auto flex w-[var(--badge-w)] flex-col items-center"
       style={{ transformOrigin: "50% 0" }}
-      initial={reduce ? { opacity: 0 } : { y: "-110vh", rotate: 0 }}
-      animate={reduce ? { opacity: 1 } : { y: 0, rotate: -3 }}
+      // Drops in tilted and swings to rest straight (0°).
+      initial={reduce ? { opacity: 0 } : { y: "-110vh", rotate: 14 }}
+      animate={reduce ? { opacity: 1 } : { y: 0, rotate: 0 }}
       // Retract: 400ms when leaving for a tab visited for the first time, 240ms for a return visit.
       // AnimatePresence passes the destination's visit as `custom`.
       variants={{
@@ -128,24 +132,39 @@ export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto, delay = 0 }: Ba
       }}
       exit="gone"
       transition={
-        reduce ? { duration: 0.15 } : { type: "spring", stiffness: 120, damping: 9, mass: 1, delay }
+        reduce
+          ? { duration: 0.15 }
+          : {
+              y: { type: "spring", stiffness: 120, damping: 9, mass: 1, delay },
+              rotate: { type: "spring", stiffness: 45, damping: 3.2, mass: 1, delay },
+            }
       }
       drag={!reduce}
       dragSnapToOrigin
       onDragStart={onDrag}
-      dragElastic={0.25}
+      dragElastic={0.4}
       dragMomentum={false}
+      // Dragging sideways swings the card; on release it springs back and keeps swinging.
+      onDrag={(_, info) => {
+        if (still) return;
+        dragging.current = true;
+        tiltTarget.set(Math.max(-16, Math.min(16, -info.offset.x / 9)));
+      }}
+      onDragEnd={() => {
+        dragging.current = false;
+        tiltTarget.set(0);
+      }}
     >
-      {/* sway: idle pendulum ±0.6° over ~6s, plus the cursor tilt; both stop with ‖ motion */}
+      {/* sway: idle pendulum ±1.5° over ~5s, plus the cursor tilt; both stop with ‖ motion */}
       <motion.div
         ref={card}
         className="flex w-full flex-col items-center"
         style={{ transformOrigin: "50% 0", rotateZ: tilt }}
-        animate={still ? { rotate: 0 } : { rotate: [-0.6, 0.6] }}
+        animate={still ? { rotate: 0 } : { rotate: [-1.5, 1.5] }}
         transition={
           still
             ? { duration: 0.2 }
-            : { duration: 3, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }
+            : { duration: 2.5, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }
         }
       >
         {/* lanyard + clip */}
@@ -188,7 +207,8 @@ export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto, delay = 0 }: Ba
             {/* FRONT */}
             <div
               inert={flipped}
-              className="badge-face relative flex flex-col gap-3 rounded-[14px] border border-line3 p-4"
+              // Standard ID card (CR80, 54 × 85.6 mm) held upright: 1 : 1.586.
+              className="badge-face relative flex aspect-[54/85.6] flex-col gap-2 rounded-[14px] border border-line3 p-4"
               style={{
                 background: "var(--card)",
                 backfaceVisibility: "hidden",
@@ -204,49 +224,49 @@ export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto, delay = 0 }: Ba
                 className="mx-auto -mt-1 h-1.5 w-12 rounded-full bg-bg ring-1 ring-line3"
               />
               <Header />
-              <div
-                className="relative w-full overflow-hidden rounded-sm border border-line3 bg-[#0a0a0a]"
-                style={{ height: "var(--photo-h)" }}
-              >
-                {photo && (
-                  <Image
-                    src={profile.photo}
-                    alt={`${profile.firstName} ${profile.lastName}`}
-                    fill
-                    priority
-                    sizes="296px"
-                    className="object-cover"
-                    style={{ filter: "grayscale(1) contrast(1.1)" }}
+              {/* the photo takes the height the text leaves, always at 4:5 */}
+              <div className="flex min-h-0 flex-1 justify-center">
+                <div className="relative aspect-[4/5] h-full overflow-hidden rounded-sm border border-line3 bg-[#0a0a0a]">
+                  {photo && (
+                    <Image
+                      src={profile.photo}
+                      alt={`${profile.firstName} ${profile.lastName}`}
+                      fill
+                      priority
+                      sizes="296px"
+                      className="object-cover"
+                      style={{ filter: "grayscale(1) contrast(1.1)" }}
+                    />
+                  )}
+                  <div
+                    aria-hidden
+                    className="absolute inset-0"
+                    style={{
+                      backgroundImage:
+                        "repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 3px)",
+                    }}
                   />
-                )}
-                <div
-                  aria-hidden
-                  className="absolute inset-0"
-                  style={{
-                    backgroundImage:
-                      "repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 3px)",
-                  }}
-                />
-                {!photo && (
+                  {!photo && (
+                    <span
+                      aria-hidden
+                      className="absolute inset-0 flex items-center justify-center text-6xl font-bold text-[#1a1a1a]"
+                    >
+                      AJ
+                    </span>
+                  )}
                   <span
                     aria-hidden
-                    className="absolute inset-0 flex items-center justify-center text-6xl font-bold text-[#1a1a1a]"
+                    className="absolute left-2 top-1.5 text-[length:var(--fs-micro)] tracking-[.12em] text-t4"
                   >
-                    AJ
+                    IMG_0001.RAW
                   </span>
-                )}
-                <span
-                  aria-hidden
-                  className="absolute left-2 top-1.5 text-[length:var(--fs-micro)] tracking-[.12em] text-t4"
-                >
-                  IMG_0001.RAW
-                </span>
-                <span
-                  aria-hidden
-                  className="absolute bottom-1.5 right-2 text-[length:var(--fs-micro)] tracking-[.12em] text-t4"
-                >
-                  B/W · 4:5
-                </span>
+                  <span
+                    aria-hidden
+                    className="absolute bottom-1.5 right-2 text-[length:var(--fs-micro)] tracking-[.12em] text-t4"
+                  >
+                    B/W · 4:5
+                  </span>
+                </div>
               </div>
               <div>
                 <p className="m-0 text-[length:var(--fs-lead)] font-bold leading-7 text-t1">
@@ -316,7 +336,7 @@ export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto, delay = 0 }: Ba
             {/* BACK */}
             <div
               inert={!flipped}
-              className="badge-face absolute inset-0 flex flex-col gap-3 rounded-[14px] border border-line3 p-4"
+              className="badge-face absolute inset-0 flex flex-col gap-2 rounded-[14px] border border-line3 p-4"
               style={{
                 background: "var(--card)",
                 backfaceVisibility: "hidden",
@@ -342,31 +362,32 @@ export function IdBadge({ flipped, onFlip, onDrag, qr, hasPhoto, delay = 0 }: Ba
                   </li>
                 ))}
               </ul>
-              <ul className="m-0 list-none p-0 text-[length:var(--fs-ui)] leading-5">
-                {links.map((l) => (
-                  <li key={l.label}>
-                    <span aria-hidden className="text-t4">
-                      →{" "}
-                    </span>
-                    <a
-                      className="slink"
-                      href={l.href}
-                      {...(l.kind === "resume"
-                        ? { download: true }
-                        : l.href.startsWith("http")
-                          ? { target: "_blank", rel: "noopener noreferrer" }
-                          : {})}
-                    >
-                      {l.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-              <div className="relative mt-auto flex items-end justify-center">
+              {/* QR beside the links, so the back fits the same ID-card proportions as the front */}
+              <div className="relative mt-auto flex items-end gap-3 pr-8">
                 <Qr
                   modules={qr}
                   label={`QR code linking to ${github.href.replace("https://", "")}`}
                 />
+                <ul className="m-0 min-w-0 list-none p-0 text-[length:var(--fs-ui)] leading-5">
+                  {links.map((l) => (
+                    <li key={l.label}>
+                      <span aria-hidden className="text-t4">
+                        →{" "}
+                      </span>
+                      <a
+                        className="slink"
+                        href={l.href}
+                        {...(l.kind === "resume"
+                          ? { download: true }
+                          : l.href.startsWith("http")
+                            ? { target: "_blank", rel: "noopener noreferrer" }
+                            : {})}
+                      >
+                        {l.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
                 <FlipButton flipped={flipped} onFlip={onFlip} />
               </div>
             </div>
