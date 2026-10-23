@@ -163,7 +163,7 @@ Four readable steps on a 4px rhythm: lead → body ×1.33, body → ui ×1.25. L
 1. **Title bar** (36px): three dim window dots (decorative) · centered `ankesh@portfolio: ~/<tab> — tmux` in `--text-3` · on the right a persistent **`↓ resume.pdf`** action (yellow, always visible on every tab, one click to download, feedback in §8 `resume`).
 2. **Buffer** (flex): vim-style gutter (48px, right-aligned line numbers, `aria-hidden`) + content.
 3. **Vim status line** (28px): `NORMAL` mode block · file name (`~/home.md`) · spacer · real build info shown as `main@a3f9c21 · 2h ago`. The commit SHA and deploy time are injected at build from Vercel env vars, and the SHA links to the commit on GitHub. The time is a `<time datetime="…">`: the server renders the absolute date (`2025-10-23`), and the client converts it to relative time and refreshes it every minute, so it never goes stale; `title` gives the full timestamp. Then `line:col` (the buffer's top visible line, i.e. the real scroll position) · `All/Top/Bot` (also from scroll position). Every field is either real or removed.
-4. **Command line** (32px): `:` + yellow block cursor; hint on the right in `--text-3`: `click a tab below · help · / commands`, where `help` (runs `help`) and `/ commands` (opens the palette) are secondary-link buttons.
+4. **Command line** (32px): `:` + yellow block cursor; hint on the right in `--text-3`: `click a tab below · help · / commands`, where `help` (runs `help`) and `/ commands` (types `/` into the command line, listing every command) are secondary-link buttons.
 5. **tmux status bar** (32px, tabs are 32px-tall hit targets): tabs (left-anchored) · spacer · `● open to work` · `‖ motion` pause toggle · live clock `14:22 IST`. There is no `[ankesh]` session label; the title bar already names the session.
 
 **Tabs read as navigation at rest, not only on hover.**
@@ -268,7 +268,7 @@ Owns the window chrome and composes, in DOM order, `<TitleBar />` (`<header>`), 
 - Gutter: right-aligned line numbers in `--text-5`; the line that holds the latest output's prompt is in `--text-3` (brighter, not yellow: it isn't interactive).
 - Multi-row ASCII art counts as **one** logical line (a single gutter number).
 - After the last line, fill the remaining height with `~` rows in `--text-6`.
-- **One cursor at a time.** While output is printing, a `--text-1` block cursor rides at the buffer's write position (§9 "Terminal text appearance"). When printing finishes it returns to the command line. Whichever text field has focus (command line, palette search, a mail-form field) shows the cursor in yellow; no other cursor is visible.
+- **One cursor at a time.** While output is printing, a `--text-1` block cursor rides at the buffer's write position (§9 "Terminal text appearance"). When printing finishes it returns to the command line. Whichever text field has focus (command line, a mail-form field) shows the cursor in yellow; no other cursor is visible.
 - Scrolls inside the window when content overflows. The tmux tabs and status lines stay fixed.
 
 ### 6.4 `<Prompt />`
@@ -301,15 +301,19 @@ Owns the window chrome and composes, in DOM order, `<TitleBar />` (`<header>`), 
 
 ### 6.6 `<VimStatusLine />`, `<CommandLine />`, `<TmuxBar />`
 - Status line updates file name (`~/projects.md`), `line:col` and position as content changes. Build info is static per deploy.
-- The command line is the main text input; the others are the palette's search field (§6.8) and the mail form's real fields (§7.5). Focus it with `:` or by clicking it. Cursor rules are in §6.3.
+- The command line is the main text input; the others are the mail form's real fields (§7.5). Its suggestion list (§6.8) is the palette. Focus it with `:` or by clicking it. Cursor rules are in §6.3.
 - The tmux bar tabs are links (see §4 "Tabs read as navigation"). The clock updates every minute and is `aria-hidden` (decorative).
 - `‖ motion` toggles all continuous motion (background scroll, cursor blink, badge idle sway, cursor tilt and device tilt) off/on; state persists in `localStorage`. It is a real `<button aria-pressed>`.
 
 ### 6.7 `<VisualPanel />`
 Swaps the left visual per tab with `AnimatePresence` (see §7 and the timeline in §9). All visuals stay monochrome to match the badge.
 
-### 6.8 `<CommandPalette />`
-Opens on `/` (when no text field is focused) and from the `/ commands` hint: a small floating list above the command line with fuzzy-matched commands, tabs, projects and certs, navigated with ↑/↓, Enter to run, Esc to close. Shows at most 8 results; with an empty query it shows the 6 tabs plus `resume` and `help`, each with a one-line plain-English description (`projects — things I've built`). Built as an ARIA combobox (`role="combobox"` input + `role="listbox"` results, `aria-activedescendant`). The highlighted row has a yellow left bar and `--text-1` text.
+### 6.8 Command suggestions (the command line is its own palette)
+As the visitor types in the command line, matching commands appear in a small list directly above it. There is no separate palette field.
+- `/` (the key when no text field is focused, or the `/ commands` hint) puts `/` in the command line and lists every command: the 6 tabs, `resume`, `help`, then projects, certs and the rest. Typing after the slash filters fuzzily (`/pro` → `/projects`, `/open project-name`, …). Each row has a one-line plain-English description.
+- Without a slash, typing completes command names and their arguments (`wh` → `whoami`, `cd ` → `cd about`, `cd projects` …). A tab index names its tab (`3` → `go to skills`). Hidden commands are never suggested.
+- ↑/↓ move the highlight, Tab completes it into the line, Enter runs. A real command runs as typed (`cd about`, `sudo hire-me`); a `/…` line or a partial word runs the highlighted suggestion. Esc hides the list (a second Esc leaves the line). With the list hidden, ↑/↓ walk the history.
+- ARIA combobox on the command line itself (`role="combobox"` + `role="listbox"`, `aria-activedescendant`). The highlighted row has a yellow left bar and `--text-1` text.
 
 ### 6.9 `<Lightbox />`
 Full-screen view for certificates, project screenshots and about photos over a dimmed background. Images stay monochrome, like the rest of the visual area. Esc, a visible `✕ close` button (top-right, yellow) or clicking the backdrop closes it. It is a modal `<dialog>`: focus moves to the close button on open, is trapped inside, and returns to the thumbnail that opened it on close. The image has the project or certificate name as `alt`; `←/→` step through siblings.
@@ -459,9 +463,9 @@ Row heights (right column, px) plus five 8px block gaps total **468px** with the
 | Click a tmux tab or an `ls ~` entry | Jump to the tab (primary path) |
 | `home` `about` `projects` `skills` `certs` `contact` | Open the tab (also `cd ~/projects`). Aliases: `work` → projects; `experience`, `jobs`, `education` → about (scrolled to the timeline); `cv` → `resume` |
 | `0`–`5` keys | Jump to the tab matching its tmux index |
-| `/` | Open the command palette (never "search") |
+| `/` | Focus the command line with `/` typed, listing every command (§6.8) |
 | `:` | Focus the command line |
-| `Esc` | Close the palette, lightbox, badge sheet or mail form; otherwise blur the command line |
+| `Esc` | Hide the command suggestions, or close the lightbox, badge sheet or mail form; otherwise blur the command line |
 
 **Single-key shortcuts** (`0`–`5`, `/`, `:`) only fire when no text field is focused, so `cd ~/projects` types normally in the command line. They can be turned off with `shortcuts off` (WCAG 2.1.4; persisted in `localStorage`).
 
@@ -504,7 +508,8 @@ fun           there are a few classic commands hidden here         (no list: dis
 
 ### Input behavior
 - **Tab** autocompletes commands and arguments, only while the line has text: on an empty line Tab moves focus as usual, so keyboard users are never trapped. One match completes; several extend to their shared prefix, and a second Tab lists them in the buffer. **↑/↓** walk the history (kept in `sessionStorage`).
-- Unknown command → `command not found: xyz. did you mean 'projects'? — or click a tab below`, with the suggestion based on edit distance.
+- Unknown command → `command not found: xyz. did you mean 'projects'? — type help, or / to see every command`, with the suggestion based on edit distance (both clickable).
+- `/about`, `/resume`, `/theme log` … is the slash form of any command, and a tab index alone (`3`) opens that tab.
 - Every command is echoed into the buffer as a new prompt line before its output.
 - A navigation command typed in the command line keeps focus in the command line (see §13 Focus).
 
@@ -699,7 +704,7 @@ src/
     shell/        Shell.tsx  Background.tsx
     terminal/     TerminalWindow.tsx  TitleBar.tsx  Buffer.tsx  Line.tsx
                   Prompt.tsx  VimStatusLine.tsx  CommandLine.tsx  TmuxBar.tsx
-                  CommandPalette.tsx  LiveRegion.tsx  MailForm.tsx  MotionToggle.tsx
+                  LiveRegion.tsx  MailForm.tsx  MotionToggle.tsx
     blocks/       Figlet.tsx  Lead.tsx  Text.tsx  Table.tsx  Links.tsx  Dirs.tsx
                   GitLog.tsx  Tree.tsx  Comment.tsx
     visual/       VisualPanel.tsx  IdBadge.tsx  BadgeSheet.tsx  PhotoStack.tsx
@@ -794,7 +799,7 @@ Every failure keeps the terminal voice, says what happened in plain words, and o
 
 | Situation | What the visitor sees |
 |---|---|
-| Unknown command | `command not found: xyz. did you mean 'projects'? — or click a tab below` |
+| Unknown command | `command not found: xyz. did you mean 'projects'? — type help, or / to see every command` |
 | 404 route | Renders inside the shell: `cd: no such file or directory: ~/xyz` followed by `ls ~` output (the six tabs as links). Real 404 status |
 | GitHub API failure / stale data | Build keeps the last good snapshot (ISR). If none exists, the heatmap and language bar are hidden and the skills visual shows only the skill bars plus `# github stats unavailable right now` in `--text-3`. Never an empty frame |
 | Empty project or cert list | See §7 "Empty lists" (frame kept, comment shown) |

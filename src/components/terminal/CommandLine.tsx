@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { tabs, tabFor } from "@/lib/routes";
-import { commonPrefix, completions, run, type Result } from "@/lib/commands";
+import { isKnown, run, suggestions, type Result } from "@/lib/commands";
 import type { Line } from "@/lib/lines";
 import { appendOutput, clearOutput, pushHistory, readHistory } from "@/lib/session";
 import { setMotion } from "@/lib/motion-store";
@@ -11,7 +11,6 @@ import { setTheme } from "@/lib/theme-store";
 import { MATRIX_EVENT, PALETTE_EVENT, RUN_EVENT, type RunDetail } from "@/lib/term-events";
 import { markNudgeDone } from "./Nudge";
 import { announce } from "./LiveRegion";
-import { CommandPalette } from "./CommandPalette";
 
 const isField = (el: Element | null) =>
   !!el &&
@@ -25,14 +24,18 @@ const promptPath = (pathname: string) => {
   return !t || t.slug === "home" ? "~" : `~/${t.slug}`;
 };
 
-/** The `:` command line (spec §6.6, §8). It owns the one command runner; the palette and
- *  clickable commands in the buffer send it commands through `runCommand`. */
+/** The `:` command line (spec §6.6, §8). It owns the one command runner, and it is its own
+ *  palette: as the visitor types, matching commands are suggested above it (`/…` searches every
+ *  command; anything else completes names and arguments). Clickable command names in the buffer
+ *  send it commands through `runCommand`. */
 export function CommandLine({ resumeKb }: { resumeKb?: number }) {
   const router = useRouter();
   const pathname = usePathname();
   const ref = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState("");
-  const [palette, setPalette] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [open, setOpen] = useState(true); // Esc hides the suggestions until the next keystroke
+  const [active, setActive] = useState(0);
   const hist = useRef({ i: -1, draft: "" });
   const focusMain = useRef(false);
 
@@ -125,23 +128,33 @@ export function CommandLine({ resumeKb }: { resumeKb?: number }) {
     [pathname, resumeKb, apply],
   );
 
-  // Commands from the palette and from clickable names in the buffer.
+  // `/` (the key, or the `/ commands` hint) puts a slash in the command line: every command shows.
+  const startSlash = useCallback(() => {
+    setValue("/");
+    setOpen(true);
+    setActive(0);
+    ref.current?.focus();
+  }, []);
+
+  // Commands from clickable names in the buffer.
   useEffect(() => {
     const onRun = (ev: Event) => {
       const d = (ev as CustomEvent<RunDetail>).detail;
       if (d.fill) {
         setValue(d.cmd);
+        setOpen(true);
+        setActive(0);
         ref.current?.focus();
       } else execute(d.cmd, d.source);
     };
-    const onPalette = () => setPalette(true);
+    const onPalette = () => startSlash();
     window.addEventListener(RUN_EVENT, onRun);
     window.addEventListener(PALETTE_EVENT, onPalette);
     return () => {
       window.removeEventListener(RUN_EVENT, onRun);
       window.removeEventListener(PALETTE_EVENT, onPalette);
     };
-  }, [execute]);
+  }, [execute, startSlash]);
 
   // Single-key shortcuts (0–5, `/`, `:`): only when no text field is focused, and `shortcuts off`
   // turns them off (spec §8, WCAG 2.1.4).
@@ -159,23 +172,38 @@ export function CommandLine({ resumeKb }: { resumeKb?: number }) {
         ref.current?.focus();
       } else if (e.key === "/") {
         e.preventDefault();
-        setPalette(true);
+        startSlash();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [router]);
+  }, [router, startSlash]);
+
+  const list = focused && open ? suggestions(value) : [];
+  const cur = list[Math.min(active, list.length - 1)];
+
+  const submit = (raw: string) => {
+    execute(raw);
+    setValue("");
+    setActive(0);
+    hist.current = { i: -1, draft: "" };
+  };
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
-      execute(value);
-      setValue("");
-      hist.current = { i: -1, draft: "" };
+      // A real command runs as typed (`cd about`, `sudo hire-me`); `/…` or a partial word runs the
+      // highlighted suggestion instead (`/pro` → `/projects`, `wh` → `whoami`).
+      submit(cur && (value.startsWith("/") || !isKnown(value)) ? cur.value : value);
+    } else if ((e.key === "ArrowUp" || e.key === "ArrowDown") && list.length) {
+      e.preventDefault();
+      const d = e.key === "ArrowDown" ? 1 : -1;
+      setActive((a) => (Math.min(a, list.length - 1) + d + list.length) % list.length);
     } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
       const h = readHistory();
       const s = hist.current;
       if (!h.length) return;
       e.preventDefault();
+      setOpen(false); // a recalled command shows as typed, without suggestions over it
       if (e.key === "ArrowUp") {
         if (s.i === -1) s.draft = value;
         s.i = s.i === -1 ? h.length - 1 : Math.max(0, s.i - 1);
@@ -187,23 +215,18 @@ export function CommandLine({ resumeKb }: { resumeKb?: number }) {
           setValue(s.draft);
         } else setValue(h[s.i]);
       }
-    } else if (e.key === "Tab" && value.trim() && !e.shiftKey) {
-      // Only an input with something to complete takes Tab; an empty one lets focus move on.
-      const c = completions(value);
-      if (!c.length) return;
+    } else if (e.key === "Tab" && cur && !e.shiftKey) {
+      // Only a line with a suggestion takes Tab; otherwise focus moves on as usual.
       e.preventDefault();
-      const p = commonPrefix(c);
-      if (c.length === 1) setValue(c[0] + " ");
-      else if (p.length > value.length) setValue(p);
-      else
-        appendOutput(pathname, [
-          { t: "prompt", cmd: value, path: promptPath(pathname) },
-          { t: "text", parts: [c.join("   ")] },
-        ]);
+      setValue(cur.value.startsWith("/") ? cur.value : cur.value + " ");
+      setActive(0);
     } else if (e.key === "l" && e.ctrlKey) {
       e.preventDefault();
       clearOutput();
-    } else if (e.key === "Escape") e.currentTarget.blur();
+    } else if (e.key === "Escape") {
+      if (list.length) setOpen(false);
+      else e.currentTarget.blur();
+    }
   }
 
   return (
@@ -211,14 +234,38 @@ export function CommandLine({ resumeKb }: { resumeKb?: number }) {
       className="relative flex h-8 items-center gap-2 bg-[var(--term-chrome)] px-3 text-[length:var(--fs-ui)] leading-4"
       style={{ gridArea: "cmd" }}
     >
-      {palette && (
-        <CommandPalette
-          onClose={() => setPalette(false)}
-          onRun={(cmd) => {
-            setPalette(false);
-            execute(cmd, "palette");
-          }}
-        />
+      {list.length > 0 && (
+        <div className="palette absolute bottom-full left-0 z-30 w-[min(640px,100%)] border border-line3 bg-[#0c0c0c]">
+          <ul
+            id="cmd-suggest"
+            role="listbox"
+            aria-label="Suggestions"
+            className="m-0 list-none p-0 py-1"
+          >
+            {list.map((it) => {
+              const on = it === cur;
+              return (
+                <li
+                  key={it.id}
+                  id={`sug-${it.id}`}
+                  role="option"
+                  aria-selected={on}
+                  onPointerMove={() => setActive(list.indexOf(it))}
+                  onPointerDown={(e) => e.preventDefault()}
+                  onClick={() => submit(it.value)}
+                  className={`relative grid cursor-pointer grid-cols-[22ch_1fr] gap-x-[2ch] px-3 py-1.5 ${on ? "bg-white/[0.04] text-t1" : "text-t2"}`}
+                >
+                  {on && <span aria-hidden className="absolute inset-y-0 left-0 w-0.5 bg-yellow" />}
+                  <span className="truncate">{it.label}</span>
+                  <span className={`truncate ${on ? "text-t2" : "text-t3"}`}>{it.desc}</span>
+                </li>
+              );
+            })}
+          </ul>
+          <div aria-hidden className="border-t border-line2 px-3 py-1.5 text-t3 max-md:hidden">
+            ↑↓ select · tab complete · ⏎ run · esc close
+          </div>
+        </div>
       )}
       <label htmlFor="cmdline" className="text-t3">
         <span aria-hidden>:</span>
@@ -230,14 +277,24 @@ export function CommandLine({ resumeKb }: { resumeKb?: number }) {
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
+          setOpen(true);
+          setActive(0);
           hist.current.i = -1;
         }}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         onKeyDown={onKeyDown}
-        className="cmd-input min-w-0 flex-1 bg-transparent text-t1 outline-none focus-visible:outline-none"
+        role="combobox"
+        aria-expanded={list.length > 0}
+        aria-controls="cmd-suggest"
+        aria-autocomplete="list"
+        aria-activedescendant={cur ? `sug-${cur.id}` : undefined}
+        placeholder="type / for commands"
+        className="cmd-input min-w-0 flex-1 bg-transparent text-t1 outline-none placeholder:text-t3 focus-visible:outline-none"
         autoComplete="off"
         autoCapitalize="off"
         spellCheck={false}
-        aria-keyshortcuts=":"
+        aria-keyshortcuts=": /"
       />
       <span className="ml-auto whitespace-nowrap text-t3 max-md:hidden">
         click a tab below ·{" "}
@@ -249,7 +306,7 @@ export function CommandLine({ resumeKb }: { resumeKb?: number }) {
           type="button"
           className="slink cursor-pointer"
           aria-keyshortcuts="/"
-          onClick={() => setPalette(true)}
+          onClick={startSlash}
         >
           / commands
         </button>

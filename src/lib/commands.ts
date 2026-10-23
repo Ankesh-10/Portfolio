@@ -133,7 +133,7 @@ export const commands: Command[] = [
   },
   {
     name: "cd",
-    args: () => tabs.map((t) => (t.slug === "home" ? "~" : `~/${t.slug}`)),
+    args: () => ["~", "..", ...tabs.filter((t) => t.slug !== "home").map((t) => t.slug)],
     run: (args, ctx) => {
       const r = resolvePath(args[0] ?? "~", ctx.pathname);
       return r ? nav(r.href, r.label) : say(`cd: no such file or directory: ${args[0]}`);
@@ -141,7 +141,7 @@ export const commands: Command[] = [
   },
   {
     name: "ls",
-    args: () => ["~", "~/projects", "~/certs"],
+    args: () => ["~", "projects", "certs"],
     run: (args, ctx) => {
       const a = args.find((x) => !x.startsWith("-"));
       if (!a || a === "~" || a === "~/" || a === "/")
@@ -305,7 +305,13 @@ export function parse(raw: string): { name: string; args: string[] } {
 export function run(raw: string, ctx: Ctx): Result {
   const { name, args } = parse(raw);
   if (!name) return out();
-  const cmd = byName.get(name) ?? byName.get(name.replace(/^:/, ""));
+  // A tab's tmux index jumps to it (`3` → skills), like the single-key shortcut.
+  const byIndex = tabs.find((t) => String(t.index) === name);
+  if (byIndex && !args.length) return nav(byIndex.href, cap(byIndex.label));
+  // `/about`, `/resume`, `/theme log`: the slash form of any command; `/` alone lists them.
+  if (name === "/") return run("help", ctx);
+  const cmd =
+    byName.get(name) ?? byName.get(name.replace(/^:/, "")) ?? byName.get(name.replace(/^\//, ""));
   if (cmd) return cmd.run(args, ctx);
   // `~/projects` or `/about` typed alone works like cd.
   if (/^[~/.]/.test(name)) {
@@ -315,12 +321,21 @@ export function run(raw: string, ctx: Ctx): Result {
   const guess = suggest(name);
   const parts: Inline[] = [`command not found: ${name}.`];
   if (guess) parts.push(" did you mean '", { run: guess, label: guess }, "'?");
-  parts.push(" — or click a tab below");
+  parts.push(" — type ", { run: "help", label: "help" }, ", or / to see every command");
   return {
     lines: [{ t: "text", parts }],
     effects: [],
     announce: `command not found: ${name}${guess ? `. did you mean ${guess}?` : ""}`,
   };
+}
+
+/** True when the input runs as typed: a command (hidden ones too), a tab index or a path. */
+export function isKnown(raw: string): boolean {
+  const { name } = parse(raw);
+  if (!name) return false;
+  if (tabs.some((t) => String(t.index) === name)) return true;
+  if (byName.has(name) || byName.has(name.replace(/^[:/]/, ""))) return true;
+  return /^[~.]/.test(name) || (/^\//.test(name) && !!resolvePath(name, "/"));
 }
 
 const visibleNames = () =>
@@ -388,6 +403,7 @@ export const helpGroups: { label: string; rows: HelpRow[] }[] = [
     rows: [
       { items: tabs.map((t) => ({ label: t.slug, run: t.slug })), desc: "open a section" },
       { items: [{ label: "open <name>", fill: "open " }], desc: "show one project or cert" },
+      { items: [{ label: "/<command>", fill: "/" }], desc: "type / to search every command" },
     ],
   },
   {
@@ -511,4 +527,42 @@ function subsequence(needle: string, hay: string): boolean {
   let i = 0;
   for (const ch of hay) if (ch === needle[i]) i++;
   return i === needle.length;
+}
+
+// ── suggestions while typing (spec §6.8): the command line is its own palette ──
+export type Suggestion = { id: string; label: string; desc: string; value: string };
+
+const descFor = (cmd: string): string => {
+  const hit = paletteItems.find((p) => p.cmd === cmd);
+  if (hit) return hit.desc;
+  const [name, arg] = cmd.split(" ");
+  if ((name === "cd" || name === "ls") && arg) {
+    const t = tabs.find((x) => x.slug === arg);
+    if (t) return t.desc.split(" — ")[1] ?? t.desc;
+    if (arg === "~") return "home";
+    if (arg === "..") return "up one level";
+  }
+  return "";
+};
+
+/** What to show under the cursor as the visitor types. `/…` searches every command (fuzzy);
+ *  anything else completes command names and their arguments; a tab index names its tab. */
+export function suggestions(input: string, limit = 8): Suggestion[] {
+  if (input.startsWith("/")) {
+    const q = input.slice(1);
+    const items = q.trim() ? filterPalette(q, limit) : paletteItems.slice(0, limit + 2);
+    return items.map((it) => ({
+      id: it.id,
+      label: `/${it.cmd}`,
+      desc: it.desc,
+      value: `/${it.cmd}`,
+    }));
+  }
+  const t = input.trim();
+  if (!t) return [];
+  const tab = tabs.find((x) => String(x.index) === t);
+  if (tab) return [{ id: `idx-${tab.slug}`, label: t, desc: `go to ${tab.slug}`, value: t }];
+  return completions(input)
+    .slice(0, limit)
+    .map((c, i) => ({ id: `c${i}`, label: c, desc: descFor(c), value: c }));
 }
