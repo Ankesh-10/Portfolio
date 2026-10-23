@@ -46,4 +46,5 @@ export type Line =
   | { t: "detail"; title: string; body: string; rows: { k: string; v: Inline[] }[] }
   | { t: "help"; rows: { group: string; cmds: Inline[]; desc: string }[] }
   | { t: "pre"; rows: string[] }
+  | { t: "mail" }
   | { t: "kv"; rows: { k: string; v: Inline[] }[] };

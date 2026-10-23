@@ -261,6 +261,7 @@ export function contactPage(): Page {
           { k: "resume", v: [{ href: "/resume.pdf", label: "resume.pdf" }] },
         ],
       },
+      { t: "text", parts: ["→ ", { run: "mail", label: "send a message" }] },
     ],
   };
 }

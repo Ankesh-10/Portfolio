@@ -36,6 +36,7 @@ export function useCmdInput(onEscape: (e: KeyboardEvent<HTMLInputElement>) => vo
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
+      e.preventDefault(); // the command may move focus (mail form): don't let this keypress follow it
       run(value);
       setValue("");
       cursor.current = -1;

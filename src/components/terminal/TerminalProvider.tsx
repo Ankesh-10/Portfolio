@@ -17,6 +17,7 @@ import { setMotion } from "@/lib/motion-store";
 import { infoOf, schedule } from "@/lib/timeline";
 import type { Timing } from "@/lib/timeline";
 import { shortcutsPref, themePref } from "@/lib/prefs";
+import { clearDraft } from "./MailForm";
 
 export type Entry = { line: Line; timing?: Timing };
 
@@ -31,6 +32,8 @@ type Terminal = {
   resumeFlash: boolean;
   run: (raw: string) => void;
   openPalette: () => void;
+  closeMail: (cancelled?: boolean) => void;
+  finishMail: (message: string) => void;
   closePalette: () => void;
   announce: (msg: string) => void;
 };
@@ -185,10 +188,47 @@ export function TerminalProvider({
           case "matrix":
             setMatrix((m) => m + 1);
             break;
+          case "mail":
+            // one form at a time: reopening while it is open just keeps it
+            setEntries((cur) =>
+              cur.some((e) => e.line.t === "mail") ? cur : [...cur, { line: { t: "mail" } }],
+            );
+            break;
+          case "mailDiscard":
+            clearDraft();
+            break;
         }
       }
     },
     [history, pathname, resumeKb, router, append, announce],
+  );
+
+  // Esc / cancel: close the form, keep the draft, and say so (spec §7.5). Focus goes back to the command line.
+  const closeMail = useCallback(
+    (cancelled = false) => {
+      setEntries((cur) => cur.filter((e) => e.line.t !== "mail"));
+      if (cancelled) {
+        append([
+          {
+            t: "text",
+            parts: ["mail cancelled — draft saved. type mail to continue, or mail --discard."],
+          },
+        ]);
+        announce("Mail cancelled, draft saved");
+      }
+      document.getElementById("cmdline")?.focus();
+    },
+    [append, announce],
+  );
+
+  // After a successful send the form turns into a plain output line, so `mail` can open a fresh one.
+  const finishMail = useCallback(
+    (message: string) => {
+      setEntries((cur) => cur.filter((e) => e.line.t !== "mail"));
+      append([{ t: "text", parts: [message] }]);
+      document.getElementById("cmdline")?.focus();
+    },
+    [append],
   );
 
   const openPalette = useCallback(() => {
@@ -217,7 +257,11 @@ export function TerminalProvider({
   // Global keys. Single-key shortcuts only fire outside text fields and can be turned off (WCAG 2.1.4).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.key.toLowerCase() === "l") {
+      if (
+        e.ctrlKey &&
+        e.key.toLowerCase() === "l" &&
+        !document.activeElement?.closest("[data-mail]")
+      ) {
         e.preventDefault();
         setEntries([]);
         return;
@@ -250,6 +294,8 @@ export function TerminalProvider({
       resumeFlash,
       run,
       openPalette,
+      closeMail,
+      finishMail,
       closePalette,
       announce,
     }),
@@ -264,6 +310,8 @@ export function TerminalProvider({
       resumeFlash,
       run,
       openPalette,
+      closeMail,
+      finishMail,
       closePalette,
       announce,
     ],

@@ -10,6 +10,7 @@ import { Detail, Kv } from "../blocks/Detail";
 import { Inlines } from "../blocks/Inline";
 import { Nudge } from "./Nudge";
 import { Help } from "../blocks/Help";
+import { MailForm } from "./MailForm";
 
 /** Gutter line-height per block: matches the baseline of the line's first text row (spec §3). */
 export function gutterLh(l: LineT): number {
@@ -61,6 +62,8 @@ export function Line({ line }: { line: LineT }) {
       return <Detail title={line.title} body={line.body} rows={line.rows} />;
     case "help":
       return <Help rows={line.rows} />;
+    case "mail":
+      return <MailForm />;
     case "pre":
       return <pre className="m-0 whitespace-pre font-mono text-t2">{line.rows.join("\n")}</pre>;
     case "kv":

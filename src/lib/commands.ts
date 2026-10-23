@@ -18,7 +18,9 @@ export type Effect =
   | { k: "motion"; v: "on" | "off" }
   | { k: "shortcuts"; v: "on" | "off" }
   | { k: "theme"; v: "hex" | "log" }
-  | { k: "matrix" };
+  | { k: "matrix" }
+  | { k: "mail" }
+  | { k: "mailDiscard" };
 
 export type Result = {
   lines: Line[];
@@ -250,9 +252,13 @@ export function execute(raw: string, ctx: Ctx): Result {
     case "email":
       return { lines: [], effects: [{ k: "copy", text: profile.email }] };
     case "mail":
-      return say([
-        text("the mail form isn't live yet — type ", run("email"), " to copy my address."),
-      ]);
+      if (arg === "--discard")
+        return {
+          lines: [text("mail draft discarded.")],
+          effects: [{ k: "mailDiscard" }],
+          announce: "Mail draft discarded",
+        };
+      return { lines: [], effects: [{ k: "mail" }], announce: "Mail form opened" };
     case "clear":
       return { lines: [], effects: [{ k: "clear" }], echo: false };
     case "history": {
