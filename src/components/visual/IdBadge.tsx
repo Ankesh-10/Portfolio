@@ -1,5 +1,6 @@
 "use client";
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 import { profile } from "@/content/profile";
 import { skills } from "@/content/skills";
@@ -167,7 +168,15 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
                 className="relative w-full overflow-hidden rounded-sm border border-line3 bg-[#0a0a0a]"
                 style={{ height: "var(--photo-h)" }}
               >
-                {/* TODO: replace with the real B&W photo (spec §14): next/image, priority, alt="Ankesh Jaiswal" */}
+                <Image
+                  src={profile.photo}
+                  alt="Ankesh Jaiswal"
+                  fill
+                  priority
+                  sizes="300px"
+                  className="object-cover"
+                  style={{ filter: "grayscale(1) contrast(1.1)" }}
+                />
                 <div
                   aria-hidden
                   className="absolute inset-0"
@@ -176,12 +185,6 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
                       "repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 3px)",
                   }}
                 />
-                <span
-                  aria-hidden
-                  className="absolute inset-0 flex items-center justify-center text-6xl font-bold text-[#1a1a1a]"
-                >
-                  AJ
-                </span>
                 <span
                   aria-hidden
                   className="absolute left-2 top-1.5 text-[length:var(--fs-micro)] tracking-[.12em] text-t4"
