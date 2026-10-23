@@ -38,10 +38,10 @@ export function VisualPanel({ qr, gh }: { qr: boolean[][]; gh: GithubStats | nul
       id="visual"
       aria-label="Visual"
       tabIndex={-1}
-      className="relative z-10 shrink-0 overflow-clip max-md:hidden"
+      className={`relative z-10 overflow-clip md:w-[var(--aw)] md:shrink-0 ${hasBadge ? "max-md:hidden" : "max-md:w-full"}`}
       style={{
         order: -1,
-        width: wide ? "clamp(420px, 42vw, 640px)" : "var(--visual-w)",
+        ["--aw" as string]: wide ? "clamp(420px, 42vw, 640px)" : "var(--visual-w)",
         transition: reduce ? "none" : "width 180ms cubic-bezier(0.2, 0, 0, 1)",
       }}
     >
@@ -61,7 +61,7 @@ export function VisualPanel({ qr, gh }: { qr: boolean[][]; gh: GithubStats | nul
         ) : (
           <motion.div
             key={slug || "x"}
-            className="flex h-full items-center justify-center p-8"
+            className="flex h-full items-center justify-center p-8 max-md:h-auto max-md:px-6 max-md:py-6"
             initial={{ opacity: reduce ? 1 : 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.06 } }}
@@ -97,7 +97,7 @@ function IdBadgeSlot({
   qr: boolean[][];
 }) {
   return (
-    <div className="absolute inset-x-0 top-0 [--badge-w:296px] [--photo-h:370px] [--rest-offset:clamp(96px,14vh,160px)] max-[1279px]:[--badge-w:272px] max-[1279px]:[--photo-h:300px] [@media(max-height:820px)]:[--badge-w:252px] [@media(max-height:820px)]:[--photo-h:200px]">
+    <div className="absolute inset-x-0 top-0 [--badge-w:296px] [--photo-h:370px] [--rest-offset:clamp(96px,14vh,160px)] max-[1279px]:[--badge-w:272px] max-[1279px]:[--photo-h:300px] max-[1023px]:[--badge-w:252px] max-[1023px]:[--photo-h:210px] [@media(max-height:820px)]:[--badge-w:252px] [@media(max-height:820px)]:[--photo-h:200px]">
       <IdBadge {...props} />
       {showHint && (
         <p className="m-0 mt-4 px-6 text-[length:var(--fs-ui)] text-t3">

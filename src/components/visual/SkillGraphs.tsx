@@ -38,7 +38,7 @@ function Heatmap({ gh }: { gh: GithubStats }) {
           {gh.weeks.map((w, wi) => (
             <div
               key={wi}
-              className="flex flex-col gap-[2px]"
+              className={`flex flex-col gap-[2px] ${wi < gh.weeks.length - 12 ? "max-md:hidden" : ""}`}
               // the current (last) week is outlined in text-1; red stays reserved for availability
               style={
                 wi === gh.weeks.length - 1
@@ -51,7 +51,7 @@ function Heatmap({ gh }: { gh: GithubStats }) {
                 return (
                   <span
                     key={di}
-                    className="block h-[9px] w-[9px] rounded-[1px]"
+                    className="block h-[9px] w-[9px] rounded-[1px] max-md:h-[14px] max-md:w-[14px]"
                     style={{
                       background: l < 0 ? "transparent" : LEVELS[l],
                       boxShadow: l < 0 ? "inset 0 0 0 1px var(--line-3)" : undefined,

@@ -33,6 +33,10 @@ const check = (name: string, got: number, max: number, min = 0) => {
   );
 };
 
+const bootP = schedule(home, "bootPhone");
+check("phone boot complete (≈0.6s)", endOf(bootP), 700, 450);
+check("phone lead is instant at first paint", bootP[3].t + bootP[3].d, 0);
+
 check("boot, compact name", endOf(schedule(home, "boot", { compact: true })), 1260, 1100);
 check("boot, full figlet", endOf(schedule(home, "boot", { compact: false })), 1480, 1300);
 const bootC = schedule(home, "boot", { compact: true });

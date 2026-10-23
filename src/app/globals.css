@@ -73,12 +73,10 @@
   --font-mono: var(--font-jb), ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
+/* The root stays 16px so Tailwind's rem spacing lands on the 4px grid (h-11 = 44px); the type scale is set on body. */
 html {
   background: var(--bg);
-  color: var(--text-2);
-  font-family: var(--font-mono);
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   color-scheme: dark;
 }
@@ -86,7 +84,10 @@ body {
   margin: 0;
   min-height: 100dvh;
   background: var(--bg);
+  color: var(--text-2);
   font-family: var(--font-mono);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 /* Focus: 2px ring + 2px offset on everything focusable */
@@ -508,6 +509,7 @@ html[data-boot]:not([data-boot="skip"]) .bg-canvas {
   }
   .rv-type {
     width: auto !important;
+    white-space: normal !important;
     display: inline !important;
   }
 }
@@ -518,5 +520,81 @@ html[data-motion="off"] .buf-row *::after {
 }
 html[data-motion="off"] .rv-type {
   width: auto !important;
+  white-space: normal !important;
   display: inline !important;
+}
+
+/* ───────────────────────── Layout: window grid, tablet and phone (spec §4, §12) ───────────────────────── */
+.term-grid {
+  margin: var(--win-margin);
+  margin-left: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* never let the widest item stretch the window */
+  grid-template-rows: 36px minmax(0, 1fr) 28px 32px auto;
+  grid-template-areas: "title" "buffer" "status" "cmd" "tmux";
+}
+.term-title {
+  grid-area: title;
+}
+.term-main {
+  grid-area: buffer;
+  container: buf / size;
+}
+.term-status {
+  grid-area: status;
+}
+.term-cmd {
+  grid-area: cmd;
+}
+.term-tmux {
+  grid-area: tmux;
+}
+
+@media (max-width: 767px) {
+  /* The terminal becomes a full-width page that scrolls like a normal page. */
+  html {
+    scroll-padding-top: 44px;
+    scroll-padding-bottom: calc(88px + env(safe-area-inset-bottom));
+  }
+  body {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom));
+  }
+  .term-grid {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    border-radius: 0;
+    border: 0;
+    overflow: visible;
+    padding-top: 44px; /* the top bar */
+  }
+  .term-grid .term-status {
+    order: -1;
+  }
+  .term-main {
+    container: buf / inline-size;
+    height: auto;
+  }
+  /* phone boot: instant lead, 15ms per intro line (spec §12); typing is skipped on the phone */
+  html[data-boot]:not([data-boot="skip"]) .buf-row {
+    --t: var(--tp, 0ms);
+    --d: 0ms;
+  }
+  html[data-boot]:not([data-boot="skip"]) .buf-row .rv-type {
+    animation: none !important;
+    display: inline !important;
+    width: auto !important;
+    white-space: normal !important;
+  }
+  html[data-boot]:not([data-boot="skip"]) .buf-row .rv-cur::after {
+    animation: none !important;
+  }
+  html[data-boot]:not([data-boot="skip"]) .buf-row .buf-cnt,
+  html[data-boot]:not([data-boot="skip"]) .buf-row .rv-pfx {
+    animation: rv-in 1ms linear var(--t) both;
+  }
+  .skip-intro {
+    top: 0;
+  }
 }

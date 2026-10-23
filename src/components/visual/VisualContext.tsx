@@ -4,14 +4,14 @@ import type { ElementType, ReactNode } from "react";
 
 // Cross-panel links (spec §7): hovering or focusing a terminal row drives the left visual. Touch: tap = focus.
 export type Hot = { group: "project" | "photo" | "skill" | "cert"; id: string };
-type Ctx = { hot: Hot | null; setHot: (h: Hot | null) => void };
+type Ctx = { hot: Hot | null; setHot: (h: Hot | null) => void; qr: boolean[][] };
 
-const VisualCtx = createContext<Ctx>({ hot: null, setHot: () => {} });
+const VisualCtx = createContext<Ctx>({ hot: null, setHot: () => {}, qr: [] });
 export const useVisual = () => useContext(VisualCtx);
 
-export function VisualProvider({ children }: { children: ReactNode }) {
+export function VisualProvider({ children, qr }: { children: ReactNode; qr: boolean[][] }) {
   const [hot, setHot] = useState<Hot | null>(null);
-  const value = useMemo(() => ({ hot, setHot }), [hot]);
+  const value = useMemo(() => ({ hot, setHot, qr }), [hot, qr]);
   return <VisualCtx.Provider value={value}>{children}</VisualCtx.Provider>;
 }
 

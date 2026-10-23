@@ -5,7 +5,7 @@ import type { Line } from "./lines";
 // scripts/check-timeline.mts. Times are in ms from the start of the animation.
 
 export type Mode = "type" | "type-fast" | "stream" | "draw";
-export type Visit = "boot" | "first" | "return" | "landing" | "echo";
+export type Visit = "boot" | "bootPhone" | "first" | "return" | "landing" | "echo";
 
 /** What the scheduler needs to know about one logical line. */
 export type Info = { kind: "prompt" | "figlet" | "lead" | "line"; chars: number; rows: number };
@@ -53,6 +53,8 @@ export function schedule(infos: Info[], visit: Visit, opts: Opts = {}): Timing[]
       case "boot":
       case "echo":
         return Math.min(25, 200 / n); // 25ms per line, ≤ 200ms per block
+      case "bootPhone":
+        return bi <= 1 ? 15 : Math.min(25, 200 / n); // intro lines stream at 15ms (spec §12)
       case "first":
         return bi === 0 ? Math.min(25, 200 / n) : Math.min(12, 240 / Math.max(1, laterTotal));
       case "return":
@@ -64,12 +66,26 @@ export function schedule(infos: Info[], visit: Visit, opts: Opts = {}): Timing[]
   const typed = (bi: number) => visit === "boot" || (visit === "first" && bi === 0);
   const cap = visit === "boot" ? 100 : 150;
 
+  // Phone boot (spec §12): the name lives in the header, so the figlet block is hidden and takes no time; the
+  // `cat intro.txt` prompt and the lead line are instant (the lead is the LCP); later prompts only pass time.
+  const phone = visit === "bootPhone";
+  const hasFiglet = (b: number[]) => b.some((i) => infos[i].kind === "figlet");
   blocks.forEach((b, bi) => {
     const step = stepFor(bi, b);
+    if (phone && hasFiglet(b)) {
+      for (const i of b) Object.assign(out[i], { t: 0, d: 0, mode: "stream" });
+      return;
+    }
     for (const i of b) {
       const inf = infos[i];
       const o = out[i];
-      if (inf.kind === "prompt") {
+      if (phone && inf.kind === "prompt") {
+        const d = Math.min(100, inf.chars * TYPE_MS);
+        Object.assign(o, { t, d: 0, mode: "stream" });
+        if (bi > 1) t += d;
+      } else if (phone && inf.kind === "lead") {
+        Object.assign(o, { t, d: 0, mode: "stream" });
+      } else if (inf.kind === "prompt") {
         if (typed(bi)) {
           const d = Math.min(cap, inf.chars * TYPE_MS);
           Object.assign(o, { t, d, mode: "type", n: inf.chars });

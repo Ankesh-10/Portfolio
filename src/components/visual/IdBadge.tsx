@@ -12,6 +12,8 @@ export type BadgeProps = {
   flipped: boolean;
   onFlip: () => void;
   onDrag?: () => void;
+  /** Sway with device tilt (inside the phone sheet only, spec §12). */
+  device?: boolean;
   qr: boolean[][];
 };
 
@@ -60,7 +62,7 @@ function FlipButton({ flipped, onFlip }: { flipped: boolean; onFlip: () => void 
   );
 }
 
-export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
+export function IdBadge({ flipped, onFlip, onDrag, device, qr }: BadgeProps) {
   const motionState = useMotion();
   const reduce = useReducedMotion();
   const still = reduce || motionState === "off";
@@ -73,13 +75,22 @@ export function IdBadge({ flipped, onFlip, onDrag, qr }: BadgeProps) {
       ty.set(0);
       return;
     }
+    if (device) {
+      const onTilt = (e: DeviceOrientationEvent) => {
+        const clamp = (v: number) => Math.max(-12, Math.min(12, v));
+        tx.set(clamp(((e.beta ?? 0) - 45) * -0.3));
+        ty.set(clamp((e.gamma ?? 0) * 0.3));
+      };
+      window.addEventListener("deviceorientation", onTilt);
+      return () => window.removeEventListener("deviceorientation", onTilt);
+    }
     const onMove = (e: PointerEvent) => {
       tx.set(((e.clientY / window.innerHeight) * 2 - 1) * -4);
       ty.set(((e.clientX / window.innerWidth) * 2 - 1) * 4);
     };
     window.addEventListener("pointermove", onMove);
     return () => window.removeEventListener("pointermove", onMove);
-  }, [still, tx, ty]);
+  }, [still, device, tx, ty]);
   const down = useRef<{ x: number; y: number } | null>(null);
   const github = links.find((l) => l.kind === "github")!;
   const tags = skills.flatMap((g) => g.items.map((i) => i.name)).slice(0, 8);

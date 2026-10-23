@@ -25,6 +25,8 @@ type Terminal = {
   announcement: string;
   history: string[];
   paletteOpen: boolean;
+  typeOpen: boolean;
+  setTypeOpen: (v: boolean) => void;
   matrix: number;
   resumeFlash: boolean;
   run: (raw: string) => void;
@@ -67,6 +69,7 @@ export function TerminalProvider({
     }
   });
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const [typeOpen, setTypeOpen] = useState(false); // the phone's docked command line
   const [matrix, setMatrix] = useState(0);
   const [resumeFlash, setResumeFlash] = useState(false);
   const shortcuts = shortcutsPref.use();
@@ -241,6 +244,8 @@ export function TerminalProvider({
       announcement,
       history,
       paletteOpen,
+      typeOpen,
+      setTypeOpen,
       matrix,
       resumeFlash,
       run,
@@ -253,6 +258,8 @@ export function TerminalProvider({
       announcement,
       history,
       paletteOpen,
+      typeOpen,
+      setTypeOpen,
       matrix,
       resumeFlash,
       run,

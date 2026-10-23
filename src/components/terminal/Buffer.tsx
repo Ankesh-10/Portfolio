@@ -3,6 +3,7 @@ import { infoOf, schedule } from "@/lib/timeline";
 import { Row } from "./Row";
 import { Output } from "./Output";
 import { Reveal } from "./Reveal";
+import { PhoneHero } from "../visual/PhoneHero";
 
 /**
  * The vim-style buffer: gutter + lines + command output + `~` fill (spec §6.3).
@@ -15,21 +16,26 @@ export function Buffer({ title, lines, boot }: { title: string; lines: LineT[]; 
   const landing = schedule(infos, "landing");
   const bootC = boot ? schedule(infos, "boot", { compact: true }) : undefined;
   const bootF = boot ? schedule(infos, "boot", { compact: false }) : undefined;
+  const bootP = boot ? schedule(infos, "bootPhone") : undefined;
   const lead = lines.find((l) => l.t === "lead");
   // The lead types in one row only if it fits; below this width it streams instead (spec §9 type-fast).
   const leadFit = lead && lead.t === "lead" ? Math.ceil(lead.text.length * 12.1 + 72) : 0;
 
   return (
-    <div className="buf-scroll h-full overflow-y-auto overflow-x-hidden" tabIndex={-1}>
+    <div
+      className="buf-scroll h-full overflow-y-auto overflow-x-hidden max-md:h-auto max-md:overflow-visible"
+      tabIndex={-1}
+    >
       {boot && (
         <>
           <button type="button" className="skip-intro ylink">
             skip intro <span aria-hidden>⏎</span>
           </button>
-          <style>{`@container buf (max-width:${leadFit}px){html[data-boot] .buf-row[data-kind="lead"] .rv-type{animation:none!important;display:inline!important;width:auto!important}html[data-boot] .buf-row[data-kind="lead"] .rv-cur::after{animation:none!important}html[data-boot] .buf-row[data-kind="lead"] .buf-cnt{animation:rv-in 1ms linear var(--t) both}}`}</style>
+          <style>{`@container buf (max-width:${leadFit}px){html[data-boot] .buf-row[data-kind="lead"] .rv-type{animation:none!important;display:inline!important;width:auto!important;white-space:normal!important}html[data-boot] .buf-row[data-kind="lead"] .rv-cur::after{animation:none!important}html[data-boot] .buf-row[data-kind="lead"] .buf-cnt{animation:rv-in 1ms linear var(--t) both}}`}</style>
         </>
       )}
-      <h1 className="sr-only">{title}</h1>
+      {boot && <PhoneHero />}
+      <h1 className={`sr-only ${boot ? "max-md:hidden" : ""}`}>{title}</h1>
       <Reveal>
         {lines.map((l, i) => (
           <Row
@@ -37,9 +43,10 @@ export function Buffer({ title, lines, boot }: { title: string; lines: LineT[]; 
             line={l}
             n={i + 1}
             info={infos[i]}
+            phoneHide={boot && i < 2}
             timing={{
               landing: landing[i],
-              boot: bootC && bootF ? { c: bootC[i], f: bootF[i] } : undefined,
+              boot: bootC && bootF && bootP ? { c: bootC[i], f: bootF[i], p: bootP[i] } : undefined,
             }}
           />
         ))}

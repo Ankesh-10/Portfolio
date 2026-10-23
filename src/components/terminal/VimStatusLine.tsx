@@ -8,10 +8,7 @@ type Build = { sha?: string; iso: string };
 export function VimStatusLine({ build }: { build: Build }) {
   const tab = tabFor(usePathname());
   return (
-    <div
-      className="flex h-7 items-center gap-3 bg-[var(--term-chrome)] pr-3 text-[length:var(--fs-ui)] leading-4 text-t3"
-      style={{ gridArea: "status" }}
-    >
+    <div className="term-status flex h-7 items-center gap-3 bg-[var(--term-chrome)] pr-3 text-[length:var(--fs-ui)] leading-4 text-t3">
       <span className="flex h-full items-center bg-t2 px-3 font-bold text-bg">NORMAL</span>
       <span>~/{tab?.slug ?? "?"}.md</span>
       <span className="ml-auto flex items-center gap-3 max-md:hidden">

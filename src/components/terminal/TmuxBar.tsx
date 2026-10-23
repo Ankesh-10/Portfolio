@@ -37,8 +37,7 @@ export function TmuxBar() {
     <nav
       id="sections"
       aria-label="Sections"
-      className="tm-bar flex min-h-8 items-center border-t border-line1 bg-[var(--term-chrome)] px-2 text-[length:var(--fs-ui)] font-medium leading-4"
-      style={{ gridArea: "tmux" }}
+      className="tm-bar term-tmux flex min-h-8 max-md:hidden items-center border-t border-line1 bg-[var(--term-chrome)] px-2 text-[length:var(--fs-ui)] font-medium leading-4"
     >
       <div className="tm-tabs flex items-center">
         {tabs.map((t) => {

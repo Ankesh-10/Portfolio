@@ -24,7 +24,7 @@ export function Shell({
 }) {
   return (
     <TerminalProvider resumeKb={resumeKb}>
-      <VisualProvider>
+      <VisualProvider qr={qr}>
         <Background />
         <MatrixRain />
         <NavTracker />

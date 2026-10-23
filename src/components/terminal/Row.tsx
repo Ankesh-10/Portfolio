@@ -5,7 +5,7 @@ import { Line, gutterLh } from "./Line";
 
 export type RowTiming = {
   landing?: Timing; // deep-link landing (inert unless <html data-landing>)
-  boot?: { c: Timing; f: Timing }; // home only: compact and full-figlet boot schedules
+  boot?: { c: Timing; f: Timing; p: Timing }; // home only: compact, full-figlet and phone boot schedules
   echo?: Timing; // output of a command the visitor ran
 };
 
@@ -17,11 +17,13 @@ export function Row({
   n,
   info,
   timing,
+  phoneHide,
 }: {
   line: LineT;
   n: number;
   info?: Info;
   timing?: RowTiming;
+  phoneHide?: boolean; // the figlet block: the name lives in the phone header instead
 }) {
   const prompt = line.t === "prompt";
   const style: Record<string, string | number> = { marginTop: prompt && n > 1 ? 8 : 0 };
@@ -32,6 +34,7 @@ export function Row({
     Object.assign(style, {
       "--tc": ms(B.c.t),
       "--dc": ms(B.c.d),
+      "--tp": ms(B.p.t),
       "--tf": ms(B.f.t),
       "--df": ms(B.f.d),
       "--n": B.c.n,
@@ -49,7 +52,7 @@ export function Row({
       data-mode={mode}
       data-pair={B ? "" : undefined}
       data-echo={E ? "" : undefined}
-      className="buf-row grid grid-cols-[48px_1fr] pr-6 max-md:grid-cols-[32px_1fr] max-md:pr-4"
+      className={`buf-row grid grid-cols-[48px_1fr] pr-6 max-md:grid-cols-[32px_1fr] max-md:pr-4 ${phoneHide ? "max-md:hidden" : ""}`}
       style={style as CSSProperties}
     >
       <span
